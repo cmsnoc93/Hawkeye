@@ -46,8 +46,8 @@ def topology():
 
 				
 			@copy_current_request_context
-			def path_calc():
-				return getpath(src,dst)
+			def path_calc(src,dst):
+				return get_path(src,dst)
 
 			@copy_current_request_context
 			def callthreads(setofnamest,path_no):
