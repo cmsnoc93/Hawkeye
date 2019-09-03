@@ -1,5 +1,6 @@
 import textfsm
 from collections import defaultdict
+import re
 
 def fetchKPI(ssh,nme,path_no,devicedict):
 				# print(context)

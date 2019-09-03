@@ -1,6 +1,7 @@
 import paramiko
 from netmiko import ConnectHandler, SSHDetect
 from hawkutils import _ping_to
+import re
 
 def get_path(src,dst):
     src=src
