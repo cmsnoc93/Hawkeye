@@ -1,5 +1,6 @@
 import paramiko
 from netmiko import ConnectHandler, SSHDetect
+from hawkutils import _ping_to
 
 def get_path(src,dst):
     src=src
@@ -34,9 +35,9 @@ def get_path(src,dst):
 
 
 
-    ping_stat['source']=ping_to(src)
+    ping_stat['source']=_ping_to(src)
     if ping_stat['source']!='perfect':
-        ping_stat['dg']=ping_to(def_gw)
+        ping_stat['dg']=_ping_to(def_gw)
         ping_stat['terminate']='true'
         ping_stat['ping_failure']='true'
         return entry,exit,entryrev,setofnames,ping_stat

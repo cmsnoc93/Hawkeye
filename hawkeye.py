@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, request, render_template, g, copy_current_request_context, current_app
 import json, re, os
-from hawkutils import ThreadWithReturnValue, router, restructureDict, jsonifypath, _ping_to
+from hawkutils import ThreadWithReturnValue, router, restructureDict, jsonifypath, 
 from pathcalc import get_path
 from kpis import fetchKPI
 
