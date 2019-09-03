@@ -1,4 +1,4 @@
-import textfsm, re, , json
+import textfsm, re, json
 from collections import defaultdict
 
 
