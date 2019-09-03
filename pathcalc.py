@@ -1,7 +1,7 @@
-import paramiko
+import paramiko, re
 from netmiko import ConnectHandler, SSHDetect
-from hawkutils import _ping_to
-import re
+from hawkutils import _ping_to, router
+
 
 def get_path(src,dst):
     src=src

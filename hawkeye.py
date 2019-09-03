@@ -1,8 +1,8 @@
 from flask import Flask, redirect, url_for, request, render_template, g, copy_current_request_context, current_app
-from hawkutils import ThreadWithReturnValue, router, restructureDict, jsonifypath
+from hawkutils import ThreadWithReturnValue, restructureDict, jsonifypath
 from pathcalc import get_path
 from kpis import fetchKPI
-import json, re, os
+import json, os
 
 app = Flask(__name__)
 
