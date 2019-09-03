@@ -1,0 +1,1288 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Hawkeye</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <style>
+        .sub-kpi{
+            background-color: lightgray;
+            padding:5px;
+        }
+        .kpi{
+            padding:5px;
+        }
+        .red{
+            color:red;
+        }
+        .green{
+            color:green;
+        }
+        .amber{
+            color:#ffbf00;
+        }
+        .tint{
+            background-color:#f7f7f7;
+        }
+	#loader{
+	position:absolute;
+	left:50%;
+	top:50%;
+	z-index:1;
+	width:150px;
+	height:150px;
+	margin: -75px 0 0 -75 px;
+	border: 16px solid #f3f3f3;
+	border-radius:50%;
+	border-top:16px solid #3498db;
+	width:120px;
+	height:120px;
+	animation: spin 2s linear infinite;
+	}
+
+	@keyframes spin{
+	0% { transform:rotate(0deg); }
+	100% { transform:rotate(360deg); }	
+	}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
+    <script>
+        let app = angular.module("myApp", []);
+        app.controller("myController", function ($scope, $http) {
+            let response; 
+
+            // Function : Abbreviate Interface Names
+            function removeSmall(str) {
+                let temp = "";
+                for (i = 0; i < str.length; i++) {
+                    var ch = str.charAt(i);
+                    if (ch >= "a" && ch <= "z")
+                        continue;
+                    temp += str.charAt(i);
+                }
+                return temp.toLowerCase();
+            }
+
+	    $scope.refresh = function refresh(){
+		drawMap($scope.mapinfofwd,$scope.mapinfobkwd,$scope.mapstyle);
+      	    }
+	    var timer = document.getElementById("timer"),
+			seconds=0,minutes=0,hours=0,t;
+		
+            $scope.fetchData = function () {
+                console.log("Fetching for (src,dst) : ",$scope.src,",",$scope.dst)	
+		timer.textContent="00:00:00",seconds=0,minutes=0,hours=0;
+		clearTimeout(t);
+		function add(){
+			seconds++;
+			if(seconds>59){
+				seconds=0;
+				minutes++;
+				if(minutes>59){
+				minutes=0;
+				hours++;
+				}
+			}
+			timer.textContent=(hours ? (hours > 9 ? hours : "0" +
+hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes)
+: "00") + ":" + (seconds > 9 ? seconds: "0"+seconds);
+			timer_func();
+		}
+		function timer_func(){
+			t = setTimeout(add,1000);
+		}
+		clearTimeout(t);
+		timer_func();
+	 	document.getElementById("loader-head").style.display="block";
+				
+		
+                $http({
+                    method: 'POST',
+                    url: '/Topology',
+                    data: {
+                        src: $scope.src,
+                        dst: $scope.dst,
+                    }
+                }).then(function (res) {
+                    response = res.data;
+                    console.log(response);
+                    if (response !== undefined) {
+			if(response.length > 3)
+				$scope.mapstyle = "broken"
+			else
+				$scope.mapstyle = "end_to_end"
+
+		        handleErrors(response[2],"forward");
+			if($scope.mapstyle == "broken")
+				handleErrors(response[5],"backward");
+						
+                        makeTable(response[1],"forward");
+			if($scope.mapstyle == "broken")
+				makeTable(response[4],"backward");
+
+			document.getElementById("loader-head").style.display="none";
+			console.log("Plotting Map...");
+
+			if($scope.mapstyle == "broken"){
+                        drawMap(response[0],response[3],$scope.mapstyle);
+				$scope.mapinfofwd = response[0];
+				$scope.mapinfobkwd = response[3];
+			}
+			else if($scope.mapstyle == "end_to_end"){
+		                drawMap(response[0],null,$scope.mapstyle);
+				$scope.mapinfofwd = response[0];
+			}
+			console.log("Plotting Completed.");
+	                        
+                    }
+                }, function (res) {
+                    console.log("Response Error Occured")
+                });
+            };
+
+            // Function : Plot Topology
+            function drawMap(response,response2,dir) {
+                var nodelist = [];
+		var cloudnode = false;
+                var set = new Set();
+                for (device in $scope.device_map) {         
+                    var name = $scope.device_map[device]["Name"][0]     
+                    if (!set.has(name)) {
+                        set.add(name);
+                        var node = { id:name, shape:"image"}     
+                        var isEndpoint = false;
+                        if($scope.src!=undefined && $scope.dst!=undefined)
+                        for(interface in $scope.device_map[device]['Interface Dictionary']){
+			    console.log("checking interfaces for src,dst");
+                            if($scope.device_map[device]['Interface Dictionary'][interface]['ip']==$scope.src){
+                                console.log($scope.device_map[device]['Interface Dictionary'][interface]['ip'],",",$scope.src)
+                                node.label = "SRC:" + name;
+                                isEndpoint = true;
+                                break;
+                            }
+                            if($scope.device_map[device]['Interface Dictionary'][interface]['ip']==$scope.dst){
+                                console.log($scope.device_map[device]['Interface Dictionary'][interface]['ip'],",",$scope.dst)
+                                node.label = "DEST:" + name;
+                                isEndpoint = true;
+                                break;
+                            }
+                        }
+                        if(!isEndpoint)
+                            node.label = name;
+                        if (name.includes('RC'))
+                            node.image = "/static/router.png";
+                        else
+                            node.image = "/static/switchl3.png";
+                        nodelist.push(node);
+                    }
+                }            
+                             
+                var edgelist = [];
+                
+		if($scope.mapstyle == "end_to_end"){
+			
+			for (line in response) {
+		            var edge = {from:response[line]["now"],to:response[line]["next"]};
+		            if (edge.to == edge.from)
+		                continue;
+		            edge.label = removeSmall(response[line]["exit"]) + " / " + removeSmall(response[line]["entry"]);
+		            edgelist.push(edge)
+			}
+		 }else if($scope.mapstyle == "broken"){
+			for(line in response){
+				if(response[line]["next"]=="Couldnt Fetch"){
+					if(!cloudnode){var node = { id:"cloud",label:"Service Provider",shape:"image",image:"/static/cloud.png"}	
+					nodelist.push(node);cloudnode=true}
+					var edge = {from:response[line]["now"],to:"cloud",label:removeSmall(response[line]["exit"])+" / "+$scope.ssh_in};
+					edgelist.push(edge)
+				}else{
+				    var edge = {from:response[line]["now"],to:response[line]["next"]};
+		            if (edge.to == edge.from)
+		                continue;
+		            edge.label = removeSmall(response[line]["exit"]) + " / " + removeSmall(response[line]["entry"]);edgelist.push(edge)	
+				}			
+			}
+			for(line in response2){
+				if(response2[line]["next"]=="Couldnt Fetch"){
+					if(!cloudnode){var node = { id:"cloud",label:"Service Provider Network",shape:"image",image:"/static/cloud.png"}	
+					nodelist.push(node);cloudnode=true}
+					var edge = {from:response2[line]["now"],to:"cloud",label:removeSmall(response2[line]["exit"])+" / "+$scope.ssh_out};
+					edgelist.push(edge)
+				}else{
+			             var edge = {from:response2[line]["now"],to:response2[line]["next"]};
+		            if (edge.to == edge.from)
+		                continue;
+		            edge.label = removeSmall(response2[line]["exit"]) + " / " + removeSmall(response2[line]["entry"]);edgelist.push(edge)
+				}
+			}
+					
+			
+		    
+
+			
+                }
+		var nodes = new vis.DataSet(nodelist);   
+                var edges = new vis.DataSet(edgelist);
+                var container = document.getElementById('mynetwork');
+                var data = {
+                    nodes: nodes,
+                    edges: edges
+                };
+
+                var options = {physics: {enabled: false},
+                               interaction: {dragNodes: true, zoomView: true,hoverConnectedEdges:true},
+                               layout: {hierarchical:{enabled:true,direction:"LR",nodeSpacing:300,blockShifting:false,edgeMinimization:false,
+sortMethod:"directed"}}};
+
+                var network = new vis.Network(container, data, options);    
+		$scope.network = network;
+		$scope.data = data;
+                network.on("click", function (properties) {
+                    $scope.$apply(function () { 
+		$scope.clicked_device = $scope.device_map[properties.nodes];  
+			
+			if(properties.nodes == "cloud")
+			{	console.log($scope.clicked_device);				
+				$scope.cloudclicked=true
+				
+			}else
+                       	$scope.cloudclicked = false
+			console.log("Is Cloud:",$scope.cloudclicked)
+			if(!$scope.cloudclicked){
+                            
+                        
+                        $scope.thresholds = { green: 0, amber: 1, red: 3 }
+                        $scope.images = { 0: "/static/checked.png", 
+                                          1: "/static/warning-t.png",
+                                          3: "/static/cancel.png"}
+                        $scope.device = 0; 
+			$scope.platform = 0;
+                        $scope.cpu = 0;
+                        $scope.memory = 0;
+                        $scope.logs = 0;
+
+                        $scope.interface = 0;
+                        $scope.interfaces = {};
+                        $scope.counters = 0;
+                        $scope.protocols = 0;
+                        $scope.eigrp = 0;
+			$scope.eigrp_down = [];
+                        $scope.bgp = 0;
+			$scope.bgp_down = [];
+                        $scope.spanning = 0;
+                        $scope.routeflaps = 0;
+
+
+		
+		
+                        $scope.qos = 0;
+                        evaluateThresholds();      
+			if($scope.clicked_device.Name[0].includes('RC'))
+				$scope.clicked_image = "/static/router.png"
+              		else 
+				$scope.clicked_image = "/static/switchl3.png"
+                        
+                        console.log($scope.clicked_device);
+			
+                        let clicked = properties.nodes;
+                        $scope.exits = "";
+                        $scope.entries = "";
+console.log("RESPONSE IS"+ response)
+                        for (entry in response) {
+                            from = response[entry]["now"];
+			    console.log("FROM IS"+from)
+                            if (from == clicked) {
+                                if (response[entry]['next'] == from)
+                                    continue;
+                                if(response[entry]["next"] == "Couldnt Fetch"){$scope.exits += "Provider Edge via "+response[entry]["exit"]}else
+                                $scope.exits += response[entry]["next"] + " via " + response[entry]["exit"]+" "
+                            }
+                            to = response[entry]["next"];
+                            if (to == clicked) {
+                                if (response[entry]['now'] == to)
+                                    continue;
+                                $scope.entries += response[entry]["now"] + " via " + response[entry]["entry"]+" "
+                            }
+                        }
+                        for (entry in response2) {
+                            from = response2[entry]["now"];
+                            if (from == clicked) {
+                                if (response2[entry]['next'] == from)
+                                    continue;
+				if(response2[entry]["next"] == "Couldnt Fetch"){$scope.entries += "Provider Edge via "+response2[entry]["exit"]}else
+                                $scope.entries += response2[entry]["next"] + " via " + response2[entry]["exit"]+" "
+                            }
+                            to = response2[entry]["next"];
+                            if (to == clicked) {
+                                if (response2[entry]['now'] == to)
+                                    continue;
+				
+                                $scope.exits += response2[entry]["now"] + " via " + response2[entry]["entry"]+" "
+                            }
+                        }
+                        if ($scope.exits.length === 0) {
+                            $scope.exits = "THIS IS DESTINATION";
+                        }
+                         if ($scope.entries.length === 0) {
+                            $scope.entries = "THIS IS SOURCE";
+			    
+                         }
+			}else if($scope.cloudclicked){
+				$scope.entries = $scope.ssh_in+" on Ingres Provider Edge Router";		
+				$scope.exits = $scope.ssh_out+" on Egress Provider Edge Router";
+			}
+			
+                    });
+                });
+            }
+
+	    function thres(arr){
+		
+	        var retval  = 0;
+		var prev = arr[0]
+		for (i in arr){
+		   
+		   if(arr[i]>0)
+			retval = 1;
+		   if(arr[i] != prev)
+			return 2;
+		   prev = arr[i];
+		}
+		return retval
+	    }
+            // Function : Apply Thresholds
+            function evaluateThresholds(){
+
+                console.log("Checking thresholds");                
+                thresholds = $scope.thresholds;
+
+
+		os_type = $scope.clicked_device.device.version.soft_ver
+		$scope.os_type = os_type
+                // CPU
+		if(os_type != "cisco_nxos"){
+		        var flag = thresholds.green;
+		        for (attrib in $scope.clicked_device.CPU.cpu_util){
+		            var value = $scope.clicked_device.CPU.cpu_util[attrib];
+		            if(value < 50)
+		                flag = flag | thresholds.green;
+		            else if(value < 70)
+		                flag = flag | thresholds.amber;
+		            else
+		                flag = flag | thresholds.red;
+		        }
+			$scope.cpu = flag;
+		}else{
+			var flag = thresholds.green;
+			var cpu = $scope.clicked_device.CPU.cpu_util;
+			var util = parseFloat(cpu.user)+parseFloat(cpu.kernel);
+			$scope.total_nexus_util = util
+			if(util < 50)
+				flag = flag | thresholds.green;
+		            else if(util < 70)
+		                flag = flag | thresholds.amber;
+		            else
+		                flag = flag | thresholds.red;
+			$scope.cpu = flag;
+		
+		}
+			
+                
+
+                // Memory
+                var flag = thresholds.green;
+                for (attrib in $scope.clicked_device.device.memory){
+                    var value = $scope.clicked_device.device.memory[attrib];
+                    if(value.percent < 50)
+                        flag = flag | thresholds.green;
+                    else if(value.percent < 70)
+                        flag = flag | thresholds.amber;
+                    else
+                        flag = flag | thresholds.red;                    
+                }
+                $scope.memory = flag;
+
+                // Logs
+                var flag = thresholds.green;
+		var eigrp_down = new Set();
+	 	var bgp_down = new Set();
+                for (it in $scope.clicked_device.device.log){   
+                    var line = $scope.clicked_device.device.log[it];
+		    
+		                
+                    if(line.includes("DUAL")){
+                        var r = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/;
+                        var ip =  line.match(r);
+                        if(!(ip[0] in $scope.clicked_device.Protocols.eigrp)){
+                            
+			        eigrp_down.add(ip[0]);
+				console.log(ip[0],"has not come back up");
+			    
+			    $scope.eigrp = $scope.eigrp | thresholds.red;
+			    
+                        }
+			flag = flag | thresholds.red;
+			
+                    }
+                    if(line.includes("BGP")){
+                        var r = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/;
+                        var ip =  line.match(r);
+                        if(!(ip[0] in $scope.clicked_device.Protocols.bgp)){
+                            
+			        bgp_down.add(ip[0]);
+				console.log(ip[0],"has not come back up");
+			    
+			    $scope.bgp = $scope.bgp | thresholds.red;
+			    
+                        }
+			flag = flag | thresholds.red;
+			
+                    }
+                        
+                   
+                        flag = flag | thresholds.amber; 
+                                      
+                }
+	        $scope.eigrp_down = Array.from(eigrp_down)
+		$scope.bgp_down = Array.from(bgp_down)
+                $scope.logs = flag;
+                
+                // Device
+                $scope.device = $scope.cpu | $scope.memory | $scope.logs
+//Interface counter errors
+				if(Object.keys($scope.clicked_device.device.interface_counters_errors).length == 0)
+		{
+		$scope.counters = 0;
+		}
+		else{
+		$scope.counters = 1;
+		}
+                // Interfaces
+                
+                for(interface in $scope.clicked_device["Interface Dictionary"]){
+                    var flag = thresholds.green;
+		    var int = $scope.clicked_device["Interface Dictionary"][interface]
+		    console.log("Current interface:",int);
+                    if(thres(int.collisions) > 0 || thres(int.crc) > 0 || thres(int.frame) > 0 || thres(int.ignored) > 0
+                      || thres(int.input_errors) > 0 || thres(int.interf_reset) > 0 || thres(int.late_collision) > 0 || thres(int.output_drops) > 0 
+                      || thres(int.output_errors) > 0 || thres(int.overrun) > 0){
+                          flag = thresholds.amber;
+                      }
+                    $scope.interfaces[interface] = flag;
+                }
+
+                for(int in $scope.interfaces){
+                    $scope.interface = $scope.interface | $scope.interfaces[int];
+                }
+
+                // EIGRP
+                var flag = thresholds.green;
+	        if($scope.clicked_device.device.version.soft_ver!='cisco_nxos'){
+                for(neigh in $scope.clicked_device.Protocols.eigrp){
+		    $scope.eigrp_neigh_count = "Number of neighbors constant"
+                    var srtt = $scope.clicked_device.Protocols.eigrp[neigh].srtt;
+                    var rto = $scope.clicked_device.Protocols.eigrp[neigh].rto;
+		    var occurences = $scope.clicked_device.Protocols.eigrp[neigh].iteration;
+		    var status = new Array();
+		if($scope.clicked_device.Protocols.eigrp[neigh].uptime[0].includes("00")){
+		flag = flag | thresholds.red;
+		status.push("Flap in last Hour");}
+		    
+		    var changed = false; var limit=false; var prev=srtt[0];
+		    for(val in srtt){
+			if(srtt[val] != prev)
+				changed = true;
+			if(srtt[val] >= 1500)
+				limit = true;
+			prev = srtt[val];
+		    }
+		    if(changed==true){
+			status.push("SRTT fluctuating")
+		        flag = flag | thresholds.amber;
+		    }
+		    if(limit==true){
+			status.push("SRTT Too High")
+			flag = flag | thresholds.red;
+		    }
+
+		 
+		    changed = false;  limit=false;  prev=rto[0];
+		    for(val in rto){
+			if(rto[val] != prev)
+				changed = true;
+			if(rto[val] > 4500)
+				limit = true;
+			prev = rto[val];
+		    }
+		   if(changed==true){
+			status.push("RTO fluctuating")
+			flag = flag | thresholds.amber;
+		   }
+		   if(limit==true){
+			status.push("RTO Too High")
+			flag = flag | thresholds.red;
+		   }
+		   if(occurences.length!=3){
+			status.push("Flapping")
+		        flag = flag | thresholds.red;
+			$scope.eigrp_neigh_count="Number of Neighbors not constant"
+		   }
+		   if(!occurences.includes(2)){
+			$scope.eigrp_down.push($scope.clicked_device.Protocols.eigrp[neigh].neighbor);
+			flag = flag | thresholds.red;
+		   }
+
+		   if(status.length==0){
+			 flag = flag | thresholds.green;
+			 status.push("No Issues")
+		   }
+
+		  $scope.clicked_device.Protocols.eigrp[neigh].status= status
+                }
+$scope.eigrp = $scope.eigrp | flag;
+                
+	   }
+	else if ($scope.clicked_device.device.version.soft_ver=='cisco_nxos'){
+	var flag = thresholds.green
+	 for(neigh in $scope.clicked_device.Protocols.eigrp){ 
+		if($scope.clicked_device.Protocols.eigrp[neigh].condition == 'perfect.'){
+		  flag = flag | thresholds.green;}
+		else if($scope.clicked_device.Protocols.eigrp[neigh].condition == ' rto value fluctuating. ' || $scope.clicked_device.Protocols.eigrp[neigh].condition == ' srtt value fluctuating. '){
+		  flag = flag | thresholds.amber;}
+		else {
+		  flag = flag | thresholds.red;}
+	     }
+	$scope.eigrp = $scope.eigrp | flag;
+	
+	}
+	
+		
+		
+		// ROUTE FLAPS
+		
+                for (it in $scope.clicked_device.Protocols.ip_route){   
+                    $scope.routeflaps = thresholds.red;
+		    break;
+		}
+                
+                // BGP
+                var flag = thresholds.green;
+                for(neigh in $scope.clicked_device.Protocols.bgp){
+                    var value = $scope.clicked_device.Protocols.bgp[neigh];
+		    if(typeof value === "object"){
+                    if(value['condition']!="perfect")
+                        flag = flag | thresholds.red;
+                    else
+                        flag = flag | thresholds.green;
+		    }else{
+	             if (value.includes("not"))
+			flag = flag | thresholds.red;
+	             else
+			flag = flag | thresholds.green; 
+		    }
+	   
+                }
+                $scope.bgp = $scope.bgp | flag;
+
+                $scope.protocols = $scope.eigrp | $scope.bgp | $scope.routeflaps ;
+
+            }
+
+	    // Returns 0 (fine), 1 (high values), 2 (changing values)
+
+
+            function makeTable(devices,dir) {
+		
+		if(dir=="forward"){
+		        $scope.device_map = {};
+		        for (obj in devices) {
+		            name = devices[obj]['Name'][0];
+		            $scope.device_map[name] = devices[obj]
+		        }
+		        console.log("Devices added: ",$scope.device_map)
+		}
+		else{
+			$scope.rev_device_map = {};
+				
+		        for (obj in devices) {
+		            name = devices[obj]['Name'][0];
+		            $scope.rev_device_map[name] = devices[obj]
+		
+		            $scope.device_map[name] = devices[obj]
+		        }
+		        console.log("Devices added: ",$scope.rev_device_map)			    
+		}
+            }
+	    function evaluateErrors(){
+		
+                        $scope.images = { 0: "/static/checked.png", 
+                                          1: "/static/warning-t.png",
+                                          3: "/static/cancel.png"}
+			$scope.ping_failure = 0;
+			$scope.ssh_failure = 0;
+			$scope.src_ping = 0;
+			$scope.dst_ping = 0;
+			$scope.dg_ping = 0;
+			if($scope.errors == null)
+				return;
+			console.log($scope.errors)
+			if("ping_failure" in $scope.errors){
+			
+				if($scope.errors["ping_failure"] == "false")
+					$scope.ping_failure = 0; 
+				else
+					$scope.ping_failure = 3;
+				
+			}
+			if("ssh_failure" in $scope.errors){
+		
+				if($scope.errors["ssh_failure"] == "false")
+					$scope.ssh_failure = 0; 
+				else
+					$scope.ssh_failure = 3;
+				
+			}
+			if("source" in $scope.errors){
+			
+				if($scope.errors["source"] == "perfect")
+					$scope.src_ping = 0; 
+				else
+					$scope.src_ping = 3;
+				
+			}
+			if("dg" in $scope.errors){
+			
+				if($scope.errors["dg"] == "perfect")
+					$scope.dg_ping = 0; 
+				else
+					$scope.dg_ping = 3;
+				
+			}
+			if("dest" in $scope.errors){
+			
+				if($scope.errors["dest"] == "perfect")
+					$scope.dst_ping = 0; 
+				else
+					$scope.dst_ping = 3;
+				
+			}
+		console.log("Scope ping failure")
+		console.log($scope.ping_failure)
+		console.log("Scope SSH Failure")
+		console.log($scope.ssh_failure)
+		console.log("Scope Source")
+		console.log($scope.src_ping)
+		console.log("Scope DG")
+		console.log($scope.dg_ping)
+		console.log("Scope Dest")
+		console.log($scope.dst_ping)
+
+	    }	
+	    $scope.fetchRaw=function(){
+		console.log("GET:",'/log/'+$scope.clicked_device.Name[0]);
+	        $http({
+                    method: 'GET',
+                    url: '/log/'+$scope.clicked_device.Name[0],
+                    
+                }).then(function (res) {
+                    response = String(res.data);
+                    
+                    if (response !== undefined) {
+						
+			var w = window.open("data:text/plain,"+response,"_blank");
+	
+			w.focus();
+			w.open();
+			w.document.write(response);
+	                        
+                    }
+                }, function (res) {
+                    console.log("Response Error Occured")
+                });
+	    }
+
+	    function handleErrors(errorDict,dir){
+		console.log("Forward errros")
+			console.log($scope.fwderrors)
+			console.log($scope.ssh_failure)
+		if(dir=="forward"){
+			$scope.errors = errorDict;
+			$scope.fwderrors = 0;
+			evaluateErrors();
+			$scope.fwderrors= $scope.ssh_failure;
+			
+			if($scope.ssh_failure > 0){
+				$scope.ssh_in = $scope.errors.ssh_err_ip[0];
+				console.log("ssh failure on forward path:",$scope.ssh_in);
+			}
+		}
+		else if(dir == "backward"){
+			$scope.errors = errorDict;
+			$scope.bkwderrors = 0;
+			evaluateErrors();
+			$scope.bkwderrors= $scope.ssh_failure;
+			if($scope.ssh_failure > 0){
+				$scope.ssh_out = $scope.errors.ssh_err_ip[0];
+				console.log("ssh failure on backward path:",$scope.ssh_out);
+			}
+		}
+	    }
+
+
+
+
+        });
+    </script>
+</head>
+<div class="jumbotron min-vw-100">
+    <div class="container text-center "style="width:355px;height:100px">
+	<div style="float:left;"><img src = "/static/cisco.png" style="width:140px;height:80px;"/></div>
+        <div style="float:right;"><p style="font-size:40px;text-align:left;margin-bottom:0"><b>Hawkeye</b></p><hr style="margin-top:0;margin-bottom:0">
+        <p style="font-size:14px;text-align:center">Automated Troubleshooter</p></div>
+    </div>
+</div>
+<body style="overflow-x:hidden">
+<div ng-app="myApp" ng-controller="myController" class="col min-vw-100">
+    <div class="align-middle col-12 min-vw-100">
+    <form  class="col w-80">
+        <div class="form-row">
+            <div class="col-2">
+                <input type="text" ng-model="src" class="form-control" placeholder="Source IP">
+            </div>
+            <div class="col-1 text-center">
+                <span class="align-middle">to</span>
+            </div>
+            <div class="col-2">
+                <input type="text" ng-model="dst" class="form-control" placeholder="Destination IP">
+            </div>
+            <div class="col-1">
+                <input type="submit" value="Execute" class="btn btn-secondary" ng-click="fetchData()">
+            </div>
+            <div class="col-1">
+<button class="btn btn-info" value="Reset View" ng-click="refresh()">Reset </button>
+            
+
+        </div>
+<div class="col-3 text-center">
+                <span class="align-middle">Time Elapsed since last Execution:</span>
+            </div>
+<div class="col-2"><h5 id="timer"><time>00:00:00</time></h5></div>
+	    
+	    
+        <br>
+    </form>
+
+
+    </div><br>
+    <div class="col-12 min-vw-80">
+	<div id="loader-head" class="row" style="display:none;">
+	<div class="col-6"">
+	<span>Please wait while the system fetches the data.	</span></div>
+	
+	<div id="loader">
+	</div>
+	</div>
+        <div id="mynetwork" style="height:300px" class="row-6 border">
+
+        </div>
+	
+        <div id="kpipanel" class="row-6 border">
+	   <div ng-if="fwderrors > 5">
+	         <h4 class="kpi"> Connectivity Errors were detected for the given query </h4>
+		 <table class="table">
+		 <tr ng-if="errors.ping_failure">
+			<td>  <h5 class="sub-kpi">Ping Failed : <img ng-src = "{{images[ping_failure]}}" style="width:20px"/></h5> </td>		
+ 		</tr>
+		 <tr ng-if="errors.source">
+			<td>  Source Ping : {{ errors.source }} : <img ng-src = "{{images[src_ping]}}" style="width:20px"/> </td>		
+ 		</tr>
+		 <tr ng-if="errors.dest">
+			<td>  Destination Ping : {{ errors.dest }} : <img ng-src = "{{images[dst_ping]}}" style="width:20px"/> </td>		
+ 		</tr>
+		 <tr ng-if="errors.dg">
+			<td>  Default Gateway Ping : {{ errors.dg }} : <img ng-src = "{{images[dg_ping]}}" style="width:20px"/> </td>		
+ 		</tr>
+		 <tr ng-if="errors.ssh_failure">
+			<td>  <h5 class="sub-kpi">SSH Failed : <img ng-src = "{{images[ssh_failure]}}" style="width:20px"/></h5> </td>		
+ 		</tr>
+		 <tr ng-if="errors.ssh_err_ip">
+			<td>  SSH failed on device : {{ errors.ssh_err_ip }}</td>		
+ 		</tr>
+		</table>
+	    </div> 
+	    <div id="sp" ng-if="cloudclicked" >
+ 		<h4 class="sub-kpi"><img ng-src = "/static/cloud.png" style="width:20px"/> Service Provider Network</h4>
+                <div class="kpi"><b>Entry: </b>{{ entries }}</div>
+                <div class="kpi"><b>Exit: </b>{{ exits }}<br></div>
+		<div class="kpi">Carrier Information: <button class="btn btn-info btn-sm">Fetch Details</button><br></div>
+	    </div>
+            <div id="dev" ng-if="clicked_device">
+                <h4 class="sub-kpi"><img ng-src = "{{clicked_image}}" style="width:20px"/> {{ clicked_device.Name[0] }}</h4>
+                <div class="kpi"><b>Entry: </b>{{ entries }}</div>
+                <div class="kpi"><b>Exit: </b>{{ exits }}<br></div>
+		<div class="kpi"><b>Raw Output: </b><button class="btn btn-smsm btn-info" ng-click="fetchRaw()">Open</div>
+            
+                <div class="mt-4 border tint">
+                    <h5 class="kpi"> Device Health: <img ng-src = "{{images[device]}}" style="width:20px"/></h5>
+		    <div>
+		    	<h6 class="sub-kpi">Platform: <img ng-src = "{{images[platform]}}" style="width:20px"/></h6>
+			<table class="table table-borderless">
+			    <tr>
+				<td ng-if="clicked_device.device.version.hardware.length > 0">Hardware: {{ clicked_device.device.version.hardware }}</td>
+				<td ng-if="clicked_device.device.version.reload_reason.length > 0">Reload Reason: {{ clicked_device.device.version.reload_reason }}</td>
+				<td ng-if="clicked_device.device.version.soft_ver.length > 0">Software Version: {{ clicked_device.device.version.soft_ver }}</td>
+				<td ng-if="clicked_device.device.version.uptime.length > 0">Uptime: {{ clicked_device.device.version.uptime }}</td>
+				<td ng-if="clicked_device.device.version.version.length > 0">Version: {{ clicked_device.device.version.version }}</td>
+			    </tr>
+			</table>
+		    </div>
+                    <div ng-if = "os_type != 'cisco_nxos'">
+                        <h6 class="sub-kpi">CPU Usage: <img ng-src = "{{images[cpu]}}" style="width:20px"/></h6>                    
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th>Last 5 Sec</th>
+                                <th>Last 1 Min</th>
+                                <th>Last 5 Min</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{clicked_device.CPU.cpu_util.cpu_5_sec}}%</td>
+                                <td>{{clicked_device.CPU.cpu_util.cpu_1_min}}%</td>
+                                <td>{{clicked_device.CPU.cpu_util.cpu_5_min}}%</td>
+                               
+                            </tr>
+                            </tbody>
+                        </table> 
+                        <table class="table table-borderless" ng-if="cpu > 0">
+                            <thead>
+                            <tr>
+                                <th>Process</th>
+                                <th>PID</th>
+                                <th>5 Sec</th>
+                                <th>1 Min</th>
+                                <th>5 Min</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="(key,value) in clicked_device.CPU.pid">
+                                <td>{{value.process}}</td>
+                                <td>{{key}}</td>
+                                <td>{{value.proc_5_sec}}%</td>
+                                <td>{{value.proc_1_min}}%</td>
+                                <td>{{value.proc_5_min}}%</td>
+                            </tr>
+                            </tbody>
+                        </table> 
+                    </div>
+<!--NXOS CPU-->
+                    <div ng-if ="os_type == 'cisco_nxos'">
+                        <h6 class="sub-kpi">CPU Usage: <img ng-src = "{{images[cpu]}}" style="width:20px"/></h6>                    
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Kernel</th>
+                                <th>Total Used</th>
+                                <th>Idle</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{clicked_device.CPU.cpu_util.user}}%</td>
+                                <td>{{clicked_device.CPU.cpu_util.kernel}}%</td>
+                                <td>{{total_nexus_util}}%</td>
+                                <td>{{clicked_device.CPU.cpu_util.idle}}%</td>
+                               
+                            </tr>
+                            </tbody>
+                        </table> 
+                        <table class="table table-borderless" ng-if="cpu > 0">
+                            <thead>
+                            <tr>
+                                <th>Process</th>
+                                <th>PID</th>
+                                <th>Utilization (1 sec)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="(key,value) in clicked_device.CPU.pid">
+                                <td>{{value.process}}</td>
+                                <td>{{key}}</td>
+                                <td>{{value.proc_1_sec}}%</td>
+                            </tr>
+                            </tbody>
+                        </table> 
+                    </div>
+                    <div>
+                        <h6 class="sub-kpi">Memory Usage: <img ng-src = "{{images[memory]}}" style="width:20px"/></h6>
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th>Pool</th>
+                                <th>Total</th>
+                                <th>Free</th>
+                                <th>Used</th>
+                                <th>% Used</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="(key,value) in clicked_device.device.memory">
+                                <td>{{ key }}</td>
+                                <td>{{ value.total }}Mb</td>
+                                <td>{{ value.free }}Mb</td>
+                                <td>{{ value.used }}Mb</td>
+                                <td>{{ value.percent }}%</td>
+                            </tr>
+                            </tbody>
+                        </table> 
+                    </div>
+                    <div>
+                        <h6 class="sub-kpi">SysLog: <img ng-src = "{{images[logs]}}" style="width:20px"/></h6>    
+                        <h6 class="sub-kpi red" ng-if="logs>0">SysLog Issues detected, Check Protocol Information for Details</h6>                
+                        <div class="row" ng-if="logs>0" ng-repeat="log in clicked_device.device.log">
+                                <div class="col">{{ log }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 border tint">
+                    <h5 class="kpi"> Interface Statistics: <img ng-src = "{{images[interface]}}" style="width:20px"/></h5>
+                    <table class="table" ng-repeat="(key,interface) in clicked_device['Interface Dictionary']">
+                        <thead><tr class="sub-kpi w-100"><td><h6>{{ key }} : {{ interface.ip }}
+                               <img ng-src = "{{images[interfaces[key]]}}" style="width:20px"/></h6></td>
+                               </tr>
+                        </thead>
+                        <tr>
+                            <td>B/W: {{ interface.bandwidth[2] }}</td>
+                            <td>Collisions: {{ interface.collisions }}</td>
+                            <td ng-if="interface.crc[0]"> {{ interface.crc }}</td>
+                            <td>{{ interface.duplex[2] }}</td>
+                        </tr>
+                        <tr>
+                            <td ng-if="interface.frame[0]">Frame: {{ interface.frame }}</td>
+                            <td ng-if="interface.ignored[0]">Ignored: {{ interface.ignored }}</td>
+                            <td ng-if="interface.input_errors[0]">Input Errors:{{ interface.input_errors }}</td>
+                            <td>Resets: {{ interface.interf_reset }}</td>                
+                        </tr>
+                        <tr>
+                            <td>Speed: {{ interface.speed[2] }}</td>
+                            <td>Late Collisions: {{ interface.late_collision }}</td>
+                            <td ng-if="interface.output_drops[0]">Output Drops: {{ interface.output_drops }}</td>
+                            <td>Output Errors: {{ interface.output_errors }}</td>
+                        </tr>
+                        <tr>
+                            <td ng-if="interface.overrun[0]">Overrun: {{ interface.overrun }}</td>
+                            <td>Reliability: {{ interface.reliability[2] }}</td>
+                            <td>RX Load: {{ interface.rxload[2] }}</td>                            
+                            <td>TX Load: {{ interface.txload[2] }}</td>
+                        </tr>
+			<tr>
+			<td ng-if="interface.description"> Description : {{interface.description[2]}}</td>
+			</tr>
+                    </table>
+                  <h6 class="sub-kpi">Interfaces with Counter Errors: <img ng-src = "{{images[counters]}}" style="width:20px"/></h6> 
+                  
+                    <h6 class="sub-kpi green" ng-if="counters==0">There are no interfaces with Counter errors on this Path</h6>  
+
+      
+            
+
+ <button type="button" class="btn btn-success"  data-toggle="collapse" data-target="#demo">Interface errors</button>
+            <div class = "collapse" id ="demo">
+       <div ng-if="clicked_device.device.version.soft_ver=='cisco_ios'">
+                <div ng-if="clicked_device.device.interface_counters_errors">
+                        <h6>Interface errors</h6>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Interface</th>
+                                <th>Error</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="(key,data) in clicked_device.device.interface_counters_errors">
+                                <td>{{key}}</td>   
+                                
+                                <td>
+                                        
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Align Error</th>
+                                                            <th>FCS Error</th>
+                                                            <th>Xmit Error</th>
+                                                            <th>Rcv Error</th>
+                                                            <th>Undersize Error</th>
+                                                            <th>Outdiscards Error</th>
+                                                        </tr>
+                                                        
+                                                        <tr ng-repeat="subval in data">
+                                                            <td>{{subval[0]}}</td>
+                                                            <td>{{subval[1]}}</td>
+                                                            <td>{{subval[2]}}</td>
+                                                            <td>{{subval[3]}}</td>
+                                                            <td>{{subval[4]}}</td>
+                                                            <td>{{subval[5]}}</td>
+                                                        </tr>
+                                                    </thead>
+                                                    </table>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Single-Col</th>
+                                                                <th>Multi-Col</th>
+                                                                <th>Late-Col</th>
+                                                                <th>Excess-Col</th>
+                                                                <th>Carri-Sen</th>
+                                                                <th>Runts</th>
+                                                                <th>Giants</th>
+                                                            </tr>
+                                                            
+                                                            <tr ng-repeat="subval in data">
+                                                                <td>{{subval[6]}}</td>
+                                                                <td>{{subval[7]}}</td>
+                                                                <td>{{subval[8]}}</td>
+                                                                <td>{{subval[9]}}</td>
+                                                                <td>{{subval[10]}}</td>
+                                                                <td>{{subval[11]}}</td>
+                                                                <td>{{subval[12]}}</td>
+    
+                                                            </tr>
+                                                        </thead>
+                                                        </table>
+                                        
+                                </td>
+                               
+                            </tr>
+                            </tbody>
+                        </table>
+                    
+</div>
+</div>
+ <!-- CLOSE 2 divs !-->
+<!--- NXOS !--->
+       <div ng-if="clicked_device.device.version.soft_ver=='cisco_nxos'">
+                <div ng-if="clicked_device.device.interface_counters_errors">
+                        <h6>Interface errors</h6>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Interface</th>
+                                <th>Error</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="(key,data) in clicked_device.device.interface_counters_errors">
+                                <td>{{key}}</td>   
+                                
+                                <td>
+                                        
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Align Error</th>
+                                                            <th>FCS Error</th>
+                                                            <th>Xmit Error</th>
+                                                            <th>Rcv Error</th>
+                                                            <th>Undersize Error</th>
+                                                            <th>Outdiscards Error</th>
+                                                        </tr>
+                                                        
+                                                        <tr ng-repeat="subval in data">
+                                                            <td>{{subval[0]}}</td>
+                                                            <td>{{subval[1]}}</td>
+                                                            <td>{{subval[2]}}</td>
+                                                            <td>{{subval[3]}}</td>
+                                                            <td>{{subval[4]}}</td>
+                                                            <td>{{subval[5]}}</td>
+                                                        </tr>
+                                                    </thead>
+                                                    </table>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Single-Col</th>
+                                                                <th>Multi-Col</th>
+                                                                <th>Late-Col</th>
+                                                                <th>Excess-Col</th>
+                                                                <th>Carri-Sen</th>
+                                                                <th>Runts</th>
+                                                                <th>Giants</th>
+                                                            </tr>
+                                                            
+                                                            <tr ng-repeat="subval in data">
+                                                                <td>{{subval[6]}}</td>
+                                                                <td>{{subval[7]}}</td>
+                                                                <td>{{subval[8]}}</td>
+                                                                <td>{{subval[9]}}</td>
+                                                                <td>{{subval[10]}}</td>
+                                                                <td>{{subval[11]}}</td>
+                                                                <td>{{subval[12]}}</td>
+    
+                                                            </tr>
+                                                        </thead>
+                                                        </table>
+  <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SQETest-Er</th>
+                                                            <th>Deferred-Tx</th>
+                                                            <th>IntMacTx-Er</th>
+                                                            <th>IntMacRx-Er </th>
+                                                            <th>Symbol-Err</th>
+                                                        </tr>
+                                                        
+                                                        <tr ng-repeat="subval in data">
+                                                            <td>{{subval[13]}}</td>
+                                                            <td>{{subval[14]}}</td>
+                                                            <td>{{subval[15]}}</td>
+                                                            <td>{{subval[16]}}</td>
+                                                            <td>{{subval[17]}}</td>
+                                                           
+                                                        </tr>
+                                                    </thead>
+                                                    </table>
+                                        
+                                </td>
+                               
+                            </tr>
+                            </tbody>
+                        </table>
+                    
+</div>
+</div>
+
+<!---!--->
+      </div>              
+                </div>
+                <div class="mt-4 border tint">
+                    <h5 class="kpi"> Protocol Information: <img ng-src = "{{images[protocols]}}" style="width:20px"/></h5>
+                    <div ng-if="clicked_device.Protocols.eigrp && os_type!='cisco_nxos'">
+                        <h6 class="sub-kpi">EIGRP Neighbors: <img ng-src = "{{images[eigrp]}}" style="width:20px"/></h6>
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th>Neighbor</th>
+                                <th>RTO (ms)</th>
+                                <th>SRTT (ms)</th>
+				<th>Hold (ms)</th>
+                                <th>Uptime</th>
+				<!--<th>Up in Iterations:</th>-->
+				<th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="neigh in clicked_device.Protocols.eigrp">
+                                
+                                <td>{{ neigh.neighbor }}</td>
+				<td>{{ neigh.rto }}</td>
+                                <td>{{ neigh.srtt }}</td>
+                                <td>{{ neigh.hold }}</td>
+				<td>{{ neigh.uptime[0] }}</td>
+                                <!--<td>{{ neigh.iteration }}</td>-->
+				<td>{{ neigh.status }}</td>
+				
+			        
+                            </tr>
+			    <div><h6 class="">{{ eigrp_neigh_count }} </h6></div>
+			    <div ng-if="eigrp_down.length !=0" ng-repeat="neigh in eigrp_down">
+                                <h6 class="red">Neighbor Down : {{ neigh }}</h6></div>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+<!--NXOS -->
+		                       <div ng-if="clicked_device.Protocols.eigrp && os_type=='cisco_nxos'">
+                        <h6 class="sub-kpi">EIGRP Neighbors: <img ng-src = "{{images[eigrp]}}" style="width:20px"/></h6>
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th>Neighbor</th>
+                                <th>RTO (ms)</th>
+                                <th>SRTT (ms)</th>
+				<th>Hold (ms)</th>
+                                <th>Uptime</th>
+				<!--<th>Up in Iterations:</th>-->
+				<th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="neigh in clicked_device.Protocols.eigrp">
+                                
+                                <td>{{ neigh.e_neigh }}</td>
+				<td>{{ neigh.e_rto }}</td>
+                                <td>{{ neigh.e_srtt }}</td>
+                                <td>{{ neigh.e_hold }}</td>
+				<td>{{ neigh.e_uptime }}</td>
+                                <!--<td>{{ neigh.iteration }}</td>-->
+				<td>{{ neigh.condition }}</td>
+				
+			        
+                            </tr>
+			    <div><h6 class="">{{ eigrp_neigh_count }} </h6></div>
+			    <div ng-if="eigrp_down.length !=0" ng-repeat="neigh in eigrp_down">
+                                <h6 class="red">Neighbor Down : {{ neigh }}</h6></div>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div ng-if="clicked_device.Protocols.bgp">
+                        <h6 class="sub-kpi">BGP Neighbors: <img ng-src = "{{images[bgp]}}" style="width:20px"/></h6>
+			<h6> {{ clicked_device.Protocols.bgp.Number_of_neigh }} </h6>
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+				<th>Router ID</th>
+                                <th>Neighbor</th>
+                                <th>Local AS</th>
+                                <th>Neigh AS</th>
+                                <th>Prefixes Recived</th>
+                                <th>Up/Down</th>
+                                <th>Status</th>
+		 		
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="neigh in clicked_device.Protocols.bgp">
+				<td>{{ neigh.router_id }}</td>
+                                <td>{{ neigh.bgp_neigh }}</td>
+                                <td>{{ neigh.local_as}}</td>
+                                <td>{{ neigh.neigh_as }}</td>
+                                <td>{{ neigh.state_pfxrcd }}</td>
+                                <td>{{ neigh.updown}}</td>
+                                <td>{{ neigh.condition }}</td>
+				 
+                            </tr>
+                            </tbody>
+                        </table>
+<div ng-if="bgp_down.length !=0" ng-repeat="neigh in bgp_down">
+                                <h6 class="tint">Neighbor Down : {{ neigh }}</h6></div>
+                    </div>
+                    <div>
+                        <h6 class="sub-kpi">Route Flaps in the last hour: <img ng-src = "{{images[routeflaps]}}" style="width:20px"/></h6>    
+                        <h6 class="sub-kpi green" ng-if="routeflaps == 0">No recent route flaps detected</h6>                
+                        <div class="row" ng-repeat="flap in clicked_device.Protocols.ip_route">
+                                <div class="col">{{ flap }}</div>
+                        </div>
+                    </div>
+		    <div ng-if="clicked_device.Protocols.spanning_tree">
+                        <h6 class="sub-kpi">Spanning Tree : <img ng-src = "{{images[spanning]}}" style="width:20px"/></h6>
+			<h6 class="sub-kpi green"> No topology changes observed  </h6>
+                    </div>              
+		</div> 
+                <div class="mt-4 border tint">
+                        <h5 class="kpi"> Quality of Service: <img ng-src = "{{images[qos]}}" style="width:20px"/></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
