@@ -1,4 +1,4 @@
-import textfsm, re
+import textfsm, re, time
 from collections import defaultdict
 
 
