@@ -1,6 +1,5 @@
 from threading import Thread
 from subprocess import Popen, PIPE
-from flask import copy_current_request_context
 
 # Extended Thread Class that returns its callable's return values
 class ThreadWithReturnValue(Thread):
@@ -145,8 +144,7 @@ def jsonifypath(exit,reverse):
 		return temp
 
 # Ping
-@copy_current_request_context
-def ping_to(check_dst):
+def _ping_to(check_dst):
 	cmd="ping -c 4 "
 	cmd+=check_dst
 	p= Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)

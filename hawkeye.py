@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, request, render_template, g, copy_cu
 import json, paramiko, textfsm, re, os
 from netmiko import ConnectHandler, SSHDetect
 from collections import defaultdict
-from hawkutils import ThreadWithReturnValue, router, restructureDict, jsonifypath, ping_to
+from hawkutils import ThreadWithReturnValue, router, restructureDict, jsonifypath, _ping_to
 from pathcalc import getpath
 from kpis import fetchKPI
 
@@ -42,6 +42,11 @@ def topology():
 			g.intojson2=[]
 			g.ff=0
 
+			@copy_current_request_context
+			def ping_to(dst):
+				_ping_to(dst)
+
+				
 			@copy_current_request_context
 			def path_calc():
 				getpath(src,dst)
