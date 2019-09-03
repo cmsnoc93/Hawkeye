@@ -1,5 +1,6 @@
 from threading import Thread
 from subprocess import Popen, PIPE
+from flask import copy_current_request_context
 
 # Extended Thread Class that returns its callable's return values
 class ThreadWithReturnValue(Thread):
