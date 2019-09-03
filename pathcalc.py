@@ -1,6 +1,7 @@
 import paramiko, re
 from netmiko import ConnectHandler, SSHDetect
 from hawkutils import _ping_to, router
+from flask import g
 
 
 def get_path(src,dst):
