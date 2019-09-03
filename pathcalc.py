@@ -1,3 +1,6 @@
+import paramiko
+from netmiko import ConnectHandler, SSHDetect
+
 def get_path(src,dst):
     src=src
     dst=dst	

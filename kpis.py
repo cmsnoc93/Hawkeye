@@ -1,3 +1,6 @@
+import textfsm
+from collections import defaultdict
+
 def fetchKPI(ssh,nme,path_no,devicedict):
 				# print(context)
 				# print(context.app_context())
@@ -23,7 +26,7 @@ def fetchKPI(ssh,nme,path_no,devicedict):
 							except Exception as e: 
 								print("9 Exception Raised , Trying again",e)
 								boo=True
-								ssh=ConnectHandler(device_type=version,host=devicedict.sship,username="rit",password="CMSnoc$1234")
+								#ssh=ConnectHandler(device_type=version,host=devicedict.sship,username="rit",password="CMSnoc$1234")
 								continue
 							if not(isinstance(ret,list)):
 								boo=True
@@ -68,7 +71,7 @@ def fetchKPI(ssh,nme,path_no,devicedict):
 							except Exception as e: 
 								print("9 Exception Raised , Trying again",e)
 								boo=True
-								ssh=ConnectHandler(device_type=version,host=devicedict.sship,username="rit",password="CMSnoc$1234")
+								#ssh=ConnectHandler(device_type=version,host=devicedict.sship,username="rit",password="CMSnoc$1234")
 								continue
 							if not(isinstance(ret,list)):
 								boo=True
