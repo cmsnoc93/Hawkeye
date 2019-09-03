@@ -1,3 +1,6 @@
+from threading import Thread
+from subprocess import Popen, PIPE
+
 # Extended Thread Class that returns its callable's return values
 class ThreadWithReturnValue(Thread):
     def __init__(self, group=None, target=None, name=None,

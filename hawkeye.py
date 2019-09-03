@@ -1,9 +1,7 @@
 from flask import Flask, redirect, url_for, request, render_template, g, copy_current_request_context, current_app
 import json, paramiko, textfsm, re, os
 from netmiko import ConnectHandler, SSHDetect
-from subprocess import Popen, PIPE
 from collections import defaultdict
-from threading import Thread
 from hawkutils import ThreadWithReturnValue, router, restructureDict, jsonifypath, ping_to
 from pathcalc import getpath
 from kpis import fetchKPI
