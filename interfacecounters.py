@@ -1,6 +1,6 @@
 from collections import defaultdict
 def check_interfacecounters(ssh,nme,version,fhand,devicedict):
-    print("For show interface counters")
+	print("For show interface counters")
 	
 	#print(devicedict.gennodedict['version']['hardware'])
 	Int_count={}
