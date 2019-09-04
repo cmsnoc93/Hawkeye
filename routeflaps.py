@@ -1,6 +1,6 @@
 def check_routeflaps(ssh,nme,version,fhand,devicedict):
     
-    version = devicedict.gennodedict['version']['soft_ver']
+	version = devicedict.gennodedict['version']['soft_ver']
 	print("VERSION ",version)
 	if version=='cisco_nxos':
 		ret=ssh.send_command("sh ip route | inc 00:",use_textfsm=True)
