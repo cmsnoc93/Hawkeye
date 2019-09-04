@@ -1,6 +1,6 @@
 def check_syslog(ssh,nme,version,fhand,devicedict):
     
-    boo=True
+	boo=True
 	while boo:		
 		try:
 			time1 = ssh.send_command("show clock")

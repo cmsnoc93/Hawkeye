@@ -1,5 +1,5 @@
 def check_spanningtree(ssh,nme,version,fhand,devicedict):
-    map_return = {}
+	map_return = {}
 	print("For Spanning Tree KPI")
 	#print(devicedict.gennodedict['version']['hardware'])
 	output_span=''

@@ -1,5 +1,5 @@
 def check_protocols(ssh,nme,version,fhand,devicedict):
-    flag2=0
+	flag2=0
 	flag1=0
 	if version=='cisco_nxos':
 		ret=ssh.send_command("sh feature | i eigrp",use_textfsm=True)

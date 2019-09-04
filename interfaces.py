@@ -1,5 +1,5 @@
 def check_interfaces(ssh,nme,verison,devicedict):
-    for interf in devicedict.dictint.keys():
+	for interf in devicedict.dictint.keys():
 		devicedict.dictint[interf]['crc']=list()
 		devicedict.dictint[interf]['duplex']=list()
 		devicedict.dictint[interf]['description']=list()
