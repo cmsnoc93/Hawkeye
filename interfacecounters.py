@@ -152,21 +152,21 @@ def check_interfacecounters(ssh,nme,version,fhand,devicedict):
 #print(m)
 				print(int_d)
 			for xint in int_d.keys():
-			if xint != 'mgmt0':
-				k = int(len(int_d[xint]) / 3)
-				print("K is", k)
-				for yint in range(0, k):
-				lco = yint+3
-				int_d[xint][yint] = int_d[xint][yint] + int_d[xint][lco]
-				#print(m)
-				if k==3:
-				for yint in range(0,k):
-					lco=lco+1
-					print(lco,xint)
-				#print(int_d[xint])
-				#print(int_d)
+				if xint != 'mgmt0':
+					k = int(len(int_d[xint]) / 3)
+					print("K is", k)
+					for yint in range(0, k):
+					lco = yint+3
 					int_d[xint][yint] = int_d[xint][yint] + int_d[xint][lco]
-			int_d[xint] = int_d[xint][:3] 
+					#print(m)
+					if k==3:
+					for yint in range(0,k):
+						lco=lco+1
+						print(lco,xint)
+					#print(int_d[xint])
+					#print(int_d)
+						int_d[xint][yint] = int_d[xint][yint] + int_d[xint][lco]
+				int_d[xint] = int_d[xint][:3] 
 		
 	devicedict.gennodedict['interface_counters_errors']=m
 	return devicedict
