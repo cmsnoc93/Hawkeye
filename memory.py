@@ -66,4 +66,4 @@ def check_memory(ssh,nme,version,fhand,devicedict):
 	devicedict.gennodedict['Process_Memory']=dict()
 	devicedict.gennodedict['Process_Memory']=memory
 	print(memory)
-    return devicedict
+	return devicedict

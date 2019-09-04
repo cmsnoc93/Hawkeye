@@ -169,4 +169,4 @@ def check_interfacecounters(ssh,nme,version,fhand,devicedict):
 			int_d[xint] = int_d[xint][:3] 
 		
 	devicedict.gennodedict['interface_counters_errors']=m
-    return devicedict
+	return devicedict

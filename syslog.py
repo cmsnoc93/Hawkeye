@@ -81,4 +81,4 @@ def check_syslog(ssh,nme,version,fhand,devicedict):
 		fhand.write("\nNo Logs")
 	fhand.write("\n\n")
 
-    return devicedict
+	return devicedict

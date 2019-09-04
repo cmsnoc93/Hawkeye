@@ -71,4 +71,4 @@ def check_spanningtree(ssh,nme,version,fhand,devicedict):
 		print('\n\n\n')
 	devicedict.gennodedict['spanning_tree']=map_return
 
-    return devicedict
+	return devicedict

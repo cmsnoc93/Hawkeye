@@ -51,4 +51,4 @@ def check_routeflaps(ssh,nme,version,fhand,devicedict):
 					print("Yes")
 		devicedict.gennodedict['ip_route_00']=gen
     
-    return devicedict
+	return devicedict

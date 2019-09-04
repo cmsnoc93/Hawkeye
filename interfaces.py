@@ -80,4 +80,4 @@ def check_interfaces(ssh,nme,verison,devicedict):
 					devicedict.dictint[interf]['bandwidth'].append(line['bandwidth'])
 				if 'output_drops' in x:
 					devicedict.dictint[interf]['output_drops'].append(line['output_drops'])
-    return devicedict
+	return devicedict

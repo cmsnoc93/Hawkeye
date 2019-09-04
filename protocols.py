@@ -288,4 +288,4 @@ def check_protocols(ssh,nme,version,fhand,devicedict):
 			devicedict.gennodedict['bgp_neigh'][c['bgp_neigh']]=dict()
 			devicedict.gennodedict['bgp_neigh'][c['bgp_neigh']]=c
 
-			return devicedict
+	return devicedict
