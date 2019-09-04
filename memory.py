@@ -54,7 +54,7 @@ def check_memory(ssh,nme,version,fhand,devicedict):
 		for line in ret:
 			count=count+1
 			if(count>2):
-				break;
+				break
 			temp_vals = line.split(' ')
 			vals = []
 			for string in temp_vals:
@@ -66,5 +66,4 @@ def check_memory(ssh,nme,version,fhand,devicedict):
 	devicedict.gennodedict['Process_Memory']=dict()
 	devicedict.gennodedict['Process_Memory']=memory
 	print(memory)
-
     return devicedict
