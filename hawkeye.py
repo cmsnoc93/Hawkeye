@@ -25,30 +25,29 @@ if __name__ == '__main__' :
 def topology():
 
 	with app.app_context():
+		
 		if request.method == 'GET':
 			return render_template('topology.html')
+
 		elif request.method == 'POST':
+
+			# Inputs
 			req = request.get_json()
 			src = req['src']
 			dst = req['dst']
-
-			print("src:",src)
-			print("dst:",dst)
-
+			print("src:",src, " dst:",dst, "worker pid:",os.getpid())
+				
+			# Request-Specfic Data Structures
 			g.dictofobj={}
 			g.intojson=[]
 			g.intojson2=[]
-			g.ff=0
-
-			@copy_current_request_context
-			def ping_to(dst):
-				return _ping_to(dst)
-
-				
+			
+			# Path Calculation
 			@copy_current_request_context
 			def path_calc(src,dst):
 				return get_path(src,dst)
 
+			# Key Commands Firing
 			@copy_current_request_context
 			def callthreads(setofnamest,path_no):
 				
@@ -58,7 +57,7 @@ def topology():
 					
 					for nme in setofnamest:
 						ssh=g.dictofobj[nme].handle
-						thread = ThreadWithReturnValue(target=fetchKPI,args=(ssh,nme,path_no,g.dictofobj[nme]));
+						thread = ThreadWithReturnValue(target=fetchKPI,args=(ssh,nme,g.dictofobj[nme]));
 						threads.append(thread)
 						print("Starting Thread :",thread)
 						thread.start()
