@@ -5,7 +5,7 @@ def fetchKPI(ssh,nme,devicedict):
 
 	version = devicedict.gennodedict['version']['soft_ver']
 	fname=os.getpid()+nme+".txt"
-    fhand=open(fname,'w')
+	fhand=open(fname,'w')
 
 	# SHOW PROC CPU
 	devicedict = check_cpu(ssh,nme,version,fhand,devicedict)
@@ -30,36 +30,6 @@ def fetchKPI(ssh,nme,devicedict):
 
 	# SHOW IP PROTOCOLS (BGP/EIGRP)
 	devicedict = check_protocols(ssh,nme,version,fhand,devicedict)
-				
-
-			
-			
-		
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	forjson={}
 	forjson['Name']=dict()
