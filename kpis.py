@@ -1,4 +1,4 @@
-import textfsm, re, json, time
+import textfsm, re, json, time, os
 import cpu, memory, routeflaps, syslog, interfaces, protocols, spanningtree, interfacecounters
 
 def fetchKPI(ssh,nme,devicedict):
