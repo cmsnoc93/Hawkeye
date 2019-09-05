@@ -1,3 +1,4 @@
+import textfsm,time,re
 def check_interfacecounters(ssh,nme,version,fhand,devicedict):
 	print("For show interface counters")
 	#print(devicedict.gennodedict['version']['hardware'])

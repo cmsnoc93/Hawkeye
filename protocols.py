@@ -1,3 +1,4 @@
+import textfsm,time,re
 def check_protocols(ssh,nme,version,fhand,devicedict):
 	flag2=0
 	flag1=0

@@ -1,3 +1,4 @@
+import textfsm,time,re
 def check_memory(ssh,nme,version,fhand,devicedict):
     
 	boo=True

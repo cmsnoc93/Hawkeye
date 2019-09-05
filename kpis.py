@@ -1,5 +1,12 @@
-import textfsm, re, json, time, os
-import cpu, memory, routeflaps, syslog, interfaces, protocols, spanningtree, interfacecounters
+import os
+from cpu import check_cpu
+from memory import check_memory
+from syslog import check_syslog
+from interfaces import check_interfaces
+from protocols import check_protocols
+from routeflaps import check_routeflaps
+from spanningtree import check_spanningtree
+
 
 def fetchKPI(ssh,nme,devicedict):
 

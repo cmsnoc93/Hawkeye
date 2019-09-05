@@ -1,3 +1,4 @@
+import textfsm,time,re
 def check_interfaces(ssh,nme,verison,devicedict):
 	for interf in devicedict.dictint.keys():
 		devicedict.dictint[interf]['crc']=list()

@@ -1,3 +1,4 @@
+import textfsm,time,re
 def check_spanningtree(ssh,nme,version,fhand,devicedict):
 	map_return = {}
 	print("For Spanning Tree KPI")

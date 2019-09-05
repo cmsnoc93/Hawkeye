@@ -1,3 +1,4 @@
+import textfsm,time,re
 def check_routeflaps(ssh,nme,version,fhand,devicedict):
     
 		
