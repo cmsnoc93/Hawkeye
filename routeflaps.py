@@ -1,9 +1,9 @@
 def check_routeflaps(ssh,nme,version,fhand,devicedict):
     
-	version = devicedict.gennodedict['version']['soft_ver']
+		
 	print("VERSION ",version)
 	if version=='cisco_nxos':
-		ret=ssh.send_command("sh ip route | inc 00:",use_textfsm=True)
+		ret=ssh.send_command("sh ip route",use_textfsm=True)
 		print(ret)
 		fhand.write("Show ip route | i 00: \n")
 		fhand.write(str(ret))
@@ -12,9 +12,10 @@ def check_routeflaps(ssh,nme,version,fhand,devicedict):
 		ct1=1
 		for rou in ret:
 			print(rou)
-			print('\n')
-			make_dict[ct1]=rou
-			ct1+=1
+			if rou['uptime'][:2]=='00':
+				print('\n')
+				make_dict[ct1]=rou
+				ct1+=1
 		devicedict.gennodedict['ip_route_00']=make_dict
 	else:
 		boo=True
