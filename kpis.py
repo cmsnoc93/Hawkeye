@@ -4,7 +4,7 @@ import cpu, memory, routeflaps, syslog, interfaces, protocols, spanningtree, int
 def fetchKPI(ssh,nme,devicedict):
 
 	version = devicedict.gennodedict['version']['soft_ver']
-	fname=os.getpid()+nme+".txt"
+	fname=str(os.getpid())+nme+".txt"
 	fhand=open(fname,'w')
 
 	# SHOW PROC CPU
