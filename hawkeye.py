@@ -120,7 +120,7 @@ def topology():
 
 @app.route('/logs/<workerpid>/<device_name>')
 def fetchRaw(workerpid,device_name):
-	f = open('/logs/'+workerpid+'/'+device_name+".txt","r")
+	f = open('logs/'+workerpid+'/'+device_name+".txt","r")
 	data = f.read()
 	data = data.replace('\n','<br/>')
 	print("Sending File")
