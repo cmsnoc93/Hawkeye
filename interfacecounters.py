@@ -1,4 +1,5 @@
 import textfsm,time,re
+from hawkutils import expand_name
 def check_interfacecounters(ssh,nme,version,fhand,devicedict):
 	print("For show interface counters")
 	#print(devicedict.gennodedict['version']['hardware'])

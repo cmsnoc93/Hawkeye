@@ -143,6 +143,24 @@ def jsonifypath(exit,reverse):
 					temp.append(t) 		
 		return temp
 
+# Expand Interface Names
+def expand_name(rec):
+	if 'Ethernet' not in rec:
+	    if rec[0:3]=="Eth":
+	        snd="Ethernet"+rec[3:]
+	    elif rec[0:2]=="Fa":
+	        snd="FastEthernet"+rec[2:]
+	    else:
+	        snd="GigabitEthernet"+rec[3:]
+	else:
+	    if 'Gig'in rec:
+	        snd='Gig'+rec[rec.find('net')+3:]
+	    elif 'Fast'in rec:
+	        snd='Fa'+rec[rec.find('net')+3:]
+	    else:
+	        snd='Eth'+rec[rec.find('net')+3:]
+	print(" RECEIVED NAME "+rec+" CHANGED NAME "+snd+"\n\n\n\n\n")
+
 # Ping
 def _ping_to(check_dst):
 	cmd="ping -c 4 "
