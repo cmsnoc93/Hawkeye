@@ -118,9 +118,9 @@ def topology():
 			return json.dumps(response_list)
 	
 
-@app.route('/log/<device_name>')
+@app.route('/log/<workedpid>/<device_name>')
 def fetchRaw(device_name):
-	f = open(device_name+".txt","r")
+	f = open('/logs/'+workedpid+'/'+device_name+".txt","r")
 	data = f.read();
 	data = data.replace('\n','<br/>')
 	print("Sending File")

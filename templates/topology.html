@@ -122,7 +122,7 @@
                             if (response !== undefined) {
                                 
 
-                                $scope.workedpid = response[3]
+                                $scope.workedpid = response[3].pid
                                 console.log("WORKER:",$scope.workerpid)
 
                                 // Analyzing Response Type
@@ -703,14 +703,13 @@ $scope.eigrp = $scope.eigrp | flag;
 
             // Function : Fetch Raw Outputs from logfiles
             $scope.fetchRaw=function(){
-		console.log("GET:",'/log/'+$scope.clicked_device.Name[0]);
+		    console.log("GET:",'/log/'+$scope.workedpid+'/'+$scope.clicked_device.Name[0]);
 	        $http({
                     method: 'GET',
-                    url: '/log/'+$scope.clicked_device.Name[0],
+                    url: '/log/'+$scope.workedpid+'/'+$scope.clicked_device.Name[0],
                     
                 }).then(function (res) {
-                    response = String(res.data);
-                    
+                    response = String(res.data);                    
                     if (response !== undefined) {
 						
 			var w = window.open("data:text/plain,"+response,"_blank");
