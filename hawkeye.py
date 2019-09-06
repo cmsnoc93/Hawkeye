@@ -118,10 +118,10 @@ def topology():
 			return json.dumps(response_list)
 	
 
-@app.route('/log/<workedpid>/<device_name>')
-def fetchRaw(device_name):
-	f = open('/logs/'+workedpid+'/'+device_name+".txt","r")
-	data = f.read();
+@app.route('/log/<workerpid>/<device_name>')
+def fetchRaw(workerpid,device_name):
+	f = open('/logs/'+workerpid+'/'+device_name+".txt","r")
+	data = f.read()
 	data = data.replace('\n','<br/>')
 	print("Sending File")
 	return json.dumps(data)
