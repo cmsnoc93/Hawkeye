@@ -47,7 +47,7 @@ def topology():
 			def path_calc(src,dst):
 				return get_path(src,dst)
 
-			# Key Commands Firing
+			# KPIs
 			@copy_current_request_context
 			def callthreads(setofnamest,path_no):
 				
@@ -98,6 +98,10 @@ def topology():
 			response_list.append(paths1)
 			response_list.append(device_json)
 			response_list.append(ping_stat)
+			"""
+			worker = dict()
+			worker['pid'] = os.getpid()
+			response_list.append(worker)"""
 
 			if ping_stat['ssh_failure']=='true':
 				paths2 = jsonifypath(exit2,entryrev2)	

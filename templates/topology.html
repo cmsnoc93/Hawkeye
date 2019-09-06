@@ -51,6 +51,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
     <script>
+        // Initialize Angular
         let app = angular.module("myApp", []);
         app.controller("myController", function ($scope, $http) {
             let response; 
@@ -66,83 +67,96 @@
                 }
                 return temp.toLowerCase();
             }
-
-	    $scope.refresh = function refresh(){
-		drawMap($scope.mapinfofwd,$scope.mapinfobkwd,$scope.mapstyle);
-      	    }
-	    var timer = document.getElementById("timer"),
+            
+            // Function : Refresh View
+            $scope.refresh = function refresh(){
+            drawMap($scope.mapinfofwd,$scope.mapinfobkwd,$scope.mapstyle);
+            }  
+              
+            // Request Timer Setup
+	        var timer = document.getElementById("timer"),
 			seconds=0,minutes=0,hours=0,t;
-		
+        
+            // Function : Fetch Data
             $scope.fetchData = function () {
+
                 console.log("Fetching for (src,dst) : ",$scope.src,",",$scope.dst)	
-		timer.textContent="00:00:00",seconds=0,minutes=0,hours=0;
-		clearTimeout(t);
-		function add(){
-			seconds++;
-			if(seconds>59){
-				seconds=0;
-				minutes++;
-				if(minutes>59){
-				minutes=0;
-				hours++;
-				}
-			}
-			timer.textContent=(hours ? (hours > 9 ? hours : "0" +
-hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes)
-: "00") + ":" + (seconds > 9 ? seconds: "0"+seconds);
-			timer_func();
-		}
-		function timer_func(){
-			t = setTimeout(add,1000);
-		}
-		clearTimeout(t);
-		timer_func();
-	 	document.getElementById("loader-head").style.display="block";
+
+                // Initializing Request Timer
+		        timer.textContent="00:00:00",seconds=0,minutes=0,hours=0;
+	        	clearTimeout(t);
+		        function add(){
+                    seconds++;
+                    if(seconds>59){
+                        seconds=0;
+                        minutes++;
+                        if(minutes>59){
+                        minutes=0;
+                        hours++;
+                        }
+                    }
+                    timer.textContent=(hours ? (hours > 9 ? hours : "0" +
+                    hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes)
+                    : "00") + ":" + (seconds > 9 ? seconds: "0"+seconds);
+                    timer_func();
+                    }
+                    
+                    function timer_func(){
+                        t = setTimeout(add,1000);
+                    }
+                    clearTimeout(t);
+                    timer_func();
+	 	            document.getElementById("loader-head").style.display="block";
 				
-		
-                $http({
-                    method: 'POST',
-                    url: '/Topology',
-                    data: {
-                        src: $scope.src,
-                        dst: $scope.dst,
-                    }
-                }).then(function (res) {
-                    response = res.data;
-                    console.log(response);
-                    if (response !== undefined) {
-			if(response.length > 3)
-				$scope.mapstyle = "broken"
-			else
-				$scope.mapstyle = "end_to_end"
+                    // HTTP POST to Server
+                    $http({
+                        method: 'POST',
+                        url: '/Topology',
+                        data: {
+                            src: $scope.src,
+                            dst: $scope.dst,
+                        }
+                    }).then(function (res) {
+                        response = res.data;
+                        console.log(response);
+                            if (response !== undefined) {
+                                
+                                // Analyzing Response Type
+                                if(response.length > 3)
+                                    $scope.mapstyle = "broken"
+                                else
+                                    $scope.mapstyle = "end_to_end"
+                                
+                                // Handle Ping/SSH Errors
+                                handleErrors(response[2],"forward");
+                                if($scope.mapstyle == "broken")
+                                    handleErrors(response[5],"backward");
+                                
+                                // Initialize Angular Objects from Response
+                                makeTable(response[1],"forward");
+                                if($scope.mapstyle == "broken")
+                                    makeTable(response[4],"backward");
 
-		        handleErrors(response[2],"forward");
-			if($scope.mapstyle == "broken")
-				handleErrors(response[5],"backward");
-						
-                        makeTable(response[1],"forward");
-			if($scope.mapstyle == "broken")
-				makeTable(response[4],"backward");
+                                // Draw Topology
+                                document.getElementById("loader-head").style.display="none";
+                                console.log("Plotting Map...");                            
+                                if($scope.mapstyle == "broken"){
+                                    drawMap(response[0],response[3],$scope.mapstyle);
+                                    $scope.mapinfofwd = response[0];
+                                    $scope.mapinfobkwd = response[3];
+                                }
+                                else if($scope.mapstyle == "end_to_end"){
+                                    drawMap(response[0],null,$scope.mapstyle);
+                                    $scope.mapinfofwd = response[0];
+                                }
 
-			document.getElementById("loader-head").style.display="none";
-			console.log("Plotting Map...");
-
-			if($scope.mapstyle == "broken"){
-                        drawMap(response[0],response[3],$scope.mapstyle);
-				$scope.mapinfofwd = response[0];
-				$scope.mapinfobkwd = response[3];
-			}
-			else if($scope.mapstyle == "end_to_end"){
-		                drawMap(response[0],null,$scope.mapstyle);
-				$scope.mapinfofwd = response[0];
-			}
-			console.log("Plotting Completed.");
-	                        
-                    }
-                }, function (res) {
-                    console.log("Response Error Occured")
-                });
-            };
+                                console.log("Plotting Completed.");
+                                
+                            }
+                        }, function (res) {
+                            console.log("Response Error Occured")
+                        });
+                    };
 
             // Function : Plot Topology
             function drawMap(response,response2,dir) {
@@ -340,20 +354,20 @@ console.log("RESPONSE IS"+ response)
                 });
             }
 
-	    function thres(arr){
-		
-	        var retval  = 0;
-		var prev = arr[0]
-		for (i in arr){
-		   
-		   if(arr[i]>0)
-			retval = 1;
-		   if(arr[i] != prev)
-			return 2;
-		   prev = arr[i];
-		}
-		return retval
-	    }
+            // Function : Interface Checks
+            function thres(arr){		
+                var retval  = 0;
+                var prev = arr[0]
+                for (i in arr){		   
+                if(arr[i]>0)
+                    retval = 1;
+                if(arr[i] != prev)
+                    return 2;
+                prev = arr[i];
+                }
+                return retval
+            }
+
             // Function : Apply Thresholds
             function evaluateThresholds(){
 
@@ -592,10 +606,8 @@ $scope.eigrp = $scope.eigrp | flag;
 
             }
 
-	    // Returns 0 (fine), 1 (high values), 2 (changing values)
-
-
-            function makeTable(devices,dir) {
+            // Function : Setup Angular Objects from Response
+	        function makeTable(devices,dir) {
 		
 		if(dir=="forward"){
 		        $scope.device_map = {};
@@ -617,7 +629,9 @@ $scope.eigrp = $scope.eigrp | flag;
 		        console.log("Devices added: ",$scope.rev_device_map)			    
 		}
             }
-	    function evaluateErrors(){
+        
+            // Function : Handle Ping & SSH Errors
+            function evaluateErrors(){
 		
                         $scope.images = { 0: "/static/checked.png", 
                                           1: "/static/warning-t.png",
@@ -682,7 +696,9 @@ $scope.eigrp = $scope.eigrp | flag;
 		console.log($scope.dst_ping)
 
 	    }	
-	    $scope.fetchRaw=function(){
+
+            // Function : Fetch Raw Outputs from logfiles
+            $scope.fetchRaw=function(){
 		console.log("GET:",'/log/'+$scope.clicked_device.Name[0]);
 	        $http({
                     method: 'GET',
@@ -705,7 +721,8 @@ $scope.eigrp = $scope.eigrp | flag;
                 });
 	    }
 
-	    function handleErrors(errorDict,dir){
+            // Function : Detect Ping & SSH Errors
+	        function handleErrors(errorDict,dir){
 		console.log("Forward errros")
 			console.log($scope.fwderrors)
 			console.log($scope.ssh_failure)
@@ -731,9 +748,6 @@ $scope.eigrp = $scope.eigrp | flag;
 			}
 		}
 	    }
-
-
-
 
         });
     </script>

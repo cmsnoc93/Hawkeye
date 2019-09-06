@@ -12,7 +12,9 @@ from interfacecounters import check_interfacecounters
 def fetchKPI(ssh,nme,devicedict):
 
 	version = devicedict.gennodedict['version']['soft_ver']
-	fname=str(os.getpid())+nme+".txt"
+	processId = str(os.getpid())
+	os.mkdir(os.path.join('logs',processId))
+	fname=(os.path.join('logs',processId,nme+".txt"))
 	fhand=open(fname,'w')
 
 	# SHOW PROC CPU
