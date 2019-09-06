@@ -1,4 +1,4 @@
-import textfsm,time,re
+import textfsm,time,re,json
 def check_syslog(ssh,nme,version,fhand,devicedict):
     
 	boo=True
