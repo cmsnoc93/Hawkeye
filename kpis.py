@@ -1,7 +1,7 @@
 import os
 from cpu import check_cpu
 from memory import check_memory
-from syslog import check_syslog
+#from syslog import check_syslog
 from interfaces import check_interfaces
 from protocols import check_protocols
 from routeflaps import check_routeflaps
@@ -21,7 +21,7 @@ def fetchKPI(ssh,nme,devicedict):
 	devicedict = check_memory(ssh,nme,version,fhand,devicedict)
 
 	# SHOW LOG
-	devicedict = check_syslog(ssh,nme,version,fhand,devicedict)
+	#devicedict = check_syslog(ssh,nme,version,fhand,devicedict)
 
 	# SHOW IP ROUTE
 	devicedict = check_routeflaps(ssh,nme,version,fhand,devicedict)
