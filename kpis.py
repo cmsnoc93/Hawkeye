@@ -13,7 +13,8 @@ def fetchKPI(ssh,nme,logdir,devicedict):
 
 	version = devicedict.gennodedict['version']['soft_ver']
 	
-	fname=(logdir+nme+".txt"))
+	print(logdir)
+	fname=(logdir+nme+".txt")
 	print(fname)
 	fhand=open(fname,'w')
 
