@@ -9,7 +9,7 @@ from spanningtree import check_spanningtree
 from interfacecounters import check_interfacecounters
 
 
-def fetchKPI(ssh,nme,logdir,devicedict):
+def fetchKPI(ssh,nme,devicedict):
 
 	version = devicedict.gennodedict['version']['soft_ver']
 	processId = str(os.getpid())
