@@ -55,9 +55,12 @@ def topology():
 					print("Path number \n dict of objects ")
 					print(g.dictofobj)
 					
+					processId = str(os.getpid())
+					logdir = os.makedirs(os.path.join('logs',processId))
+					
 					for nme in setofnamest:
-						ssh=g.dictofobj[nme].handle
-						thread = ThreadWithReturnValue(target=fetchKPI,args=(ssh,nme,g.dictofobj[nme]));
+						ssh=g.dictofobj[nme].handle						
+						thread = ThreadWithReturnValue(target=fetchKPI,args=(ssh,nme,logdir,g.dictofobj[nme]));
 						threads.append(thread)
 						print("Starting Thread :",thread)
 						thread.start()
