@@ -1,5 +1,5 @@
 import textfsm,time,re
-def check_interfaces(ssh,nme,verison,devicedict):
+def check_interfaces(ssh,nme,verison,fhand,devicedict):
 	for interf in devicedict.dictint.keys():
 		devicedict.dictint[interf]['crc']=list()
 		devicedict.dictint[interf]['duplex']=list()
