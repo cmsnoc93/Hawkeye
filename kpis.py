@@ -6,6 +6,7 @@ from interfaces import check_interfaces
 from protocols import check_protocols
 from routeflaps import check_routeflaps
 from spanningtree import check_spanningtree
+from interfacecounters import check_interfacecounters
 
 
 def fetchKPI(ssh,nme,devicedict):
