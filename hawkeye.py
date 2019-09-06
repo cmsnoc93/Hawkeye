@@ -99,20 +99,20 @@ def topology():
 			device_json = restructureDict(g.intojson)
 
 			response_list = list()
-			response_list.append(paths1)
-			response_list.append(device_json)
-			response_list.append(ping_stat)
-			"""
+			response_list.append(paths1) # response[0]
+			response_list.append(device_json) # response[1]
+			response_list.append(ping_stat) # response[2]
+			
 			worker = dict()
 			worker['pid'] = os.getpid()
-			response_list.append(worker)"""
+			response_list.append(worker) # response[3]
 
 			if ping_stat['ssh_failure']=='true':
 				paths2 = jsonifypath(exit2,entryrev2)	
 				device_json2 = restructureDict(g.intojson2)
-				response_list.append(paths2)
-				response_list.append(device_json2)
-				response_list.append(ping_stat2)
+				response_list.append(paths2) # response[4]
+				response_list.append(device_json2) # response[5]
+				response_list.append(ping_stat2) # response[6]
 
 			print(os.getpid(),"Exiting")
 			return json.dumps(response_list)

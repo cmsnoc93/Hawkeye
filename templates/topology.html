@@ -121,8 +121,12 @@
                         console.log(response);
                             if (response !== undefined) {
                                 
+
+                                $scope.workedpid = response[3]
+                                console.log("WORKER:",$scope.workerpid)
+
                                 // Analyzing Response Type
-                                if(response.length > 3)
+                                if(response.length > 4)
                                     $scope.mapstyle = "broken"
                                 else
                                     $scope.mapstyle = "end_to_end"
@@ -130,20 +134,20 @@
                                 // Handle Ping/SSH Errors
                                 handleErrors(response[2],"forward");
                                 if($scope.mapstyle == "broken")
-                                    handleErrors(response[5],"backward");
+                                    handleErrors(response[6],"backward");
                                 
                                 // Initialize Angular Objects from Response
                                 makeTable(response[1],"forward");
                                 if($scope.mapstyle == "broken")
-                                    makeTable(response[4],"backward");
+                                    makeTable(response[5],"backward");
 
                                 // Draw Topology
                                 document.getElementById("loader-head").style.display="none";
                                 console.log("Plotting Map...");                            
                                 if($scope.mapstyle == "broken"){
-                                    drawMap(response[0],response[3],$scope.mapstyle);
+                                    drawMap(response[0],response[4],$scope.mapstyle);
                                     $scope.mapinfofwd = response[0];
-                                    $scope.mapinfobkwd = response[3];
+                                    $scope.mapinfobkwd = response[4];
                                 }
                                 else if($scope.mapstyle == "end_to_end"){
                                     drawMap(response[0],null,$scope.mapstyle);
