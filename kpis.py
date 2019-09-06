@@ -9,11 +9,11 @@ from spanningtree import check_spanningtree
 from interfacecounters import check_interfacecounters
 
 
-def fetchKPI(ssh,nme,devicedict):
+def fetchKPI(ssh,nme,logdir,devicedict):
 
 	version = devicedict.gennodedict['version']['soft_ver']
 	processId = str(os.getpid())
-	os.mkdir(os.path.join('logs',processId))
+	os.makedirs(os.path.join('logs',processId))
 	fname=(os.path.join('logs',processId,nme+".txt"))
 	fhand=open(fname,'w')
 
