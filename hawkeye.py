@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, request, render_template, g, copy_cu
 from hawkutils import ThreadWithReturnValue, restructureDict, jsonifypath
 from pathcalc import get_path
 from kpis import fetchKPI
-import json, os
+import json, os, shutil
 
 app = Flask(__name__)
 
@@ -55,10 +55,15 @@ def topology():
 					print("Path number \n dict of objects ")
 					print(g.dictofobj)
 					
+					# Creating Log Directory for this Request
 					processId = str(os.getpid())
+					if os.path.exists(os.path.join('logs',processId)):
+						print("Deleting Previous Logs")
+						shutil.rmtree(os.path.join('logs',processId))
 					os.makedirs(os.path.join('logs',processId))
 					logdir = os.path.join('logs',processId)
 
+					# Shoot threads for each device on the path
 					for nme in setofnamest:
 						ssh=g.dictofobj[nme].handle						
 						thread = ThreadWithReturnValue(target=fetchKPI,args=(ssh,nme,logdir,g.dictofobj[nme]));
@@ -66,6 +71,7 @@ def topology():
 						print("Starting Thread :",thread)
 						thread.start()
 					
+					# Wait for threads to return results
 					for thread in threads:
 						print("Waiting for thread to complete:")
 						print(thread)
