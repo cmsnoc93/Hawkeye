@@ -5,52 +5,13 @@
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"/>
-    <style>
-        .sub-kpi{
-            background-color: lightgray;
-            padding:5px;
-        }
-        .kpi{
-            padding:5px;
-        }
-        .red{
-            color:red;
-        }
-        .green{
-            color:green;
-        }
-        .amber{
-            color:#ffbf00;
-        }
-        .tint{
-            background-color:#f7f7f7;
-        }
-	#loader{
-	position:absolute;
-	left:50%;
-	top:50%;
-	z-index:1;
-	width:150px;
-	height:150px;
-	margin: -75px 0 0 -75 px;
-	border: 16px solid #f3f3f3;
-	border-radius:50%;
-	border-top:16px solid #3498db;
-	width:120px;
-	height:120px;
-	animation: spin 2s linear infinite;
-	}
-
-	@keyframes spin{
-	0% { transform:rotate(0deg); }
-	100% { transform:rotate(360deg); }	
-	}
-    </style>
+    <link rel="stylesheet" href="/static/hawkeye.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
     <script>
+
         // Initialize Angular
         let app = angular.module("myApp", []);
         app.controller("myController", function ($scope, $http) {
@@ -70,7 +31,7 @@
             
             // Function : Refresh View
             $scope.refresh = function refresh(){
-            drawMap($scope.mapinfofwd,$scope.mapinfobkwd,$scope.mapstyle);
+                drawMap($scope.mapinfofwd,$scope.mapinfobkwd,$scope.mapstyle);
             }  
               
             // Request Timer Setup
@@ -78,7 +39,7 @@
 			seconds=0,minutes=0,hours=0,t;
         
             // Function : Fetch Data
-            $scope.fetchData = function () {
+            $scope.fetchData = function(){
 
                 console.log("Fetching for (src,dst) : ",$scope.src,",",$scope.dst)	
 
@@ -99,73 +60,72 @@
                     hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes)
                     : "00") + ":" + (seconds > 9 ? seconds: "0"+seconds);
                     timer_func();
-                    }
-                    
-                    function timer_func(){
+                }
+                function timer_func(){
                         t = setTimeout(add,1000);
-                    }
-                    clearTimeout(t);
-                    timer_func();
-	 	            document.getElementById("loader-head").style.display="block";
+                }
+                clearTimeout(t);
+                timer_func();
+	 	        document.getElementById("loader-head").style.display="block";
 				
-                    // HTTP POST to Server
-                    $http({
-                        method: 'POST',
-                        url: '/Topology',
-                        data: {
-                            src: $scope.src,
-                            dst: $scope.dst,
-                        }
-                    }).then(function (res) {
-                        response = res.data;
-                        console.log(response);
-                            if (response !== undefined) {
-                                
+                // HTTP POST to Server
+                $http({
+                    method: 'POST',
+                    url: '/Topology',
+                    data: {
+                        src: $scope.src,
+                        dst: $scope.dst,
+                    }
+                }).then(function (res) {
+                    response = res.data;
+                    console.log(response);
+                        if (response !== undefined) {
+                            
 
-                                $scope.workerpid = response[3].pid
-                                console.log("WORKER:",$scope.workerpid)
+                            $scope.workerpid = response[3].pid
+                            console.log("WORKER:",$scope.workerpid)
 
-                                // Analyzing Response Type
-                                if(response.length > 4)
-                                    $scope.mapstyle = "broken"
-                                else
-                                    $scope.mapstyle = "end_to_end"
-                                
-                                // Handle Ping/SSH Errors
-                                handleErrors(response[2],"forward");
-                                if($scope.mapstyle == "broken")
-                                    handleErrors(response[6],"backward");
-                                
-                                // Initialize Angular Objects from Response
-                                makeTable(response[1],"forward");
-                                if($scope.mapstyle == "broken")
-                                    makeTable(response[5],"backward");
+                            // Analyzing Response Type
+                            if(response.length > 4)
+                                $scope.mapstyle = "broken"
+                            else
+                                $scope.mapstyle = "end_to_end"
+                            
+                            // Handle Ping/SSH Errors
+                            handleErrors(response[2],"forward");
+                            if($scope.mapstyle == "broken")
+                                handleErrors(response[6],"backward");
+                            
+                            // Initialize Angular Objects from Response
+                            makeTable(response[1],"forward");
+                            if($scope.mapstyle == "broken")
+                                makeTable(response[5],"backward");
 
-                                // Draw Topology
-                                document.getElementById("loader-head").style.display="none";
-                                console.log("Plotting Map...");                            
-                                if($scope.mapstyle == "broken"){
-                                    drawMap(response[0],response[4],$scope.mapstyle);
-                                    $scope.mapinfofwd = response[0];
-                                    $scope.mapinfobkwd = response[4];
-                                }
-                                else if($scope.mapstyle == "end_to_end"){
-                                    drawMap(response[0],null,$scope.mapstyle);
-                                    $scope.mapinfofwd = response[0];
-                                }
-
-                                console.log("Plotting Completed.");
-                                
+                            // Draw Topology
+                            document.getElementById("loader-head").style.display="none";
+                            console.log("Plotting Map...");                            
+                            if($scope.mapstyle == "broken"){
+                                drawMap(response[0],response[4],$scope.mapstyle);
+                                $scope.mapinfofwd = response[0];
+                                $scope.mapinfobkwd = response[4];
                             }
-                        }, function (res) {
-                            console.log("Response Error Occured")
-                        });
-                    };
+                            else if($scope.mapstyle == "end_to_end"){
+                                drawMap(response[0],null,$scope.mapstyle);
+                                $scope.mapinfofwd = response[0];
+                            }
+
+                            console.log("Plotting Completed.");
+                            
+                        }
+                    }, function (res) {
+                        console.log("Response Error Occured")
+                });
+            };
 
             // Function : Plot Topology
             function drawMap(response,response2,dir) {
                 var nodelist = [];
-		var cloudnode = false;
+		        var cloudnode = false;
                 var set = new Set();
                 for (device in $scope.device_map) {         
                     var name = $scope.device_map[device]["Name"][0]     
@@ -175,7 +135,7 @@
                         var isEndpoint = false;
                         if($scope.src!=undefined && $scope.dst!=undefined)
                         for(interface in $scope.device_map[device]['Interface Dictionary']){
-			    console.log("checking interfaces for src,dst");
+			                console.log("checking interfaces for src,dst");
                             if($scope.device_map[device]['Interface Dictionary'][interface]['ip']==$scope.src){
                                 console.log($scope.device_map[device]['Interface Dictionary'][interface]['ip'],",",$scope.src)
                                 node.label = "SRC:" + name;
@@ -201,49 +161,49 @@
                              
                 var edgelist = [];
                 
-		if($scope.mapstyle == "end_to_end"){
-			
-			for (line in response) {
-		            var edge = {from:response[line]["now"],to:response[line]["next"]};
-		            if (edge.to == edge.from)
-		                continue;
-		            edge.label = removeSmall(response[line]["exit"]) + " / " + removeSmall(response[line]["entry"]);
-		            edgelist.push(edge)
-			}
-		 }else if($scope.mapstyle == "broken"){
-			for(line in response){
-				if(response[line]["next"]=="Couldnt Fetch"){
-					if(!cloudnode){var node = { id:"cloud",label:"Service Provider",shape:"image",image:"/static/cloud.png"}	
-					nodelist.push(node);cloudnode=true}
-					var edge = {from:response[line]["now"],to:"cloud",label:removeSmall(response[line]["exit"])+" / "+$scope.ssh_in};
-					edgelist.push(edge)
-				}else{
-				    var edge = {from:response[line]["now"],to:response[line]["next"]};
-		            if (edge.to == edge.from)
-		                continue;
-		            edge.label = removeSmall(response[line]["exit"]) + " / " + removeSmall(response[line]["entry"]);edgelist.push(edge)	
-				}			
-			}
-			for(line in response2){
-				if(response2[line]["next"]=="Couldnt Fetch"){
-					if(!cloudnode){var node = { id:"cloud",label:"Service Provider Network",shape:"image",image:"/static/cloud.png"}	
-					nodelist.push(node);cloudnode=true}
-					var edge = {from:response2[line]["now"],to:"cloud",label:removeSmall(response2[line]["exit"])+" / "+$scope.ssh_out};
-					edgelist.push(edge)
-				}else{
-			             var edge = {from:response2[line]["now"],to:response2[line]["next"]};
-		            if (edge.to == edge.from)
-		                continue;
-		            edge.label = removeSmall(response2[line]["exit"]) + " / " + removeSmall(response2[line]["entry"]);edgelist.push(edge)
-				}
-			}
+                if($scope.mapstyle == "end_to_end"){
+                    
+                    for (line in response) {
+                            var edge = {from:response[line]["now"],to:response[line]["next"]};
+                            if (edge.to == edge.from)
+                                continue;
+                            edge.label = removeSmall(response[line]["exit"]) + " / " + removeSmall(response[line]["entry"]);
+                            edgelist.push(edge)
+                    }
+                }else if($scope.mapstyle == "broken"){
+                    for(line in response){
+                        if(response[line]["next"]=="Couldnt Fetch"){
+                            if(!cloudnode){var node = { id:"cloud",label:"Service Provider",shape:"image",image:"/static/cloud.png"}	
+                            nodelist.push(node);cloudnode=true}
+                            var edge = {from:response[line]["now"],to:"cloud",label:removeSmall(response[line]["exit"])+" / "+$scope.ssh_in};
+                            edgelist.push(edge)
+                        }else{
+                            var edge = {from:response[line]["now"],to:response[line]["next"]};
+                            if (edge.to == edge.from)
+                                continue;
+                            edge.label = removeSmall(response[line]["exit"]) + " / " + removeSmall(response[line]["entry"]);edgelist.push(edge)	
+                        }			
+                    }
+                    for(line in response2){
+                        if(response2[line]["next"]=="Couldnt Fetch"){
+                            if(!cloudnode){var node = { id:"cloud",label:"Service Provider Network",shape:"image",image:"/static/cloud.png"}	
+                            nodelist.push(node);cloudnode=true}
+                            var edge = {from:response2[line]["now"],to:"cloud",label:removeSmall(response2[line]["exit"])+" / "+$scope.ssh_out};
+                            edgelist.push(edge)
+                        }else{
+                                var edge = {from:response2[line]["now"],to:response2[line]["next"]};
+                            if (edge.to == edge.from)
+                                continue;
+                            edge.label = removeSmall(response2[line]["exit"]) + " / " + removeSmall(response2[line]["entry"]);edgelist.push(edge)
+                        }
+                    }
 					
 			
 		    
 
 			
                 }
-		var nodes = new vis.DataSet(nodelist);   
+		        var nodes = new vis.DataSet(nodelist);   
                 var edges = new vis.DataSet(edgelist);
                 var container = document.getElementById('mynetwork');
                 var data = {
@@ -254,31 +214,31 @@
                 var options = {physics: {enabled: false},
                                interaction: {dragNodes: true, zoomView: true,hoverConnectedEdges:true},
                                layout: {hierarchical:{enabled:true,direction:"LR",nodeSpacing:300,blockShifting:false,edgeMinimization:false,
-sortMethod:"directed"}}};
+                               sortMethod:"directed"}}};
 
                 var network = new vis.Network(container, data, options);    
-		$scope.network = network;
-		$scope.data = data;
+		        $scope.network = network;
+		        $scope.data = data;
                 network.on("click", function (properties) {
                     $scope.$apply(function () { 
-		$scope.clicked_device = $scope.device_map[properties.nodes];  
+		            $scope.clicked_device = $scope.device_map[properties.nodes];  
 			
-			if(properties.nodes == "cloud")
-			{	console.log($scope.clicked_device);				
-				$scope.cloudclicked=true
+			        if(properties.nodes == "cloud")
+			        {	console.log($scope.clicked_device);				
+				        $scope.cloudclicked=true
 				
-			}else
+			        }else
                        	$scope.cloudclicked = false
-			console.log("Is Cloud:",$scope.cloudclicked)
-			if(!$scope.cloudclicked){
-                            
+			            console.log("Is Cloud:",$scope.cloudclicked)
+			            
+                        if(!$scope.cloudclicked){                           
                         
                         $scope.thresholds = { green: 0, amber: 1, red: 3 }
                         $scope.images = { 0: "/static/checked.png", 
                                           1: "/static/warning-t.png",
                                           3: "/static/cancel.png"}
                         $scope.device = 0; 
-			$scope.platform = 0;
+			            $scope.platform = 0;
                         $scope.cpu = 0;
                         $scope.memory = 0;
                         $scope.logs = 0;
@@ -288,14 +248,11 @@ sortMethod:"directed"}}};
                         $scope.counters = 0;
                         $scope.protocols = 0;
                         $scope.eigrp = 0;
-			$scope.eigrp_down = [];
+			            $scope.eigrp_down = [];
                         $scope.bgp = 0;
-			$scope.bgp_down = [];
+			            $scope.bgp_down = [];
                         $scope.spanning = 0;
-                        $scope.routeflaps = 0;
-
-
-		
+                        $scope.routeflaps = 0;		
 		
                         $scope.qos = 0;
                         evaluateThresholds();      
@@ -375,43 +332,44 @@ console.log("RESPONSE IS"+ response)
             // Function : Apply Thresholds
             function evaluateThresholds(){
 
-                console.log("Checking thresholds");                
+                console.log("Applying Severity Thresholds");                
                 thresholds = $scope.thresholds;
 
 
-		os_type = $scope.clicked_device.device.version.soft_ver
-		$scope.os_type = os_type
-                // CPU
-		if(os_type != "cisco_nxos"){
-		        var flag = thresholds.green;
-		        for (attrib in $scope.clicked_device.CPU.cpu_util){
-		            var value = $scope.clicked_device.CPU.cpu_util[attrib];
-		            if(value < 50)
-		                flag = flag | thresholds.green;
-		            else if(value < 70)
-		                flag = flag | thresholds.amber;
-		            else
-		                flag = flag | thresholds.red;
-		        }
-			$scope.cpu = flag;
-		}else{
-			var flag = thresholds.green;
-			var cpu = $scope.clicked_device.CPU.cpu_util;
-			var util = parseFloat(cpu.user)+parseFloat(cpu.kernel);
-			$scope.total_nexus_util = util
-			if(util < 50)
-				flag = flag | thresholds.green;
-		            else if(util < 70)
-		                flag = flag | thresholds.amber;
-		            else
-		                flag = flag | thresholds.red;
-			$scope.cpu = flag;
-		
-		}
-			
-                
+                os_type = $scope.clicked_device.device.version.soft_ver
+                $scope.os_type = os_type
 
-                // Memory
+                // CPU
+		        if(os_type != "cisco_nxos"){
+                    var flag = thresholds.green;
+                    for (attrib in $scope.clicked_device.CPU.cpu_util){
+                        var value = $scope.clicked_device.CPU.cpu_util[attrib];
+                        if(value < 50)
+                            flag = flag | thresholds.green;
+                        else if(value < 70)
+                            flag = flag | thresholds.amber;
+                        else
+                            flag = flag | thresholds.red;
+                    }
+                    $scope.cpu = flag;
+		        }
+                else{
+                    var flag = thresholds.green;
+                    var cpu = $scope.clicked_device.CPU.cpu_util;
+                    var util = parseFloat(cpu.user)+parseFloat(cpu.kernel);
+                    $scope.total_nexus_util = util
+                    if(util < 50)
+                        flag = flag | thresholds.green;
+                    else if(util < 70)
+                        flag = flag | thresholds.amber;
+                    else
+                        flag = flag | thresholds.red;
+                    $scope.cpu = flag;
+		
+		        }
+			              
+
+                // MEMORY
                 var flag = thresholds.green;
                 for (attrib in $scope.clicked_device.device.memory){
                     var value = $scope.clicked_device.device.memory[attrib];
@@ -424,333 +382,288 @@ console.log("RESPONSE IS"+ response)
                 }
                 $scope.memory = flag;
 
-                // Logs
+                // LOGS
                 var flag = thresholds.green;
-		var eigrp_down = new Set();
-	 	var bgp_down = new Set();
+                var eigrp_down = new Set();
+                var bgp_down = new Set();
                 for (it in $scope.clicked_device.device.log){   
                     var line = $scope.clicked_device.device.log[it];
-		    
-		                
-                    if(line.includes("DUAL")){
+                    // EIGRP LOGS
+		            if(line.includes("DUAL")){
                         var r = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/;
                         var ip =  line.match(r);
                         if(!(ip[0] in $scope.clicked_device.Protocols.eigrp)){
-                            
-			        eigrp_down.add(ip[0]);
-				console.log(ip[0],"has not come back up");
-			    
-			    $scope.eigrp = $scope.eigrp | thresholds.red;
-			    
-                        }
-			flag = flag | thresholds.red;
-			
+                            eigrp_down.add(ip[0]);
+				            //console.log(ip[0],"has not come back up");
+			                $scope.eigrp = $scope.eigrp | thresholds.red;
+			            }
+			            flag = flag | thresholds.red;			
                     }
+                    // BGP LOGS
                     if(line.includes("BGP")){
                         var r = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/;
                         var ip =  line.match(r);
                         if(!(ip[0] in $scope.clicked_device.Protocols.bgp)){
-                            
-			        bgp_down.add(ip[0]);
-				console.log(ip[0],"has not come back up");
-			    
-			    $scope.bgp = $scope.bgp | thresholds.red;
-			    
+                            bgp_down.add(ip[0]);
+				            //console.log(ip[0],"has not come back up");
+			                $scope.bgp = $scope.bgp | thresholds.red;			    
                         }
-			flag = flag | thresholds.red;
-			
-                    }
-                        
-                   
-                        flag = flag | thresholds.amber; 
+			            flag = flag | thresholds.red;
+			        }                                   
+                    flag = flag | thresholds.amber; 
                                       
                 }
-	        $scope.eigrp_down = Array.from(eigrp_down)
-		$scope.bgp_down = Array.from(bgp_down)
+	            $scope.eigrp_down = Array.from(eigrp_down)
+		        $scope.bgp_down = Array.from(bgp_down)
                 $scope.logs = flag;
                 
-                // Device
+                //------------------ DEVICE HEALTH-------------------//
                 $scope.device = $scope.cpu | $scope.memory | $scope.logs
-//Interface counter errors
-				if(Object.keys($scope.clicked_device.device.interface_counters_errors).length == 0)
-		{
-		$scope.counters = 0;
-		}
-		else{
-		$scope.counters = 1;
-		}
-                // Interfaces
-                
+
+
+                //INTERFACE COUNTER ERRORS
+				if(Object.keys($scope.clicked_device.device.interface_counters_errors).length == 0){
+		            $scope.counters = 0;
+		        }
+		        else{
+		            $scope.counters = 1;
+		        }
+
+                // INTERFACES                
                 for(interface in $scope.clicked_device["Interface Dictionary"]){
                     var flag = thresholds.green;
-		    var int = $scope.clicked_device["Interface Dictionary"][interface]
-		    console.log("Current interface:",int);
-                    if(thres(int.collisions) > 0 || thres(int.crc) > 0 || thres(int.frame) > 0 || thres(int.ignored) > 0
+		            var int = $scope.clicked_device["Interface Dictionary"][interface]
+		            if(thres(int.collisions) > 0 || thres(int.crc) > 0 || thres(int.frame) > 0 || thres(int.ignored) > 0
                       || thres(int.input_errors) > 0 || thres(int.interf_reset) > 0 || thres(int.late_collision) > 0 || thres(int.output_drops) > 0 
                       || thres(int.output_errors) > 0 || thres(int.overrun) > 0){
                           flag = thresholds.amber;
                       }
                     $scope.interfaces[interface] = flag;
                 }
-
                 for(int in $scope.interfaces){
                     $scope.interface = $scope.interface | $scope.interfaces[int];
                 }
 
                 // EIGRP
                 var flag = thresholds.green;
-	        if($scope.clicked_device.device.version.soft_ver!='cisco_nxos'){
-                for(neigh in $scope.clicked_device.Protocols.eigrp){
-		    $scope.eigrp_neigh_count = "Number of neighbors constant"
-                    var srtt = $scope.clicked_device.Protocols.eigrp[neigh].srtt;
-                    var rto = $scope.clicked_device.Protocols.eigrp[neigh].rto;
-		    var occurences = $scope.clicked_device.Protocols.eigrp[neigh].iteration;
-		    var status = new Array();
-		if($scope.clicked_device.Protocols.eigrp[neigh].uptime[0].includes("00")){
-		flag = flag | thresholds.red;
-		status.push("Flap in last Hour");}
-		    
-		    var changed = false; var limit=false; var prev=srtt[0];
-		    for(val in srtt){
-			if(srtt[val] != prev)
-				changed = true;
-			if(srtt[val] >= 1500)
-				limit = true;
-			prev = srtt[val];
-		    }
-		    if(changed==true){
-			status.push("SRTT fluctuating")
-		        flag = flag | thresholds.amber;
-		    }
-		    if(limit==true){
-			status.push("SRTT Too High")
-			flag = flag | thresholds.red;
-		    }
+	            if($scope.clicked_device.device.version.soft_ver!='cisco_nxos'){
+                    for(neigh in $scope.clicked_device.Protocols.eigrp){
+                        $scope.eigrp_neigh_count = "Number of neighbors constant"
+                        var srtt = $scope.clicked_device.Protocols.eigrp[neigh].srtt;
+                        var rto = $scope.clicked_device.Protocols.eigrp[neigh].rto;
+                        var occurences = $scope.clicked_device.Protocols.eigrp[neigh].iteration;
+                        var status = new Array();
 
-		 
-		    changed = false;  limit=false;  prev=rto[0];
-		    for(val in rto){
-			if(rto[val] != prev)
-				changed = true;
-			if(rto[val] > 4500)
-				limit = true;
-			prev = rto[val];
-		    }
-		   if(changed==true){
-			status.push("RTO fluctuating")
-			flag = flag | thresholds.amber;
-		   }
-		   if(limit==true){
-			status.push("RTO Too High")
-			flag = flag | thresholds.red;
-		   }
-		   if(occurences.length!=3){
-			status.push("Flapping")
-		        flag = flag | thresholds.red;
-			$scope.eigrp_neigh_count="Number of Neighbors not constant"
-		   }
-		   if(!occurences.includes(2)){
-			$scope.eigrp_down.push($scope.clicked_device.Protocols.eigrp[neigh].neighbor);
-			flag = flag | thresholds.red;
-		   }
-
-		   if(status.length==0){
-			 flag = flag | thresholds.green;
-			 status.push("No Issues")
-		   }
-
-		  $scope.clicked_device.Protocols.eigrp[neigh].status= status
-                }
-$scope.eigrp = $scope.eigrp | flag;
+                        if($scope.clicked_device.Protocols.eigrp[neigh].uptime[0].includes("00")){
+                            flag = flag | thresholds.red;
+                            status.push("Flap in last Hour");
+                        }
                 
-	   }
-	else if ($scope.clicked_device.device.version.soft_ver=='cisco_nxos'){
-	var flag = thresholds.green
-	 for(neigh in $scope.clicked_device.Protocols.eigrp){ 
-		if($scope.clicked_device.Protocols.eigrp[neigh].condition == 'perfect.'){
-		  flag = flag | thresholds.green;}
-		else if($scope.clicked_device.Protocols.eigrp[neigh].condition == ' rto value fluctuating. ' || $scope.clicked_device.Protocols.eigrp[neigh].condition == ' srtt value fluctuating. '){
-		  flag = flag | thresholds.amber;}
-		else {
-		  flag = flag | thresholds.red;}
-	     }
-	$scope.eigrp = $scope.eigrp | flag;
+                        var changed = false; var limit=false; var prev=srtt[0];
+                        for(val in srtt){
+                            if(srtt[val] != prev)
+                                changed = true;
+                            if(srtt[val] >= 1500)
+                                limit = true;
+                            prev = srtt[val];
+                        }
+                        if(changed==true){
+                            status.push("SRTT fluctuating")
+                            flag = flag | thresholds.amber;
+                        }
+                        if(limit==true){
+                            status.push("SRTT Too High")
+                            flag = flag | thresholds.red;
+                        }
+                        changed = false;  limit=false;  prev=rto[0];
+                        for(val in rto){
+                            if(rto[val] != prev)
+                                changed = true;
+                            if(rto[val] > 4500)
+                                limit = true;
+                            prev = rto[val];
+                        }
+                        if(changed==true){
+                            status.push("RTO fluctuating")
+                            flag = flag | thresholds.amber;
+                        }
+                        if(limit==true){
+                            status.push("RTO Too High")
+                            flag = flag | thresholds.red;
+                        }
+                        if(occurences.length!=3){
+                            status.push("Flapping")
+                            flag = flag | thresholds.red;
+                            $scope.eigrp_neigh_count="Number of Neighbors not constant"
+                        }
+                        if(!occurences.includes(2)){
+                            $scope.eigrp_down.push($scope.clicked_device.Protocols.eigrp[neigh].neighbor);
+                            flag = flag | thresholds.red;
+                        }
+                        if(status.length==0){
+                            flag = flag | thresholds.green;
+                            status.push("No Issues")
+                        }
+                        $scope.clicked_device.Protocols.eigrp[neigh].status= status
+                    }
+                    $scope.eigrp = $scope.eigrp | flag;                
+	            }
+	            else if ($scope.clicked_device.device.version.soft_ver=='cisco_nxos'){
+	                var flag = thresholds.green
+                    for(neigh in $scope.clicked_device.Protocols.eigrp){ 
+                        if($scope.clicked_device.Protocols.eigrp[neigh].condition == 'perfect.'){
+                            flag = flag | thresholds.green;
+                        }
+                        else if($scope.clicked_device.Protocols.eigrp[neigh].condition == ' rto value fluctuating. ' || $scope.clicked_device.Protocols.eigrp[neigh].condition == ' srtt value fluctuating. '){
+                            flag = flag | thresholds.amber;
+                        }
+                        else{
+                        flag = flag | thresholds.red;
+                        }
+                    }
+	                $scope.eigrp = $scope.eigrp | flag;	
+	            }
 	
-	}
-	
-		
-		
-		// ROUTE FLAPS
-		
+                // ROUTE FLAPS		
                 for (it in $scope.clicked_device.Protocols.ip_route){   
                     $scope.routeflaps = thresholds.red;
-		    break;
-		}
+		            break;
+		        }
                 
                 // BGP
                 var flag = thresholds.green;
                 for(neigh in $scope.clicked_device.Protocols.bgp){
                     var value = $scope.clicked_device.Protocols.bgp[neigh];
-		    if(typeof value === "object"){
-                    if(value['condition']!="perfect")
-                        flag = flag | thresholds.red;
-                    else
-                        flag = flag | thresholds.green;
-		    }else{
-	             if (value.includes("not"))
-			flag = flag | thresholds.red;
-	             else
-			flag = flag | thresholds.green; 
-		    }
-	   
+                    if(typeof value === "object"){
+                        if(value['condition']!="perfect")
+                            flag = flag | thresholds.red;
+                        else
+                            flag = flag | thresholds.green;
+                    }else{
+                        if (value.includes("not"))
+                            flag = flag | thresholds.red;
+                        else
+                            flag = flag | thresholds.green; 
+                    }	   
                 }
                 $scope.bgp = $scope.bgp | flag;
 
+                //------------------PROTOCOL HEALTH---------------------------//
                 $scope.protocols = $scope.eigrp | $scope.bgp | $scope.routeflaps ;
-
             }
 
-            // Function : Setup Angular Objects from Response
-	        function makeTable(devices,dir) {
-		
-		if(dir=="forward"){
-		        $scope.device_map = {};
-		        for (obj in devices) {
-		            name = devices[obj]['Name'][0];
-		            $scope.device_map[name] = devices[obj]
-		        }
-		        console.log("Devices added: ",$scope.device_map)
-		}
-		else{
-			$scope.rev_device_map = {};
-				
-		        for (obj in devices) {
-		            name = devices[obj]['Name'][0];
-		            $scope.rev_device_map[name] = devices[obj]
-		
-		            $scope.device_map[name] = devices[obj]
-		        }
-		        console.log("Devices added: ",$scope.rev_device_map)			    
-		}
+            // Function : Initialize Device Objects from Response
+	        function makeTable(devices,dir){		
+                if(dir=="forward"){
+                    $scope.device_map = {};
+                    for (obj in devices) {
+                        name = devices[obj]['Name'][0];
+                        $scope.device_map[name] = devices[obj]
+                    }
+                    console.log("Devices Added: ",$scope.device_map)
+                }
+                else{
+                    $scope.rev_device_map = {};                        
+                    for (obj in devices) {
+                        name = devices[obj]['Name'][0];
+                        $scope.rev_device_map[name] = devices[obj]
+            
+                        $scope.device_map[name] = devices[obj]
+                    }
+                    console.log("Post-SP Devices Added: ",$scope.rev_device_map)			    
+                }
             }
         
             // Function : Handle Ping & SSH Errors
-            function evaluateErrors(){
-		
-                        $scope.images = { 0: "/static/checked.png", 
-                                          1: "/static/warning-t.png",
-                                          3: "/static/cancel.png"}
-			$scope.ping_failure = 0;
-			$scope.ssh_failure = 0;
-			$scope.src_ping = 0;
-			$scope.dst_ping = 0;
-			$scope.dg_ping = 0;
-			if($scope.errors == null)
-				return;
-			console.log($scope.errors)
-			if("ping_failure" in $scope.errors){
-			
-				if($scope.errors["ping_failure"] == "false")
-					$scope.ping_failure = 0; 
-				else
-					$scope.ping_failure = 3;
-				
-			}
-			if("ssh_failure" in $scope.errors){
-		
-				if($scope.errors["ssh_failure"] == "false")
-					$scope.ssh_failure = 0; 
-				else
-					$scope.ssh_failure = 3;
-				
-			}
-			if("source" in $scope.errors){
-			
-				if($scope.errors["source"] == "perfect")
-					$scope.src_ping = 0; 
-				else
-					$scope.src_ping = 3;
-				
-			}
-			if("dg" in $scope.errors){
-			
-				if($scope.errors["dg"] == "perfect")
-					$scope.dg_ping = 0; 
-				else
-					$scope.dg_ping = 3;
-				
-			}
-			if("dest" in $scope.errors){
-			
+            function evaluateErrors(){		
+                $scope.images = { 0: "/static/checked.png", 
+                                1: "/static/warning-t.png",
+                                3: "/static/cancel.png" }
+                $scope.ping_failure = 0;
+                $scope.ssh_failure = 0;
+                $scope.src_ping = 0;
+                $scope.dst_ping = 0;
+                $scope.dg_ping = 0;
+                if($scope.errors == null)
+                    return;			
+                if("ping_failure" in $scope.errors){			
+                    if($scope.errors["ping_failure"] == "false")
+                        $scope.ping_failure = 0; 
+                    else
+                        $scope.ping_failure = 3;				
+                }
+                if("ssh_failure" in $scope.errors){		
+                    if($scope.errors["ssh_failure"] == "false")
+                        $scope.ssh_failure = 0; 
+                    else
+                        $scope.ssh_failure = 3;				
+                }
+                if("source" in $scope.errors){			
+                    if($scope.errors["source"] == "perfect")
+                        $scope.src_ping = 0; 
+                    else
+                        $scope.src_ping = 3;				
+                }
+                if("dg" in $scope.errors){			
+                    if($scope.errors["dg"] == "perfect")
+                        $scope.dg_ping = 0; 
+                    else
+                        $scope.dg_ping = 3;				
+                }
+                if("dest" in $scope.errors){			
 				if($scope.errors["dest"] == "perfect")
 					$scope.dst_ping = 0; 
 				else
-					$scope.dst_ping = 3;
-				
+					$scope.dst_ping = 3;				
 			}
-		console.log("Scope ping failure")
-		console.log($scope.ping_failure)
-		console.log("Scope SSH Failure")
-		console.log($scope.ssh_failure)
-		console.log("Scope Source")
-		console.log($scope.src_ping)
-		console.log("Scope DG")
-		console.log($scope.dg_ping)
-		console.log("Scope Dest")
-		console.log($scope.dst_ping)
-
-	    }	
+            }	
 
             // Function : Fetch Raw Outputs from logfiles
             $scope.fetchRaw=function(){
-		    console.log("GET:",'/logs/'+$scope.workerpid+'/'+$scope.clicked_device.Name[0]);
-	        $http({
-                    method: 'GET',
-                    url: '/logs/'+$scope.workerpid+'/'+$scope.clicked_device.Name[0],
-                    
-                }).then(function (res) {
-                    response = String(res.data);                    
-                    if (response !== undefined) {
-						
-			var w = window.open("data:text/plain,"+response,"_blank");
-	
-			w.focus();
-			w.open();
-			w.document.write(response);
-	                        
-                    }
-                }, function (res) {
-                    console.log("Response Error Occured")
+                console.log("GET:",'/logs/'+$scope.workerpid+'/'+$scope.clicked_device.Name[0]);
+                $http({
+                        method: 'GET',
+                        url: '/logs/'+$scope.workerpid+'/'+$scope.clicked_device.Name[0],
+                        
+                    }).then(function (res){
+                        response = String(res.data);                    
+                        if (response !== undefined) {                            
+                            var w = window.open("data:text/plain,"+response,"_blank");        
+                            w.focus();
+                            w.open();
+                            w.document.write(response);                                
+                        }
+                    }, function (res){
+                        console.log("Response Error Occured")
                 });
 	        }
 
             // Function : Detect Ping & SSH Errors
 	        function handleErrors(errorDict,dir){
-		console.log("Forward errros")
-			console.log($scope.fwderrors)
-			console.log($scope.ssh_failure)
-		if(dir=="forward"){
-			$scope.errors = errorDict;
-			$scope.fwderrors = 0;
-			evaluateErrors();
-			$scope.fwderrors= $scope.ssh_failure;
-			
-			if($scope.ssh_failure > 0){
-				$scope.ssh_in = $scope.errors.ssh_err_ip[0];
-				console.log("ssh failure on forward path:",$scope.ssh_in);
-			}
-		}
-		else if(dir == "backward"){
-			$scope.errors = errorDict;
-			$scope.bkwderrors = 0;
-			evaluateErrors();
-			$scope.bkwderrors= $scope.ssh_failure;
-			if($scope.ssh_failure > 0){
-				$scope.ssh_out = $scope.errors.ssh_err_ip[0];
-				console.log("ssh failure on backward path:",$scope.ssh_out);
-			}
-		}
-	    }
+                console.log("Forward errros")
+                console.log($scope.fwderrors)
+                console.log($scope.ssh_failure)
+                if(dir=="forward"){
+                    $scope.errors = errorDict;
+                    $scope.fwderrors = 0;
+                    evaluateErrors();
+                    $scope.fwderrors= $scope.ssh_failure;                
+                    if($scope.ssh_failure > 0){
+                        $scope.ssh_in = $scope.errors.ssh_err_ip[0];
+                        console.log("ssh failure on forward path:",$scope.ssh_in);
+                    }
+                }
+                else if(dir == "backward"){
+                    $scope.errors = errorDict;
+                    $scope.bkwderrors = 0;
+                    evaluateErrors();
+                    $scope.bkwderrors= $scope.ssh_failure;
+                    if($scope.ssh_failure > 0){
+                        $scope.ssh_out = $scope.errors.ssh_err_ip[0];
+                        console.log("ssh failure on backward path:",$scope.ssh_out);
+                    }
+                }
+	        }
 
         });
     </script>
@@ -780,35 +693,26 @@ $scope.eigrp = $scope.eigrp | flag;
                 <input type="submit" value="Execute" class="btn btn-secondary" ng-click="fetchData()">
             </div>
             <div class="col-1">
-<button class="btn btn-info" value="Reset View" ng-click="refresh()">Reset </button>
-            
-
-        </div>
-<div class="col-3 text-center">
+                <button class="btn btn-info" value="Reset View" ng-click="refresh()">Reset </button>
+            </div>
+            <div class="col-3 text-center">
                 <span class="align-middle">Time Elapsed since last Execution:</span>
             </div>
-<div class="col-2"><h5 id="timer"><time>00:00:00</time></h5></div>
-	    
-	    
-        <br>
+            <div class="col-2"><h5 id="timer"><time>00:00:00</time></h5></div> 
+	    <br>
     </form>
-
-
     </div><br>
     <div class="col-12 min-vw-80">
 	<div id="loader-head" class="row" style="display:none;">
 	<div class="col-6"">
-	<span>Please wait while the system fetches the data.	</span></div>
-	
+	<span>Please wait while the system fetches the data.</span></div>	
 	<div id="loader">
 	</div>
 	</div>
         <div id="mynetwork" style="height:300px" class="row-6 border">
-
-        </div>
-	
+        </div>	
         <div id="kpipanel" class="row-6 border">
-	   <div ng-if="fwderrors > 5">
+	    <div ng-if="fwderrors > 5">
 	         <h4 class="kpi"> Connectivity Errors were detected for the given query </h4>
 		 <table class="table">
 		 <tr ng-if="errors.ping_failure">
