@@ -650,6 +650,7 @@
                     $scope.errors = errorDict;
                     $scope.fwderrors = 0;
                     $scope.errorResult = evaluateErrors();
+                    console.log("Errors:",$scope.errorResult)
                     $scope.fwderrors= $scope.ssh_failure;                
                     if($scope.ssh_failure > 0){
                         $scope.ssh_in = $scope.errors.ssh_err_ip[0];
