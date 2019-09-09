@@ -722,7 +722,7 @@
             <h4 class="kpi"> Connectivity Errors were detected for the given query </h4>
             <table class="table">
             <tr ng-if="errors.ping_failure">
-                <td>  <h5 class="sub-kpi">Ping Failed : <img ng-src = "{{images[ping_failure]}}" style="width:20px"/></h5> </td>		
+                <td>  <h5 class="sub-kpi">Ping : <img ng-src = "{{images[ping_failure]}}" style="width:20px"/></h5> </td>		
             </tr>
             <tr ng-if="errors.source">
                 <td>  Source Ping : {{ errors.source }} : <img ng-src = "{{images[src_ping]}}" style="width:20px"/> </td>		
@@ -734,10 +734,10 @@
                 <td>  Default Gateway Ping : {{ errors.dg }} : <img ng-src = "{{images[dg_ping]}}" style="width:20px"/> </td>		
             </tr>
             <tr ng-if="errors.ssh_failure">
-                <td>  <h5 class="sub-kpi">SSH Failed : <img ng-src = "{{images[ssh_failure]}}" style="width:20px"/></h5> </td>		
+                <td>  <h5 class="sub-kpi">SSH  : <img ng-src = "{{images[ssh_failure]}}" style="width:20px"/></h5> </td>		
             </tr>
             <tr ng-if="errors.ssh_err_ip">
-                <td>  SSH failed on device : {{ errors.ssh_err_ip }}</td>		
+                <td>  SSH failed on device(s) : {{ errors.ssh_err_ip }}</td>		
             </tr>
             </table>
         </div> 
