@@ -87,8 +87,17 @@ def topology():
 
 
 			# Forward Path
-			entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)
-			g.intojson=callthreads(setofnames,1)
+			try:
+				#entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)
+				raise Exception()
+			except Exception as e:
+				return list().appemd({'failure':'Failure occured in path calculation'})
+
+			try:
+				#g.intojson=callthreads(setofnames,1)
+				raise Exception()
+			except:
+				return list().append({'failure':'Failure occured in KPI Analysis'})
 
 			# Forward Path after SP Cloud
 			if ping_stat['ssh_failure']=='true':
@@ -105,6 +114,7 @@ def topology():
 			paths1 = jsonifypath(exit,entryrev)
 			device_json = restructureDict(g.intojson)
 
+			# to do : change list to dictionary
 			response_list = list()
 			response_list.append(paths1) # response[0]
 			response_list.append(device_json) # response[1]
