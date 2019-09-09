@@ -86,15 +86,16 @@ def topology():
 						return(g.intojson2)
 
 
+			# Forward Path
 			entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)
 			g.intojson=callthreads(setofnames,1)
+
+			# Forward Path after SP Cloud
 			if ping_stat['ssh_failure']=='true':
 				entry2,exit2,entryrev2,setofnames2,ping_stat2=path_calc(dst,src)
-				print("\n\n\n\n SET OF NAMES ")
-				print(setofnames2)
-				print("\n\n\n\n")
 				g.intojson2=callthreads(setofnames2,2) 
 
+			# Path Connectivity Information
 			print("Exit: ",exit,"\n")
 			print("Reverse: ",entryrev,"\n")
 			if ping_stat['ssh_failure']=='true':
@@ -109,10 +110,12 @@ def topology():
 			response_list.append(device_json) # response[1]
 			response_list.append(ping_stat) # response[2]
 			
+			# Add PID to response for finding correct log folder if requested
 			worker = dict()
 			worker['pid'] = os.getpid()
 			response_list.append(worker) # response[3]
 
+			# Response for Post-SP Path
 			if ping_stat['ssh_failure']=='true':
 				paths2 = jsonifypath(exit2,entryrev2)	
 				device_json2 = restructureDict(g.intojson2)
