@@ -614,7 +614,13 @@
 					$scope.dst_ping = 0; 
 				else
 					$scope.dst_ping = 3;				
-			}
+			    }
+
+                if($scope.ping_failure > 0)
+                    return "pingfailure"
+                
+                if($scope.ssh_failure > 0)
+                    return "sshfailure"
             }	
 
             // Function : Fetch Raw Outputs from logfiles
@@ -643,7 +649,7 @@
                 if(dir=="forward"){
                     $scope.errors = errorDict;
                     $scope.fwderrors = 0;
-                    evaluateErrors();
+                    $scope.errorResult = evaluateErrors();
                     $scope.fwderrors= $scope.ssh_failure;                
                     if($scope.ssh_failure > 0){
                         $scope.ssh_in = $scope.errors.ssh_err_ip[0];
@@ -653,7 +659,7 @@
                 else if(dir == "backward"){
                     $scope.errors = errorDict;
                     $scope.bkwderrors = 0;
-                    evaluateErrors();
+                    $scope.errorResult = evaluateErrors();
                     $scope.bkwderrors= $scope.ssh_failure;
                     if($scope.ssh_failure > 0){
                         $scope.ssh_out = $scope.errors.ssh_err_ip[0];
@@ -709,29 +715,34 @@
         <div id="mynetwork" style="height:300px" class="row-6 border">
         </div>	
         <div id="kpipanel" class="row-6 border">
-	    <div ng-if="fwderrors > 5">
-	         <h4 class="kpi"> Connectivity Errors were detected for the given query </h4>
-		 <table class="table">
-		 <tr ng-if="errors.ping_failure">
-			<td>  <h5 class="sub-kpi">Ping Failed : <img ng-src = "{{images[ping_failure]}}" style="width:20px"/></h5> </td>		
- 		</tr>
-		 <tr ng-if="errors.source">
-			<td>  Source Ping : {{ errors.source }} : <img ng-src = "{{images[src_ping]}}" style="width:20px"/> </td>		
- 		</tr>
-		 <tr ng-if="errors.dest">
-			<td>  Destination Ping : {{ errors.dest }} : <img ng-src = "{{images[dst_ping]}}" style="width:20px"/> </td>		
- 		</tr>
-		 <tr ng-if="errors.dg">
-			<td>  Default Gateway Ping : {{ errors.dg }} : <img ng-src = "{{images[dg_ping]}}" style="width:20px"/> </td>		
- 		</tr>
-		 <tr ng-if="errors.ssh_failure">
-			<td>  <h5 class="sub-kpi">SSH Failed : <img ng-src = "{{images[ssh_failure]}}" style="width:20px"/></h5> </td>		
- 		</tr>
-		 <tr ng-if="errors.ssh_err_ip">
-			<td>  SSH failed on device : {{ errors.ssh_err_ip }}</td>		
- 		</tr>
-		</table>
-	    </div> 
+
+
+	    <div ng-if="errorResult == 'pingfailure'">
+            <h4 class="kpi"> Connectivity Errors were detected for the given query </h4>
+            <table class="table">
+            <tr ng-if="errors.ping_failure">
+                <td>  <h5 class="sub-kpi">Ping Failed : <img ng-src = "{{images[ping_failure]}}" style="width:20px"/></h5> </td>		
+            </tr>
+            <tr ng-if="errors.source">
+                <td>  Source Ping : {{ errors.source }} : <img ng-src = "{{images[src_ping]}}" style="width:20px"/> </td>		
+            </tr>
+            <tr ng-if="errors.dest">
+                <td>  Destination Ping : {{ errors.dest }} : <img ng-src = "{{images[dst_ping]}}" style="width:20px"/> </td>		
+            </tr>
+            <tr ng-if="errors.dg">
+                <td>  Default Gateway Ping : {{ errors.dg }} : <img ng-src = "{{images[dg_ping]}}" style="width:20px"/> </td>		
+            </tr>
+            <tr ng-if="errors.ssh_failure">
+                <td>  <h5 class="sub-kpi">SSH Failed : <img ng-src = "{{images[ssh_failure]}}" style="width:20px"/></h5> </td>		
+            </tr>
+            <tr ng-if="errors.ssh_err_ip">
+                <td>  SSH failed on device : {{ errors.ssh_err_ip }}</td>		
+            </tr>
+            </table>
+        </div> 
+        
+
+
 	    <div id="sp" ng-if="cloudclicked" >
  		<h4 class="sub-kpi"><img ng-src = "/static/cloud.png" style="width:20px"/> Service Provider Network</h4>
                 <div class="kpi"><b>Entry: </b>{{ entries }}</div>
