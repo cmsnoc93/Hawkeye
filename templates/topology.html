@@ -17,6 +17,15 @@
         app.controller("myController", function ($scope, $http) {
             let response; 
 
+            // Function : Validate IP Addresses
+            function isValidIP(ipaddress) {  
+                if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {  
+                    return (true)  
+                }  
+                alert("You have entered an invalid IP address!")  
+                return (false)  
+            }  
+
             // Function : Abbreviate Interface Names
             function removeSmall(str) {
                 let temp = "";
@@ -41,6 +50,11 @@
             // Function : Fetch Data
             $scope.fetchData = function(){
 
+                if(!isValidIP($scope.src) || !isValidIP($scope.dst)){
+                    alert("Please Enter Valid IP Addresses")
+                    return;
+                }
+                
                 console.log("Query (src,dst) : ",$scope.src,",",$scope.dst)	
 
                 // Initializing Request Timer
@@ -749,7 +763,9 @@
                 <div class="kpi"><b>Entry: </b>{{ entries }}</div>
                 <div class="kpi"><b>Exit: </b>{{ exits }}<br></div>
 		<div class="kpi">Carrier Information: <button class="btn btn-info btn-sm">Fetch Details</button><br></div>
-	    </div>
+        </div>
+        
+        
             <div id="dev" ng-if="clicked_device">
                 <h4 class="sub-kpi"><img ng-src = "{{clicked_image}}" style="width:20px"/> {{ clicked_device.Name[0] }}</h4>
                 <div class="kpi"><b>Entry: </b>{{ entries }}</div>
