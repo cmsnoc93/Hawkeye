@@ -437,12 +437,12 @@
                 $scope.device = $scope.cpu | $scope.memory | $scope.logs
 
 
-                //INTERFACE COUNTER ERRORS
+                //INTERFACE COUNTER ERRORS (undergoing dev)
 				if(Object.keys($scope.clicked_device.device.interface_counters_errors).length == 0){
 		            $scope.counters = 0;
 		        }
 		        else{
-		            $scope.counters = 1;
+		            $scope.counters = 0; // Will do after pushing traffic
 		        }
 
                 // INTERFACES                
