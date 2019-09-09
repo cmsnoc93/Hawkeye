@@ -91,9 +91,12 @@ def topology():
 				#entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)
 				raise Exception()
 			except:
-				failure = json.dumps(list().append({'failure':'Failure occured in path calculation'}))
-				print(failure)
-				return failure
+				failure = dict()
+				failure['type'] = 'Path Calculation at Server'
+				fail_resp = list()
+				fail_resp.append(failure)
+				print(fail_resp)
+				return json.dumps(fail_resp)
 
 			try:
 				#g.intojson=callthreads(setofnames,1)
