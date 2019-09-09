@@ -94,7 +94,11 @@
                     console.log("Server Response: ",response);
                         if (response !== undefined) {
                             
-
+                            if(response.length == 1){
+                                console.log("Server-side errors occured")
+                                return
+                            }
+                        
                             $scope.workerpid = response[3].pid
                             console.log("Server Process Id:",$scope.workerpid)
 
