@@ -22,7 +22,6 @@
                 if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {  
                     return (true)  
                 }  
-                alert("You have entered an invalid IP address!")  
                 return (false)  
             }  
 
@@ -51,10 +50,10 @@
             $scope.fetchData = function(){
 
                 if(!isValidIP($scope.src) || !isValidIP($scope.dst)){
-                    alert("Please Enter Valid IP Addresses")
+                    alert("Please enter valid IP Address!")
                     return;
                 }
-                
+
                 console.log("Query (src,dst) : ",$scope.src,",",$scope.dst)	
 
                 // Initializing Request Timer
