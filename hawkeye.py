@@ -88,14 +88,14 @@ def topology():
 
 			# Forward Path
 			try:
-				#entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)
-				raise Exception()
+				entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)
+				#raise Exception()
 			except Exception as e:
 				return list().appemd({'failure':'Failure occured in path calculation'})
 
 			try:
-				#g.intojson=callthreads(setofnames,1)
-				raise Exception()
+				g.intojson=callthreads(setofnames,1)
+				#raise Exception()
 			except:
 				return list().append({'failure':'Failure occured in KPI Analysis'})
 
