@@ -88,19 +88,11 @@ def topology():
 
 			# Forward Path
 			try:
-				#entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)
-				raise Exception()
+				entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)				
 			except:
-				failure = dict()
-				failure['type'] = 'Path Calculation at Server'
-				fail_resp = list()
-				fail_resp.append(failure)
-				print(fail_resp)
-				return json.dumps(fail_resp)
-
+				return json.dumps(list().append({'failure':'Failure occured in KPI Analysis'}))
 			try:
-				#g.intojson=callthreads(setofnames,1)
-				raise Exception()
+				g.intojson=callthreads(setofnames,1)				
 			except:
 				return json.dumps(list().append({'failure':'Failure occured in KPI Analysis'}))
 
