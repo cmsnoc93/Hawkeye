@@ -1,0 +1,81 @@
+<!doctype html><html><head> <title>BGL--SA14</title></style></head><body>Version cisco_ios
+
+Show proc cpu | ex 0.0
+[{'proc_5_sec': '0.63', 'proc_5_min': '0.26', 'cpu_1_min': '23', 'proc_1_min': '0.26', 'interrupts': '0', 'process': 'ARP Input        ', 'cpu_5_sec': '19', 'pid': '13', 'cpu_5_min': '21'}, {'proc_5_sec': '2.39', 'proc_5_min': '2.88', 'cpu_1_min': '', 'proc_1_min': '2.79', 'interrupts': '', 'process': 'RedEarth I2C dri ', 'cpu_5_sec': '', 'pid': '87', 'cpu_5_min': ''}, {'proc_5_sec': '4.63', 'proc_5_min': '4.17', 'cpu_1_min': '', 'proc_1_min': '4.16', 'interrupts': '', 'process': 'RedEarth Tx Mana ', 'cpu_5_sec': '', 'pid': '88', 'cpu_5_min': ''}, {'proc_5_sec': '0.15', 'proc_5_min': '0.30', 'cpu_1_min': '', 'proc_1_min': '0.24', 'interrupts': '', 'process': 'HLFM address lea ', 'cpu_5_sec': '', 'pid': '124', 'cpu_5_min': ''}, {'proc_5_sec': '0.47', 'proc_5_min': '0.16', 'cpu_1_min': '', 'proc_1_min': '0.19', 'interrupts': '', 'process': 'hpm counter proc ', 'cpu_5_sec': '', 'pid': '134', 'cpu_5_min': ''}, {'proc_5_sec': '3.03', 'proc_5_min': '2.95', 'cpu_1_min': '', 'proc_1_min': '3.29', 'interrupts': '', 'process': 'Hulc LED Process ', 'cpu_5_sec': '', 'pid': '185', 'cpu_5_min': ''}, {'proc_5_sec': '0.47', 'proc_5_min': '0.33', 'cpu_1_min': '', 'proc_1_min': '0.36', 'interrupts': '', 'process': 'HQM Stack Proces ', 'cpu_5_sec': '', 'pid': '201', 'cpu_5_min': ''}, {'proc_5_sec': '0.47', 'proc_5_min': '0.15', 'cpu_1_min': '', 'proc_1_min': '0.27', 'interrupts': '', 'process': 'VRRS Main thread ', 'cpu_5_sec': '', 'pid': '233', 'cpu_5_min': ''}, {'proc_5_sec': '0.15', 'proc_5_min': '0.10', 'cpu_1_min': '', 'proc_1_min': '0.10', 'interrupts': '', 'process': 'ADJ background   ', 'cpu_5_sec': '', 'pid': '299', 'cpu_5_min': ''}, {'proc_5_sec': '0.15', 'proc_5_min': '0.11', 'cpu_1_min': '', 'proc_1_min': '0.10', 'interrupts': '', 'process': 'MMON MENG        ', 'cpu_5_sec': '', 'pid': '406', 'cpu_5_min': ''}]
+
+Show proc mem | inc totals
+Processor Pool Total:  156301568 Used:   65417956 Free:   90883612
+      I/O Pool Total:   16777216 Used:   13040680 Free:    3736536
+Driver te Pool Total:    4194304 Used:         40 Free:    4194264
+                                 78453916 Total
+
+show log | i err|drop|fail|Fail|crash|MALLOCFAIL|down
+Current Day: Feb 251: Feb 21 16:49:41.657: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.8.14.8 (GigabitEthernet1/0/2) is down: holding time expired
+2: Feb 21 16:49:50.952: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.7.14.7 (GigabitEthernet1/0/1) is down: holding time expired
+3: Feb 21 16:50:24.120: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.7.14.7 (GigabitEthernet1/0/1) is down: holding time expired
+4: Feb 21 16:50:27.551: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.8.14.8 (GigabitEthernet1/0/2) is down: holding time expired
+5: Feb 21 16:51:02.037: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.8.14.8 (GigabitEthernet1/0/2) is down: holding time expired
+6: Feb 21 16:52:23.054: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.8.14.8 (GigabitEthernet1/0/2) is down: holding time expired
+7: Feb 21 16:53:03.579: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.7.14.7 (GigabitEthernet1/0/1) is down: holding time expired
+8: Feb 21 16:53:59.464: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.7.14.7 (GigabitEthernet1/0/1) is down: holding time expired
+9: Feb 21 16:54:24.748: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.8.14.8 (GigabitEthernet1/0/2) is down: holding time expired
+10: Feb 21 16:55:04.468: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.8.14.8 (GigabitEthernet1/0/2) is down: holding time expired
+11: Feb 21 16:55:45.823: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.7.14.7 (GigabitEthernet1/0/1) is down: holding time expired
+12: Feb 21 16:55:53.180: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.8.14.8 (GigabitEthernet1/0/2) is down: holding time expired
+13: Feb 21 16:56:35.375: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.7.14.7 (GigabitEthernet1/0/1) is down: holding time expired
+14: Feb 21 16:58:17.850: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.7.14.7 (GigabitEthernet1/0/1) is down: holding time expired
+15: Feb 21 16:59:09.742: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.8.14.8 (GigabitEthernet1/0/2) is down: holding time expired
+16: Feb 21 16:59:50.477: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.7.14.7 (GigabitEthernet1/0/1) is down: holding time expired
+
+{"10.7.14.7": 8, "10.8.14.8": 8}
+
+Show interface GigabitEthernet1/0/1 
+[{'last_output': '00:00:00', 'late_collision': '0', 'last_input': '00:00:00', 'collisions': '0', 'output_rate': '6000', 'speed': '1000Mb/s', 'output_errors': '0', 'description': 'somerandomdescription', 'rxload': '1/255', 'crc': '0', 'output_drops': '0', 'interface': 'GigabitEthernet1/0/1', 'bandwidth': '1000000 Kbit', 'reliability': '255/255', 'input_rate': '7000', 'ip_address': '10.7.14.14/24', 'protocol_status': 'up (connected)', 'overrun': '0', 'address': '188b.9d34.c941', 'mtu': '1500', 'hardware_type': 'Gigabit Ethernet', 'queue_strategy': 'fifo', 'last_output_hang': 'never', 'input_packets': '2211360', 'duplex': 'Full-duplex', 'ignored': '0', 'frame': '0', 'link_status': 'up', 'delay': '10 usec', 'interf_reset': '0', 'bia': '188b.9d34.c941', 'txload': '1/255', 'encapsulation': 'ARPA', 'output_packets': '2831258', 'input_errors': '0'}]
+
+Show interface GigabitEthernet1/0/1 
+[{'last_output': '00:00:00', 'late_collision': '0', 'last_input': '00:00:01', 'collisions': '0', 'output_rate': '6000', 'speed': '1000Mb/s', 'output_errors': '0', 'description': 'somerandomdescription', 'rxload': '1/255', 'crc': '0', 'output_drops': '0', 'interface': 'GigabitEthernet1/0/1', 'bandwidth': '1000000 Kbit', 'reliability': '255/255', 'input_rate': '7000', 'ip_address': '10.7.14.14/24', 'protocol_status': 'up (connected)', 'overrun': '0', 'address': '188b.9d34.c941', 'mtu': '1500', 'hardware_type': 'Gigabit Ethernet', 'queue_strategy': 'fifo', 'last_output_hang': 'never', 'input_packets': '2211439', 'duplex': 'Full-duplex', 'ignored': '0', 'frame': '0', 'link_status': 'up', 'delay': '10 usec', 'interf_reset': '0', 'bia': '188b.9d34.c941', 'txload': '1/255', 'encapsulation': 'ARPA', 'output_packets': '2831335', 'input_errors': '0'}]
+
+Show interface GigabitEthernet1/0/1 
+[{'last_output': '00:00:00', 'late_collision': '0', 'last_input': '00:00:01', 'collisions': '0', 'output_rate': '6000', 'speed': '1000Mb/s', 'output_errors': '0', 'description': 'somerandomdescription', 'rxload': '1/255', 'crc': '0', 'output_drops': '0', 'interface': 'GigabitEthernet1/0/1', 'bandwidth': '1000000 Kbit', 'reliability': '255/255', 'input_rate': '7000', 'ip_address': '10.7.14.14/24', 'protocol_status': 'up (connected)', 'overrun': '0', 'address': '188b.9d34.c941', 'mtu': '1500', 'hardware_type': 'Gigabit Ethernet', 'queue_strategy': 'fifo', 'last_output_hang': 'never', 'input_packets': '2211521', 'duplex': 'Full-duplex', 'ignored': '0', 'frame': '0', 'link_status': 'up', 'delay': '10 usec', 'interf_reset': '0', 'bia': '188b.9d34.c941', 'txload': '1/255', 'encapsulation': 'ARPA', 'output_packets': '2831414', 'input_errors': '0'}]
+
+Show spanning-tree active
+
+No spanning tree instance exists.
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show ip protocols | i bgp: 
+
+
+Show ip protocols | i eigrp 
+Routing Protocol is "eigrp 100"
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(100)
+H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq
+                                                   (sec)         (ms)       Cnt Num
+0   10.7.14.7               Gi1/0/1                  11 4d03h       1  5000  0  1025
+1   10.8.14.8               Gi1/0/2                  11 4d03h       1  5000  0  757
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(100)
+H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq
+                                                   (sec)         (ms)       Cnt Num
+0   10.7.14.7               Gi1/0/1                  10 4d03h       1  5000  0  1025
+1   10.8.14.8               Gi1/0/2                  14 4d03h       1  5000  0  757
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(100)
+H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq
+                                                   (sec)         (ms)       Cnt Num
+0   10.7.14.7               Gi1/0/1                  13 4d03h       1  5000  0  1025
+1   10.8.14.8               Gi1/0/2                  12 4d03h       1  5000  0  757
+

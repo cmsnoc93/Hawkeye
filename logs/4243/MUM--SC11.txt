@@ -1,0 +1,92 @@
+<!doctype html><html><head> <title>MUM--SC11</title></style></head><body>Version cisco_ios
+
+Show proc cpu | ex 0.0
+[{'interrupts': '0', 'proc_5_sec': '0.15', 'proc_5_min': '0.12', 'cpu_1_min': '6', 'process': 'HULC Tcam Memory ', 'cpu_5_sec': '4', 'cpu_5_min': '5', 'proc_1_min': '0.16', 'pid': '88'}]
+
+Show proc mem | inc totals
+Processor Pool Total:   66378820 Used:   25043192 Free:   41335628
+      I/O Pool Total:    8388608 Used:    3608904 Free:    4779704
+Driver te Pool Total:    1048576 Used:         40 Free:    1048536
+                                 28657384 Total
+
+show log | i err|drop|fail|Fail|crash|MALLOCFAIL|down
+Current Day: Sep 121: *Mar  1 00:01:11.915: %LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan1, changed state to downAuth Manager registration failed
+2: *Mar  1 00:01:18.332: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to down
+3: *Mar  1 00:01:18.357: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/2, changed state to down
+4: *Mar  1 00:01:18.366: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/3, changed state to down
+5: *Mar  1 00:01:18.383: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/4, changed state to down
+
+{}
+
+Show interface GigabitEthernet0/3 
+[{'reliability': '255/255', 'protocol_status': 'up (connected)', 'collisions': '0', 'bandwidth': '1000000 Kbit', 'interface': 'GigabitEthernet0/3', 'frame': '0', 'ignored': '0', 'encapsulation': 'ARPA', 'late_collision': '0', 'input_errors': '0', 'overrun': '0', 'txload': '1/255', 'mtu': '1504', 'output_rate': '4000', 'ip_address': '10.5.11.11/24', 'last_output': '00:00:00', 'last_output_hang': 'never', 'input_rate': '2000', 'last_input': '00:00:00', 'description': '', 'delay': '10 usec', 'rxload': '1/255', 'input_packets': '1275787', 'link_status': 'up', 'queue_strategy': 'fifo', 'output_drops': '0', 'duplex': 'Full-duplex', 'output_packets': '1308421', 'hardware_type': 'Gigabit Ethernet', 'output_errors': '0', 'bia': 'f4ea.6796.d843', 'interf_reset': '0', 'speed': '1000Mb/s', 'address': 'f4ea.6796.d843', 'crc': '0'}]
+
+Show interface GigabitEthernet0/3 
+[{'reliability': '255/255', 'protocol_status': 'up (connected)', 'collisions': '0', 'bandwidth': '1000000 Kbit', 'interface': 'GigabitEthernet0/3', 'frame': '0', 'ignored': '0', 'encapsulation': 'ARPA', 'late_collision': '0', 'input_errors': '0', 'overrun': '0', 'txload': '1/255', 'mtu': '1504', 'output_rate': '6000', 'ip_address': '10.5.11.11/24', 'last_output': '00:00:00', 'last_output_hang': 'never', 'input_rate': '3000', 'last_input': '00:00:00', 'description': '', 'delay': '10 usec', 'rxload': '1/255', 'input_packets': '1275815', 'link_status': 'up', 'queue_strategy': 'fifo', 'output_drops': '0', 'duplex': 'Full-duplex', 'output_packets': '1308489', 'hardware_type': 'Gigabit Ethernet', 'output_errors': '0', 'bia': 'f4ea.6796.d843', 'interf_reset': '0', 'speed': '1000Mb/s', 'address': 'f4ea.6796.d843', 'crc': '0'}]
+
+Show interface GigabitEthernet0/3 
+[{'reliability': '255/255', 'protocol_status': 'up (connected)', 'collisions': '0', 'bandwidth': '1000000 Kbit', 'interface': 'GigabitEthernet0/3', 'frame': '0', 'ignored': '0', 'encapsulation': 'ARPA', 'late_collision': '0', 'input_errors': '0', 'overrun': '0', 'txload': '1/255', 'mtu': '1504', 'output_rate': '6000', 'ip_address': '10.5.11.11/24', 'last_output': '00:00:00', 'last_output_hang': 'never', 'input_rate': '3000', 'last_input': '00:00:00', 'description': '', 'delay': '10 usec', 'rxload': '1/255', 'input_packets': '1275850', 'link_status': 'up', 'queue_strategy': 'fifo', 'output_drops': '0', 'duplex': 'Full-duplex', 'output_packets': '1308562', 'hardware_type': 'Gigabit Ethernet', 'output_errors': '0', 'bia': 'f4ea.6796.d843', 'interf_reset': '0', 'speed': '1000Mb/s', 'address': 'f4ea.6796.d843', 'crc': '0'}]
+
+Show interface GigabitEthernet0/1 
+[{'reliability': '255/255', 'protocol_status': 'up (connected)', 'collisions': '0', 'bandwidth': '100000 Kbit', 'interface': 'GigabitEthernet0/1', 'frame': '0', 'ignored': '0', 'encapsulation': 'ARPA', 'late_collision': '0', 'input_errors': '0', 'overrun': '0', 'txload': '1/255', 'mtu': '1504', 'output_rate': '0', 'ip_address': '10.11.12.11/24', 'last_output': '00:00:01', 'last_output_hang': 'never', 'input_rate': '2000', 'last_input': '00:00:00', 'description': '', 'delay': '100 usec', 'rxload': '1/255', 'input_packets': '1942963', 'link_status': 'up', 'queue_strategy': 'fifo', 'output_drops': '0', 'duplex': 'Full-duplex', 'output_packets': '1208840', 'hardware_type': 'Gigabit Ethernet', 'output_errors': '0', 'bia': 'f4ea.6796.d841', 'interf_reset': '0', 'speed': '100Mb/s', 'address': 'f4ea.6796.d841', 'crc': '0'}]
+
+Show interface GigabitEthernet0/1 
+[{'reliability': '255/255', 'protocol_status': 'up (connected)', 'collisions': '0', 'bandwidth': '100000 Kbit', 'interface': 'GigabitEthernet0/1', 'frame': '0', 'ignored': '0', 'encapsulation': 'ARPA', 'late_collision': '0', 'input_errors': '0', 'overrun': '0', 'txload': '1/255', 'mtu': '1504', 'output_rate': '0', 'ip_address': '10.11.12.11/24', 'last_output': '00:00:03', 'last_output_hang': 'never', 'input_rate': '3000', 'last_input': '00:00:02', 'description': '', 'delay': '100 usec', 'rxload': '1/255', 'input_packets': '1942995', 'link_status': 'up', 'queue_strategy': 'fifo', 'output_drops': '0', 'duplex': 'Full-duplex', 'output_packets': '1208840', 'hardware_type': 'Gigabit Ethernet', 'output_errors': '0', 'bia': 'f4ea.6796.d841', 'interf_reset': '0', 'speed': '100Mb/s', 'address': 'f4ea.6796.d841', 'crc': '0'}]
+
+Show interface GigabitEthernet0/1 
+[{'reliability': '255/255', 'protocol_status': 'up (connected)', 'collisions': '0', 'bandwidth': '100000 Kbit', 'interface': 'GigabitEthernet0/1', 'frame': '0', 'ignored': '0', 'encapsulation': 'ARPA', 'late_collision': '0', 'input_errors': '0', 'overrun': '0', 'txload': '1/255', 'mtu': '1504', 'output_rate': '0', 'ip_address': '10.11.12.11/24', 'last_output': '00:00:00', 'last_output_hang': 'never', 'input_rate': '3000', 'last_input': '00:00:03', 'description': '', 'delay': '100 usec', 'rxload': '1/255', 'input_packets': '1943031', 'link_status': 'up', 'queue_strategy': 'fifo', 'output_drops': '0', 'duplex': 'Full-duplex', 'output_packets': '1208840', 'hardware_type': 'Gigabit Ethernet', 'output_errors': '0', 'bia': 'f4ea.6796.d841', 'interf_reset': '0', 'speed': '100Mb/s', 'address': 'f4ea.6796.d841', 'crc': '0'}]
+
+Show spanning-tree active
+
+No spanning tree instance exists.
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show ip protocols | i bgp: 
+
+
+Show ip protocols | i eigrp 
+Routing Protocol is "eigrp 300"
+  Redistributing: eigrp 300
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(300)
+H   Address                 Interface       Hold Uptime   SRTT   RTO  Q  Seq
+                                            (sec)         (ms)       Cnt Num
+2   10.5.11.5               Gi0/3             11 8w3d        1   200  0  670
+1   10.11.12.12             Gi0/1             13 8w3d        2   200  0  1072
+0   10.11.18.18             Gi0/4             10 8w3d        1   200  0  776
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(300)
+H   Address                 Interface       Hold Uptime   SRTT   RTO  Q  Seq
+                                            (sec)         (ms)       Cnt Num
+2   10.5.11.5               Gi0/3             14 8w3d        1   200  0  670
+1   10.11.12.12             Gi0/1             11 8w3d        2   200  0  1072
+0   10.11.18.18             Gi0/4             13 8w3d        1   200  0  776
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(300)
+H   Address                 Interface       Hold Uptime   SRTT   RTO  Q  Seq
+                                            (sec)         (ms)       Cnt Num
+2   10.5.11.5               Gi0/3             12 8w3d        1   200  0  670
+1   10.11.12.12             Gi0/1             14 8w3d        2   200  0  1072
+0   10.11.18.18             Gi0/4             11 8w3d        1   200  0  776
+

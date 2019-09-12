@@ -640,6 +640,7 @@ def get_path(src,dst):
                                 else:
                                     s.add(j)
                                     ls.append(j) 
+                            print("here")
 
                             if name not in exit.keys():
                                 exit[name]=set()
@@ -647,9 +648,11 @@ def get_path(src,dst):
                             exit[name].add(p)
 
                             ctobj=dictofnames[name]
-                            print("ctobj "+ctobj)
+
+                            #print("ctobj "+ctobj)
                             arr[ctobj].addexit(p)
                             print("hop ",hop)
+                            print("here3")
                             boo=True
                             ret1=""
                             while boo:

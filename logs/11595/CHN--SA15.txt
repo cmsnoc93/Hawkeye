@@ -1,0 +1,93 @@
+<!doctype html><html><head> <title>CHN--SA15</title></style></head><body>Version cisco_ios
+
+Show proc cpu | ex 0.0
+[{'process': 'SSH Process      ', 'proc_1_min': '0.66', 'proc_5_sec': '8.31', 'cpu_5_sec': '22', 'interrupts': '0', 'pid': '279', 'cpu_5_min': '5', 'cpu_1_min': '7', 'proc_5_min': '0.13'}]
+
+Show proc mem | inc totals
+Processor Pool Total:   66378820 Used:   25123292 Free:   41255528
+      I/O Pool Total:    8388608 Used:    3608904 Free:    4779704
+Driver te Pool Total:    1048576 Used:         40 Free:    1048536
+                                 28741948 Total
+
+show log | i err|drop|fail|Fail|crash|MALLOCFAIL|down
+Current Day: Feb 271: *Mar  1 00:01:11.278: %LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan1, changed state to downAuth Manager registration failed
+2: *Mar  1 00:01:17.594: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to down
+3: *Mar  1 00:01:17.611: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/2, changed state to down
+4: *Mar  1 00:01:49.261: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to down
+5: *Mar  1 00:01:50.259: %LINK-3-UPDOWN: Interface GigabitEthernet0/1, changed state to down
+6: Feb 13 21:34:51.670: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to down
+7: Feb 13 21:34:52.668: %LINK-3-UPDOWN: Interface GigabitEthernet0/1, changed state to down
+8: .Feb 13 21:34:52.677: %DUAL-5-NBRCHANGE: EIGRP-IPv4 200: Neighbor 10.10.15.10 (GigabitEthernet0/1) is down: interface down
+9: .Feb 13 21:36:11.484: %DUAL-5-NBRCHANGE: EIGRP-IPv4 200: Neighbor 10.9.15.9 (GigabitEthernet0/2) is down: retry limit exceeded
+
+{"10.10.15.10": 1, "10.9.15.9": 1}
+
+Show interface GigabitEthernet0/1 
+[{'txload': '1/255', 'last_output_hang': 'never', 'hardware_type': 'Gigabit Ethernet', 'duplex': 'Full-duplex', 'ignored': '0', 'bia': '5c50.15f1.be41', 'link_status': 'up', 'rxload': '1/255', 'output_packets': '1189383', 'output_errors': '0', 'last_input': '00:00:04', 'interface': 'GigabitEthernet0/1', 'input_packets': '1323324', 'late_collision': '0', 'overrun': '0', 'ip_address': '10.10.15.15/24', 'encapsulation': 'ARPA', 'input_errors': '0', 'output_drops': '0', 'speed': '1000Mb/s', 'protocol_status': 'up (connected)', 'queue_strategy': 'fifo', 'collisions': '0', 'reliability': '255/255', 'crc': '0', 'input_rate': '3000', 'mtu': '1504', 'frame': '0', 'description': '', 'interf_reset': '0', 'delay': '10 usec', 'last_output': '00:00:00', 'output_rate': '3000', 'bandwidth': '1000000 Kbit', 'address': '5c50.15f1.be41'}]
+
+Show interface GigabitEthernet0/1 
+[{'txload': '1/255', 'last_output_hang': 'never', 'hardware_type': 'Gigabit Ethernet', 'duplex': 'Full-duplex', 'ignored': '0', 'bia': '5c50.15f1.be41', 'link_status': 'up', 'rxload': '1/255', 'output_packets': '1189419', 'output_errors': '0', 'last_input': '00:00:01', 'interface': 'GigabitEthernet0/1', 'input_packets': '1323325', 'late_collision': '0', 'overrun': '0', 'ip_address': '10.10.15.15/24', 'encapsulation': 'ARPA', 'input_errors': '0', 'output_drops': '0', 'speed': '1000Mb/s', 'protocol_status': 'up (connected)', 'queue_strategy': 'fifo', 'collisions': '0', 'reliability': '255/255', 'crc': '0', 'input_rate': '3000', 'mtu': '1504', 'frame': '0', 'description': '', 'interf_reset': '0', 'delay': '10 usec', 'last_output': '00:00:00', 'output_rate': '3000', 'bandwidth': '1000000 Kbit', 'address': '5c50.15f1.be41'}]
+
+Show interface GigabitEthernet0/1 
+[{'txload': '1/255', 'last_output_hang': 'never', 'hardware_type': 'Gigabit Ethernet', 'duplex': 'Full-duplex', 'ignored': '0', 'bia': '5c50.15f1.be41', 'link_status': 'up', 'rxload': '1/255', 'output_packets': '1189458', 'output_errors': '0', 'last_input': '00:00:03', 'interface': 'GigabitEthernet0/1', 'input_packets': '1323325', 'late_collision': '0', 'overrun': '0', 'ip_address': '10.10.15.15/24', 'encapsulation': 'ARPA', 'input_errors': '0', 'output_drops': '0', 'speed': '1000Mb/s', 'protocol_status': 'up (connected)', 'queue_strategy': 'fifo', 'collisions': '0', 'reliability': '255/255', 'crc': '0', 'input_rate': '3000', 'mtu': '1504', 'frame': '0', 'description': '', 'interf_reset': '0', 'delay': '10 usec', 'last_output': '00:00:00', 'output_rate': '3000', 'bandwidth': '1000000 Kbit', 'address': '5c50.15f1.be41'}]
+
+Show interface GigabitEthernet0/2 
+[{'txload': '1/255', 'last_output_hang': 'never', 'hardware_type': 'Gigabit Ethernet', 'duplex': 'Full-duplex', 'ignored': '0', 'bia': '5c50.15f1.be42', 'link_status': 'up', 'rxload': '1/255', 'output_packets': '504589', 'output_errors': '0', 'last_input': '00:00:00', 'interface': 'GigabitEthernet0/2', 'input_packets': '600532', 'late_collision': '0', 'overrun': '0', 'ip_address': '10.9.15.15/24', 'encapsulation': 'ARPA', 'input_errors': '0', 'output_drops': '0', 'speed': '1000Mb/s', 'protocol_status': 'up (connected)', 'queue_strategy': 'fifo', 'collisions': '0', 'reliability': '255/255', 'crc': '0', 'input_rate': '2000', 'mtu': '1504', 'frame': '0', 'description': '', 'interf_reset': '0', 'delay': '10 usec', 'last_output': '00:00:00', 'output_rate': '0', 'bandwidth': '1000000 Kbit', 'address': '5c50.15f1.be42'}]
+
+Show interface GigabitEthernet0/2 
+[{'txload': '1/255', 'last_output_hang': 'never', 'hardware_type': 'Gigabit Ethernet', 'duplex': 'Full-duplex', 'ignored': '0', 'bia': '5c50.15f1.be42', 'link_status': 'up', 'rxload': '1/255', 'output_packets': '504589', 'output_errors': '0', 'last_input': '00:00:00', 'interface': 'GigabitEthernet0/2', 'input_packets': '600553', 'late_collision': '0', 'overrun': '0', 'ip_address': '10.9.15.15/24', 'encapsulation': 'ARPA', 'input_errors': '0', 'output_drops': '0', 'speed': '1000Mb/s', 'protocol_status': 'up (connected)', 'queue_strategy': 'fifo', 'collisions': '0', 'reliability': '255/255', 'crc': '0', 'input_rate': '2000', 'mtu': '1504', 'frame': '0', 'description': '', 'interf_reset': '0', 'delay': '10 usec', 'last_output': '00:00:02', 'output_rate': '0', 'bandwidth': '1000000 Kbit', 'address': '5c50.15f1.be42'}]
+
+Show interface GigabitEthernet0/2 
+[{'txload': '1/255', 'last_output_hang': 'never', 'hardware_type': 'Gigabit Ethernet', 'duplex': 'Full-duplex', 'ignored': '0', 'bia': '5c50.15f1.be42', 'link_status': 'up', 'rxload': '1/255', 'output_packets': '504589', 'output_errors': '0', 'last_input': '00:00:00', 'interface': 'GigabitEthernet0/2', 'input_packets': '600583', 'late_collision': '0', 'overrun': '0', 'ip_address': '10.9.15.15/24', 'encapsulation': 'ARPA', 'input_errors': '0', 'output_drops': '0', 'speed': '1000Mb/s', 'protocol_status': 'up (connected)', 'queue_strategy': 'fifo', 'collisions': '0', 'reliability': '255/255', 'crc': '0', 'input_rate': '2000', 'mtu': '1504', 'frame': '0', 'description': '', 'interf_reset': '0', 'delay': '10 usec', 'last_output': '00:00:03', 'output_rate': '0', 'bandwidth': '1000000 Kbit', 'address': '5c50.15f1.be42'}]
+
+Show spanning-tree active
+
+No spanning tree instance exists.
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show ip protocols | i bgp: 
+
+
+Show ip protocols | i eigrp 
+Routing Protocol is "eigrp 200"
+  Redistributing: eigrp 200
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(200)
+H   Address                 Interface       Hold Uptime   SRTT   RTO  Q  Seq
+                                            (sec)         (ms)       Cnt Num
+1   10.9.15.9               Gi0/2             11 1w6d        1   200  0  472
+0   10.10.15.10             Gi0/1             13 1w6d        4   300  0  682
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(200)
+H   Address                 Interface       Hold Uptime   SRTT   RTO  Q  Seq
+                                            (sec)         (ms)       Cnt Num
+1   10.9.15.9               Gi0/2             14 1w6d        1   200  0  472
+0   10.10.15.10             Gi0/1             12 1w6d        4   300  0  682
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(200)
+H   Address                 Interface       Hold Uptime   SRTT   RTO  Q  Seq
+                                            (sec)         (ms)       Cnt Num
+1   10.9.15.9               Gi0/2             12 1w6d        1   200  0  472
+0   10.10.15.10             Gi0/1             10 1w6d        4   300  0  682
+

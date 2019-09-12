@@ -1,0 +1,86 @@
+<!doctype html><html><head> <title>BGL--RC01</title></style></head><body>Version cisco_xe
+
+Show proc cpu | ex 0.0
+[{'pid': '219', 'cpu_5_sec': '0', 'cpu_1_min': '1', 'cpu_5_min': '1', 'proc_5_sec': '0.15', 'interrupts': '0', 'proc_1_min': '0.22', 'process': 'Ethernet Msec Ti ', 'proc_5_min': '0.22'}]
+
+Show proc mem | inc totals
+Processor Pool Total: 1692727672 Used:  324369360 Free: 1368358312
+ lsmpi_io Pool Total:    6295088 Used:    6294116 Free:        972
+                                330658052 Total
+
+show log | i err|drop|fail|Fail|crash|MALLOCFAIL|down
+Current Day: Feb 271: Feb  7 17:23:08.605: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/2, changed state to down
+2: Feb  7 17:23:07.603: %LINK-3-UPDOWN: SIP0/0: Interface GigabitEthernet0/0/2, changed state to down
+3: Feb  7 17:29:25.577: %LINK-3-UPDOWN: Interface GigabitEthernet0/0/2, changed state to down
+4: Feb  7 17:29:25.582: %DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.1.2.2 (GigabitEthernet0/0/2) is down: interface down
+5: Feb  7 17:29:25.576: %LINK-3-UPDOWN: SIP0/0: Interface GigabitEthernet0/0/2, changed state to down
+6: Feb  7 17:29:26.578: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/2, changed state to down
+7: Feb  7 21:19:37.166: %LINK-3-UPDOWN: Interface GigabitEthernet0/0/0, changed state to down
+8: Feb  7 21:19:37.143: %LINK-3-UPDOWN: SIP0/0: Interface GigabitEthernet0/0/0, changed state to down
+9: Feb  7 21:19:38.166: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0, changed state to down
+10: Feb  7 21:19:42.668: %LINK-3-UPDOWN: Interface GigabitEthernet0/0/0, changed state to down
+11: Feb  7 21:19:42.667: %LINK-3-UPDOWN: SIP0/0: Interface GigabitEthernet0/0/0, changed state to down
+
+{"10.1.2.2": 1}
+
+Show interface GigabitEthernet0/0/2 
+[{'output_drops': '0', 'encapsulation': 'ARPA', 'throttles': '0', 'input_errors': '0', 'mtu': '1500', 'rxload': '1/255', 'hardware_type': '4XGE', 'giants': '0', 'interface': 'GigabitEthernet0/0/2', 'description': '', 'interf_reset': '2', 'duplex': 'Full Duplex', 'bia': 'f40f.1b95.2982', 'collisions': '0', 'txload': '1/255', 'last_input': '00:00:11', 'last_output': '00:00:09', 'ip_address': '10.1.2.1/24', 'reliability': '255/255', 'ignored': '0', 'protocol_status': 'up', 'crc': '0', 'input_packets': '2477191', 'output_rate': '4000', 'input_rate': '5000', 'queue_strategy': 'fifo', 'speed': '1000Mbps', 'link_status': 'up', 'last_output_hang': 'never', 'address': 'f40f.1b95.2982', 'overrun': '0', 'bandwidth': '1000000 Kbit', 'runts': '0', 'output_packets': '2746467', 'frame': '0', 'late_collision': '0', 'output_errors': '0', 'delay': '10 usec'}]
+
+Show interface GigabitEthernet0/0/2 
+[{'output_drops': '0', 'encapsulation': 'ARPA', 'throttles': '0', 'input_errors': '0', 'mtu': '1500', 'rxload': '1/255', 'hardware_type': '4XGE', 'giants': '0', 'interface': 'GigabitEthernet0/0/2', 'description': '', 'interf_reset': '2', 'duplex': 'Full Duplex', 'bia': 'f40f.1b95.2982', 'collisions': '0', 'txload': '1/255', 'last_input': '00:00:13', 'last_output': '00:00:10', 'ip_address': '10.1.2.1/24', 'reliability': '255/255', 'ignored': '0', 'protocol_status': 'up', 'crc': '0', 'input_packets': '2477191', 'output_rate': '4000', 'input_rate': '5000', 'queue_strategy': 'fifo', 'speed': '1000Mbps', 'link_status': 'up', 'last_output_hang': 'never', 'address': 'f40f.1b95.2982', 'overrun': '0', 'bandwidth': '1000000 Kbit', 'runts': '0', 'output_packets': '2746467', 'frame': '0', 'late_collision': '0', 'output_errors': '0', 'delay': '10 usec'}]
+
+Show interface GigabitEthernet0/0/2 
+[{'output_drops': '0', 'encapsulation': 'ARPA', 'throttles': '0', 'input_errors': '0', 'mtu': '1500', 'rxload': '1/255', 'hardware_type': '4XGE', 'giants': '0', 'interface': 'GigabitEthernet0/0/2', 'description': '', 'interf_reset': '2', 'duplex': 'Full Duplex', 'bia': 'f40f.1b95.2982', 'collisions': '0', 'txload': '1/255', 'last_input': '00:00:14', 'last_output': '00:00:12', 'ip_address': '10.1.2.1/24', 'reliability': '255/255', 'ignored': '0', 'protocol_status': 'up', 'crc': '0', 'input_packets': '2477191', 'output_rate': '4000', 'input_rate': '5000', 'queue_strategy': 'fifo', 'speed': '1000Mbps', 'link_status': 'up', 'last_output_hang': 'never', 'address': 'f40f.1b95.2982', 'overrun': '0', 'bandwidth': '1000000 Kbit', 'runts': '0', 'output_packets': '2746467', 'frame': '0', 'late_collision': '0', 'output_errors': '0', 'delay': '10 usec'}]
+
+Show interface GigabitEthernet0/0/1 
+[{'output_drops': '0', 'encapsulation': 'ARPA', 'throttles': '0', 'input_errors': '0', 'mtu': '1500', 'rxload': '1/255', 'hardware_type': '4XGE', 'giants': '0', 'interface': 'GigabitEthernet0/0/1', 'description': '', 'interf_reset': '2', 'duplex': 'Full Duplex', 'bia': 'f40f.1b95.2981', 'collisions': '0', 'txload': '1/255', 'last_input': '00:00:58', 'last_output': '00:00:38', 'ip_address': '10.1.7.1/24', 'reliability': '255/255', 'ignored': '0', 'protocol_status': 'up', 'crc': '0', 'input_packets': '2344574', 'output_rate': '8000', 'input_rate': '5000', 'queue_strategy': 'fifo', 'speed': '1000Mbps', 'link_status': 'up', 'last_output_hang': 'never', 'address': 'f40f.1b95.2981', 'overrun': '0', 'bandwidth': '1000000 Kbit', 'runts': '0', 'output_packets': '2258711', 'frame': '0', 'late_collision': '0', 'output_errors': '0', 'delay': '10 usec'}]
+
+Show interface GigabitEthernet0/0/1 
+[{'output_drops': '0', 'encapsulation': 'ARPA', 'throttles': '0', 'input_errors': '0', 'mtu': '1500', 'rxload': '1/255', 'hardware_type': '4XGE', 'giants': '0', 'interface': 'GigabitEthernet0/0/1', 'description': '', 'interf_reset': '2', 'duplex': 'Full Duplex', 'bia': 'f40f.1b95.2981', 'collisions': '0', 'txload': '1/255', 'last_input': '00:00:59', 'last_output': '00:00:39', 'ip_address': '10.1.7.1/24', 'reliability': '255/255', 'ignored': '0', 'protocol_status': 'up', 'crc': '0', 'input_packets': '2344574', 'output_rate': '8000', 'input_rate': '5000', 'queue_strategy': 'fifo', 'speed': '1000Mbps', 'link_status': 'up', 'last_output_hang': 'never', 'address': 'f40f.1b95.2981', 'overrun': '0', 'bandwidth': '1000000 Kbit', 'runts': '0', 'output_packets': '2258711', 'frame': '0', 'late_collision': '0', 'output_errors': '0', 'delay': '10 usec'}]
+
+Show interface GigabitEthernet0/0/1 
+[{'output_drops': '0', 'encapsulation': 'ARPA', 'throttles': '0', 'input_errors': '0', 'mtu': '1500', 'rxload': '1/255', 'hardware_type': '4XGE', 'giants': '0', 'interface': 'GigabitEthernet0/0/1', 'description': '', 'interf_reset': '2', 'duplex': 'Full Duplex', 'bia': 'f40f.1b95.2981', 'collisions': '0', 'txload': '1/255', 'last_input': '00:00:01', 'last_output': '00:00:41', 'ip_address': '10.1.7.1/24', 'reliability': '255/255', 'ignored': '0', 'protocol_status': 'up', 'crc': '0', 'input_packets': '2344574', 'output_rate': '8000', 'input_rate': '5000', 'queue_strategy': 'fifo', 'speed': '1000Mbps', 'link_status': 'up', 'last_output_hang': 'never', 'address': 'f40f.1b95.2981', 'overrun': '0', 'bandwidth': '1000000 Kbit', 'runts': '0', 'output_packets': '2258711', 'frame': '0', 'late_collision': '0', 'output_errors': '0', 'delay': '10 usec'}]
+
+Show spanning-tree active
+
+No spanning tree instance exists.
+
+
+Show ip protocols | i bgp: 
+  Redistributing: bgp 100
+Routing Protocol is "bgp 100"
+
+Show ip protocols | i eigrp 
+Routing Protocol is "eigrp 100"
+  Redistributing: eigrp 100
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(100)
+H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq
+                                                   (sec)         (ms)       Cnt Num
+0   10.1.2.2                Gi0/0/2                  11 2w5d        1   100  0  544
+1   10.1.7.7                Gi0/0/1                  13 8w0d        3   100  0  1020
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(100)
+H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq
+                                                   (sec)         (ms)       Cnt Num
+0   10.1.2.2                Gi0/0/2                  14 2w5d        1   100  0  544
+1   10.1.7.7                Gi0/0/1                  11 8w0d        3   100  0  1020
+
+Show ip eigrp neigh 
+EIGRP-IPv4 Neighbors for AS(100)
+H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq
+                                                   (sec)         (ms)       Cnt Num
+0   10.1.2.2                Gi0/0/2                  13 2w5d        1   100  0  544
+1   10.1.7.7                Gi0/0/1                  14 8w0d        3   100  0  1020
+
+Show ip :bgp summary
+[{'bgp_neigh': '2.2.2.2', 'updown': '2w5d', 'neigh_as': '100', 'local_as': '100', 'state_pfxrcd': '15', 'router_id': '11.11.11.11'}, {'bgp_neigh': '6.6.6.6', 'updown': '2w5d', 'neigh_as': '300', 'local_as': '100', 'state_pfxrcd': '23', 'router_id': '11.11.11.11'}]
+
+Show ip :bgp summary
+[{'bgp_neigh': '2.2.2.2', 'updown': '2w5d', 'neigh_as': '100', 'local_as': '100', 'state_pfxrcd': '15', 'router_id': '11.11.11.11'}, {'bgp_neigh': '6.6.6.6', 'updown': '2w5d', 'neigh_as': '300', 'local_as': '100', 'state_pfxrcd': '23', 'router_id': '11.11.11.11'}]
+
+Show ip :bgp summary
+[{'bgp_neigh': '2.2.2.2', 'updown': '2w5d', 'neigh_as': '100', 'local_as': '100', 'state_pfxrcd': '15', 'router_id': '11.11.11.11'}, {'bgp_neigh': '6.6.6.6', 'updown': '2w5d', 'neigh_as': '300', 'local_as': '100', 'state_pfxrcd': '23', 'router_id': '11.11.11.11'}]
+
