@@ -7,6 +7,7 @@ from flask import g
 def tracenext(connec,destin,os,numb):
     cross_prov_ip='no'
     retu=connec.send_command("traceroute "+destin)
+    print(retu)
     retu=retu.split('\n')
     for line in retu:
         line=line.split()
@@ -22,6 +23,7 @@ def interf_desc(os,interface_out):
     sp='no'
     if os!='cisco_nxos':
         ret=ssh.send_command("show interfaces description",use_textfsm=True)
+        print(ret)
         for line in ret:
             if line['port']==interface_out or line['port']==expand_name(interface_out):
                 if line['descrip']=='Service Provider':
