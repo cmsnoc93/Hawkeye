@@ -43,10 +43,7 @@ animation: spin 2s linear infinite;
     src: url("/static/fonts/CiscoSans/CiscoSansTTLight.ttf"); 
 }
 
-.navbar-brand{
-  color:#009EDC;
-}
 .cisco{
   font-family: 'cisco-sans';
-  color:#0b5890;
+  color:#0F75BD;
 }
