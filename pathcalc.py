@@ -623,8 +623,10 @@ def get_path(src,dst):
                             p=p+' '+j
                             if j not in extract:
                                 extract.add(j)
+                                print('checking interface description')
                                 desc_response=interf_desc(ios_ver,hop)
                                 if desc_response=='yes':
+                                    print('tracing route')
                                     cross_ip=tracenext(ssh,dst,ios_ver,2)
                                     ping_stat['cloud']['entry']=dst1
                                     ping_stat['exit_to_cloud']=True
@@ -641,7 +643,7 @@ def get_path(src,dst):
                             exit[name].add(p)
 
                             ctobj=dictofnames[name]
-                            #print("ctobj "+ctobj)
+                            print("ctobj "+ctobj)
                             arr[ctobj].addexit(p)
                             print("hop ",hop)
                             boo=True
