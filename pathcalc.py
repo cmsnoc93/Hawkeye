@@ -26,7 +26,7 @@ def interf_desc(os,interface_out):
         print(ret)
         for line in ret:
             if line['port']==interface_out or line['port']==expand_name(interface_out):
-                if line['descrip']=='Service Provider':
+                if line['descrip']=='SP':
                     sp='yes'
             break
     return sp
@@ -612,6 +612,7 @@ def get_path(src,dst):
                     t=0
                     for j in i:
                     #print(j)
+                        print("before extract "+j)
                         if re.match('^(?:[0-9]{1,3}\.){3}([0-9]{1,3})',j):
                             print("extract- .. "+j[:-1])
                             j=j[:-1] 
