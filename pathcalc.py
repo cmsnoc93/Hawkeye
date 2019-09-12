@@ -18,11 +18,11 @@ def tracenext(connec,destin,os,numb):
 
     return cross_prov_ip
 
-def interf_desc(os,interface_out):
+def interf_desc(connec,os,interface_out):
     #Nexus not included
     sp='no'
     if os!='cisco_nxos':
-        ret=ssh.send_command("show interfaces description",use_textfsm=True)
+        ret=connec.send_command("show interfaces description",use_textfsm=True)
         print(ret)
         for line in ret:
             if line['port']==interface_out or line['port']==expand_name(interface_out):
@@ -365,7 +365,7 @@ def get_path(src,dst):
             print("Name "+name+" BGP: next hop "+dst1+" exit interface "+hop)
             extract.add(dst1)
  
-            desc_response=interf_desc(ios_ver,hop)
+            desc_response=interf_desc(ssh,ios_ver,hop)
             
             if desc_response=='yes':
                 cross_ip=tracenext(ssh,dst,ios_ver,2)
@@ -549,7 +549,7 @@ def get_path(src,dst):
 
                         if next_hop_ip not in extract:
                             extract.add(next_hop_ip)
-                            desc_response=interf_desc(ios_ver,exit_int)
+                            desc_response=interf_desc(ssh,ios_ver,exit_int)
                             if desc_response=='yes':
                                 cross_ip=tracenext(ssh,dst,ios_ver,2)
                                 ping_stat['cloud']['entry']=dst1
@@ -624,7 +624,7 @@ def get_path(src,dst):
                             if j not in extract:
                                 extract.add(j)
                                 print('checking interface description')
-                                desc_response=interf_desc(ios_ver,hop)
+                                desc_response=interf_desc(ssh,ios_ver,hop)
                                 if desc_response=='yes':
                                     print('tracing route')
                                     cross_ip=tracenext(ssh,dst,ios_ver,2)
