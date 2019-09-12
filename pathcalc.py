@@ -6,6 +6,7 @@ from flask import g
 
 def tracenext(connec,destin,os,numb):
     cross_prov_ip='no'
+    print('Will traceroute now')
     retu=connec.send_command("traceroute "+destin)
     print(retu)
     retu=retu.split('\n')
@@ -15,7 +16,8 @@ def tracenext(connec,destin,os,numb):
         if len(line)>1 and line[0]==numb: #number can be changed
             print('Next hop ip beyond SP is '+line[1])
             cross_prov_ip=line[1]
-
+            break
+    print('Exiting traceroute')
     return cross_prov_ip
 
 def interf_desc(connec,os,interface_out):
@@ -29,6 +31,7 @@ def interf_desc(connec,os,interface_out):
                 if line['descrip']=='SP':
                     sp='yes'
             break
+    print("Returning from interface description "+sp)
     return sp
 
 def get_path(src,dst):
