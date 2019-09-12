@@ -17,6 +17,9 @@
 .tint{
     background-color:#f7f7f7;
 }
+.white{
+    background-color: white;
+}
 #loader{
 position:absolute;
 left:50%;
@@ -45,5 +48,5 @@ animation: spin 2s linear infinite;
 
 .cisco{
   font-family: 'cisco-sans';
-  color:#0F75BD;
+  color:#1261A0;
 }
