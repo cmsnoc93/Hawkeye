@@ -231,7 +231,7 @@ def get_path(src,dst):
                     ping_stat['dest']='Not reachable'
                     ping_stat['terminate']='true'
                     ping_stat['ping_failure']='true'
-                    #return exit,entryrev,g.intojson,ping_stat
+                    return entry,exit,entryrev,g.intojson,ping_stat
             else:
                 ret_loc=ret.index('received,')
                 succ_num=int(ret[ret_loc-2])
@@ -241,7 +241,7 @@ def get_path(src,dst):
                     ping_stat['dest']='Not reachable'
                     ping_stat['terminate']='true'
                     ping_stat['ping_failure']='true'
-                    #return exit,entryrev,g.intojson,ping_stat
+                    return entry,exit,entryrev,g.intojson,ping_stat
             ret=ssh.send_command('sh ip int brief | inc '+src)
             print(" SOURCE INTERFACE "+ ret)
             source_int=ret.split()[0]

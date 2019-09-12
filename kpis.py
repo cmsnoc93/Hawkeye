@@ -9,12 +9,13 @@ from spanningtree import check_spanningtree
 from interfacecounters import check_interfacecounters
 
 
-def fetchKPI(ssh,nme,devicedict):
+def fetchKPI(ssh,nme,logdir,devicedict):
 
 	version = devicedict.gennodedict['version']['soft_ver']
-	processId = str(os.getpid())
-	os.makedirs(os.path.join('logs',processId))
-	fname=(os.path.join('logs',processId,nme+".txt"))
+	
+	print(logdir)
+	fname=(os.path.join(logdir,nme+".txt"))
+	print(fname)
 	fhand=open(fname,'w')
 
 	# SHOW PROC CPU

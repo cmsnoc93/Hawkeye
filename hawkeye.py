@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, request, render_template, g, copy_cu
 from hawkutils import ThreadWithReturnValue, restructureDict, jsonifypath
 from pathcalc import get_path
 from kpis import fetchKPI
-import json, os
+import json, os, shutil
 
 app = Flask(__name__)
 
@@ -55,13 +55,23 @@ def topology():
 					print("Path number \n dict of objects ")
 					print(g.dictofobj)
 					
+					# Creating Log Directory for this Request
+					processId = str(os.getpid())
+					if os.path.exists(os.path.join('logs',processId)):
+						print("Deleting Previous Logs")
+						shutil.rmtree(os.path.join('logs',processId))
+					os.makedirs(os.path.join('logs',processId))
+					logdir = os.path.join('logs',processId)
+
+					# Shoot threads for each device on the path
 					for nme in setofnamest:
-						ssh=g.dictofobj[nme].handle
-						thread = ThreadWithReturnValue(target=fetchKPI,args=(ssh,nme,g.dictofobj[nme]));
+						ssh=g.dictofobj[nme].handle						
+						thread = ThreadWithReturnValue(target=fetchKPI,args=(ssh,nme,logdir,g.dictofobj[nme]));
 						threads.append(thread)
 						print("Starting Thread :",thread)
 						thread.start()
 					
+					# Wait for threads to return results
 					for thread in threads:
 						print("Waiting for thread to complete:")
 						print(thread)
@@ -76,15 +86,22 @@ def topology():
 						return(g.intojson2)
 
 
-			entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)
-			g.intojson=callthreads(setofnames,1)
+			# Forward Path
+			try:
+				entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)				
+			except:
+				return json.dumps(list().append({'failure':'Failure occured in KPI Analysis'}))
+			try:
+				g.intojson=callthreads(setofnames,1)				
+			except:
+				return json.dumps(list().append({'failure':'Failure occured in KPI Analysis'}))
+
+			# Forward Path after SP Cloud
 			if ping_stat['ssh_failure']=='true':
 				entry2,exit2,entryrev2,setofnames2,ping_stat2=path_calc(dst,src)
-				print("\n\n\n\n SET OF NAMES ")
-				print(setofnames2)
-				print("\n\n\n\n")
 				g.intojson2=callthreads(setofnames2,2) 
 
+			# Path Connectivity Information
 			print("Exit: ",exit,"\n")
 			print("Reverse: ",entryrev,"\n")
 			if ping_stat['ssh_failure']=='true':
@@ -94,30 +111,33 @@ def topology():
 			paths1 = jsonifypath(exit,entryrev)
 			device_json = restructureDict(g.intojson)
 
+			# to do : change list to dictionary
 			response_list = list()
-			response_list.append(paths1)
-			response_list.append(device_json)
-			response_list.append(ping_stat)
-			"""
+			response_list.append(paths1) # response[0]
+			response_list.append(device_json) # response[1]
+			response_list.append(ping_stat) # response[2]
+			
+			# Add PID to response for finding correct log folder if requested
 			worker = dict()
 			worker['pid'] = os.getpid()
-			response_list.append(worker)"""
+			response_list.append(worker) # response[3]
 
+			# Response for Post-SP Path
 			if ping_stat['ssh_failure']=='true':
 				paths2 = jsonifypath(exit2,entryrev2)	
 				device_json2 = restructureDict(g.intojson2)
-				response_list.append(paths2)
-				response_list.append(device_json2)
-				response_list.append(ping_stat2)
+				response_list.append(paths2) # response[4]
+				response_list.append(device_json2) # response[5]
+				response_list.append(ping_stat2) # response[6]
 
 			print(os.getpid(),"Exiting")
 			return json.dumps(response_list)
 	
 
-@app.route('/log/<device_name>')
-def fetchRaw(device_name):
-	f = open(device_name+".txt","r")
-	data = f.read();
+@app.route('/logs/<workerpid>/<device_name>')
+def fetchRaw(workerpid,device_name):
+	f = open('logs/'+workerpid+'/'+device_name+".txt","r")
+	data = f.read()
 	data = data.replace('\n','<br/>')
 	print("Sending File")
 	return json.dumps(data)
