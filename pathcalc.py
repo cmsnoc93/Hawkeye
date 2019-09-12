@@ -371,7 +371,7 @@ def get_path(src,dst):
             desc_response=interf_desc(ssh,ios_ver,hop)
             
             if desc_response=='yes':
-                cross_ip=tracenext(ssh,dst,ios_ver,2)
+                cross_ip=tracenext(ssh,dst,ios_ver,'2')
                 ping_stat['cloud']['entry']=dst1
                 ping_stat['cloud']['exit_to']=cross_ip
                 ping_stat['exit_to_cloud']=True
@@ -554,7 +554,7 @@ def get_path(src,dst):
                             extract.add(next_hop_ip)
                             desc_response=interf_desc(ssh,ios_ver,exit_int)
                             if desc_response=='yes':
-                                cross_ip=tracenext(ssh,dst,ios_ver,2)
+                                cross_ip=tracenext(ssh,dst,ios_ver,'2')
                                 ping_stat['cloud']['entry']=dst1
                                 ping_stat['exit_to_cloud']=True
                                 ping_stat['cloud']['exit_to']=cross_ip
@@ -628,9 +628,10 @@ def get_path(src,dst):
                                 extract.add(j)
                                 print('checking interface description')
                                 desc_response=interf_desc(ssh,ios_ver,hop)
+                                print("Desc Response "+desc_response)
                                 if desc_response=='yes':
                                     print('tracing route')
-                                    cross_ip=tracenext(ssh,dst,ios_ver,2)
+                                    cross_ip=tracenext(ssh,dst,ios_ver,'2')
                                     ping_stat['cloud']['entry']=dst1
                                     ping_stat['exit_to_cloud']=True
                                     ping_stat['cloud']['exit_to']=cross_ip
