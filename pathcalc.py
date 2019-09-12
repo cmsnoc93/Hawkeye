@@ -613,7 +613,7 @@ def get_path(src,dst):
                     for j in i:
                     #print(j)
                         if re.match('^(?:[0-9]{1,3}\.){3}([0-9]{1,3})',j):
-                            print("extract- "+j[:-1])
+                            print("extract- .. "+j[:-1])
                             j=j[:-1] 
                                 
                             num=i.index('via')
@@ -622,7 +622,6 @@ def get_path(src,dst):
                             p=p+' '+j
                             if j not in extract:
                                 extract.add(j)
-
                                 desc_response=interf_desc(ios_ver,hop)
                                 if desc_response=='yes':
                                     cross_ip=tracenext(ssh,dst,ios_ver,2)
