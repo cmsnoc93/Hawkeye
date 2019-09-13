@@ -1,0 +1,73 @@
+<!doctype html><html><head> <title>MUM--SC12</title></style></head><body>Version cisco_ios
+
+Show proc cpu | ex 0.0
+[{'process': '', 'interrupts': '0', 'proc_5_sec': '', 'proc_1_min': '', 'cpu_1_min': '6', 'cpu_5_sec': '7', 'cpu_5_min': '5', 'pid': '', 'proc_5_min': ''}]
+
+Show proc mem | inc totals
+Processor Pool Total:   86665460 Used:   20455856 Free:   66209604
+      I/O Pool Total:    8380416 Used:    3596700 Free:    4783716
+Driver te Pool Total:    1048576 Used:         40 Free:    1048536
+                                 24036840 Total
+
+show log | i err|drop|fail|Fail|crash|MALLOCFAIL|down
+Current Day: Sep 131: 00:00:23: %LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan1, changed state to down
+2: 5w1d: %DUAL-5-NBRCHANGE: EIGRP-IPv4:(254) 300: Neighbor 10.6.12.6 (FastEthernet0/4) is down: holding time expired
+3: 5w1d: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/4, changed state to down
+4: 5w1d: %LINK-3-UPDOWN: Interface FastEthernet0/4, changed state to down
+
+{"10.6.12.6": 1}
+
+Show interface FastEthernet0/4 
+[{'output_errors': '0', 'description': '', 'last_input': '00:00:00', 'output_drops': '0', 'bandwidth': '100000 Kbit', 'txload': '1/255', 'ip_address': '10.6.12.12/24', 'delay': '100 usec', 'late_collision': '0', 'bia': '2893.fec0.7444', 'collisions': '0', 'crc': '0', 'queue_strategy': 'fifo', 'input_packets': '1313013', 'rxload': '1/255', 'interf_reset': '0', 'duplex': 'Full-duplex', 'ignored': '0', 'address': '2893.fec0.7444', 'mtu': '1504', 'protocol_status': 'up (connected)', 'last_output': '00:00:01', 'reliability': '255/255', 'encapsulation': 'ARPA', 'overrun': '0', 'last_output_hang': 'never', 'speed': '100Mb/s', 'output_rate': '0', 'hardware_type': 'Fast Ethernet', 'interface': 'FastEthernet0/4', 'frame': '0', 'output_packets': '1936263', 'input_errors': '0', 'link_status': 'up', 'input_rate': '3000'}]
+
+Show interface FastEthernet0/4 
+[{'output_errors': '0', 'description': '', 'last_input': '00:00:00', 'output_drops': '0', 'bandwidth': '100000 Kbit', 'txload': '1/255', 'ip_address': '10.6.12.12/24', 'delay': '100 usec', 'late_collision': '0', 'bia': '2893.fec0.7444', 'collisions': '0', 'crc': '0', 'queue_strategy': 'fifo', 'input_packets': '1313034', 'rxload': '1/255', 'interf_reset': '0', 'duplex': 'Full-duplex', 'ignored': '0', 'address': '2893.fec0.7444', 'mtu': '1504', 'protocol_status': 'up (connected)', 'last_output': '00:00:01', 'reliability': '255/255', 'encapsulation': 'ARPA', 'overrun': '0', 'last_output_hang': 'never', 'speed': '100Mb/s', 'output_rate': '0', 'hardware_type': 'Fast Ethernet', 'interface': 'FastEthernet0/4', 'frame': '0', 'output_packets': '1936265', 'input_errors': '0', 'link_status': 'up', 'input_rate': '4000'}]
+
+Show interface FastEthernet0/4 
+[{'output_errors': '0', 'description': '', 'last_input': '00:00:00', 'output_drops': '0', 'bandwidth': '100000 Kbit', 'txload': '1/255', 'ip_address': '10.6.12.12/24', 'delay': '100 usec', 'late_collision': '0', 'bia': '2893.fec0.7444', 'collisions': '0', 'crc': '0', 'queue_strategy': 'fifo', 'input_packets': '1313070', 'rxload': '1/255', 'interf_reset': '0', 'duplex': 'Full-duplex', 'ignored': '0', 'address': '2893.fec0.7444', 'mtu': '1504', 'protocol_status': 'up (connected)', 'last_output': '00:00:02', 'reliability': '255/255', 'encapsulation': 'ARPA', 'overrun': '0', 'last_output_hang': 'never', 'speed': '100Mb/s', 'output_rate': '0', 'hardware_type': 'Fast Ethernet', 'interface': 'FastEthernet0/4', 'frame': '0', 'output_packets': '1936265', 'input_errors': '0', 'link_status': 'up', 'input_rate': '4000'}]
+
+Show spanning-tree active
+
+No spanning tree instance exists.
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show int counters error | ex 0
+
+
+Show ip protocols | i bgp: 
+
+
+Show ip protocols | i eigrp 
+Routing Protocol is "eigrp 300"
+  Redistributing: eigrp 300
+
+Show ip eigrp neigh 
+EIGRP-IPv4 neighbors for process 300
+H   Address                 Interface       Hold Uptime   SRTT   RTO  Q  Seq
+                                            (sec)         (ms)       Cnt Num
+2   10.6.12.6               Fa0/4             14 3w2d        1   200  0  158
+1   10.11.12.11             Fa0/2             12 8w4d        1   200  0  1237
+0   10.12.18.18             Fa0/1             14 8w4d        1   200  0  775
+
+Show ip eigrp neigh 
+EIGRP-IPv4 neighbors for process 300
+H   Address                 Interface       Hold Uptime   SRTT   RTO  Q  Seq
+                                            (sec)         (ms)       Cnt Num
+2   10.6.12.6               Fa0/4             12 3w2d        1   200  0  158
+1   10.11.12.11             Fa0/2             11 8w4d        1   200  0  1237
+0   10.12.18.18             Fa0/1             13 8w4d        1   200  0  775
+
+Show ip eigrp neigh 
+EIGRP-IPv4 neighbors for process 300
+H   Address                 Interface       Hold Uptime   SRTT   RTO  Q  Seq
+                                            (sec)         (ms)       Cnt Num
+2   10.6.12.6               Fa0/4             11 3w2d        1   200  0  158
+1   10.11.12.11             Fa0/2             14 8w4d        1   200  0  1237
+0   10.12.18.18             Fa0/1             11 8w4d        1   200  0  775
+

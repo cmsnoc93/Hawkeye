@@ -1,0 +1,438 @@
+<!doctype html><html><head> <title>CHN--SC09</title></style></head><body>Version cisco_nxos
+
+Show proc cpu | ex 0.0 
+[{'pid': '3440', 'cpu_1_sec': '', 'kernel': '', 'interrupts': '', 'idle': '', 'proc_1_sec': '11.64', 'process': 'bcm_usd', 'user': ''}, {'pid': '3475', 'cpu_1_sec': '', 'kernel': '', 'interrupts': '', 'idle': '', 'proc_1_sec': '1.95', 'process': 'statsclient', 'user': ''}, {'pid': '3510', 'cpu_1_sec': '', 'kernel': '', 'interrupts': '', 'idle': '', 'proc_1_sec': '0.50', 'process': 'bfdc', 'user': ''}, {'pid': '', 'cpu_1_sec': '', 'kernel': '0.50', 'interrupts': '', 'idle': '94.50', 'proc_1_sec': '', 'process': '', 'user': '5.00'}]
+
+Show proc mem shared | inc totals
+Shared memory totals - Size: 472 MB, Used: 26 MB, Available: 446 MB
+
+show logging | i err|drop|fail|Fail|crash|MALLOCFAIL|down
+Current Day: Sep 131: 3(errors)               4(warnings)     5(notifications)
+2: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/1 is down (Transceiver Absent)
+3: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/2 is down (Transceiver Absent)
+4: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/3 is down (Transceiver Absent)
+5: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/4 is down (Transceiver Absent)
+6: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/5 is down (Transceiver Absent)
+7: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/6 is down (Transceiver Absent)
+8: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/7 is down (Transceiver Absent)
+9: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/8 is down (Transceiver Absent)
+10: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/9 is down (Transceiver Absent)
+11: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/10 is down (Transceiver Absent)
+12: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/11 is down (Transceiver Absent)
+13: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/12 is down (Transceiver Absent)
+14: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/13 is down (Transceiver Absent)
+15: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/14 is down (Transceiver Absent)
+16: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/15 is down (Transceiver Absent)
+17: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/16 is down (Transceiver Absent)
+18: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/17 is down (Transceiver Absent)
+19: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/18 is down (Transceiver Absent)
+20: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/19 is down (Transceiver Absent)
+21: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/20 is down (Transceiver Absent)
+22: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/21 is down (Transceiver Absent)
+23: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/22 is down (Transceiver Absent)
+24: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/23 is down (Transceiver Absent)
+25: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/24 is down (Transceiver Absent)
+26: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/25 is down (Transceiver Absent)
+27: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/26 is down (Transceiver Absent)
+28: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/27 is down (Transceiver Absent)
+29: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/28 is down (Transceiver Absent)
+30: 2019 Aug 15 12:00:33 CHN--SC09 %ETHPORT-5-IF_DOWN_NONE: Interface Ethernet1/29 is down (Transceiver Absent)
+
+{}
+
+Show ip route | i 00: 
+[{'segid': '', 'network': '1.1.1.1', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '32', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '2.2.2.2', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '32', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '3.3.3.3', 'distance': '90', 'type': 'internal', 'nexthop_if': 'Eth1/3', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.3.9.3', 'mask': '32', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '130816', 'tunnelid': ''}, {'segid': '', 'network': '4.4.4.4', 'distance': '90', 'type': 'internal', 'nexthop_if': 'Eth1/3', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.3.9.3', 'mask': '32', 'nexthop_vrf': '', 'uptime': '2d14h', 'metric': '131072', 'tunnelid': ''}, {'segid': '', 'network': '4.4.4.4', 'distance': '90', 'type': 'internal', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.10.10', 'mask': '32', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '131072', 'tunnelid': ''}, {'segid': '', 'network': '6.6.6.6', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '300', 'nexthop_ip': '10.9.10.10', 'mask': '32', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.1.2.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.1.6.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '300', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.1.7.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.2.3.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.2.8.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.3.4.0', 'distance': '90', 'type': 'internal', 'nexthop_if': 'Eth1/3', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.3.9.3', 'mask': '24', 'nexthop_vrf': '', 'uptime': '2d14h', 'metric': '3072', 'tunnelid': ''}, {'segid': '', 'network': '10.3.9.0', 'distance': '0', 'type': '', 'nexthop_if': 'Eth1/3', 'protocol': 'direct', 'encap': '', 'tag': '', 'nexthop_ip': '10.3.9.9', 'mask': '24', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '0', 'tunnelid': ''}, {'segid': '', 'network': '10.3.9.9', 'distance': '0', 'type': '', 'nexthop_if': 'Eth1/3', 'protocol': 'local', 'encap': '', 'tag': '', 'nexthop_ip': '10.3.9.9', 'mask': '32', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '0', 'tunnelid': ''}, {'segid': '', 'network': '10.4.5.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.4.10.0', 'distance': '90', 'type': 'internal', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '3072', 'tunnelid': ''}, {'segid': '', 'network': '10.5.6.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '300', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.5.11.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '300', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.6.12.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '300', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.7.8.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.7.13.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.7.14.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.8.13.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.8.14.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.9.10.0', 'distance': '0', 'type': '', 'nexthop_if': 'Eth1/4', 'protocol': 'direct', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.10.9', 'mask': '24', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '0', 'tunnelid': ''}, {'segid': '', 'network': '10.9.10.9', 'distance': '0', 'type': '', 'nexthop_if': 'Eth1/4', 'protocol': 'local', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.10.9', 'mask': '32', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '0', 'tunnelid': ''}, {'segid': '', 'network': '10.9.15.0', 'distance': '0', 'type': '', 'nexthop_if': 'Eth1/5', 'protocol': 'direct', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.15.9', 'mask': '24', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '0', 'tunnelid': ''}, {'segid': '', 'network': '10.9.15.9', 'distance': '0', 'type': '', 'nexthop_if': 'Eth1/5', 'protocol': 'local', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.15.9', 'mask': '32', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '0', 'tunnelid': ''}, {'segid': '', 'network': '10.9.16.0', 'distance': '0', 'type': '', 'nexthop_if': 'Eth1/1', 'protocol': 'direct', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.16.9', 'mask': '24', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '0', 'tunnelid': ''}, {'segid': '', 'network': '10.9.16.9', 'distance': '0', 'type': '', 'nexthop_if': 'Eth1/1', 'protocol': 'local', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.16.9', 'mask': '32', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '0', 'tunnelid': ''}, {'segid': '', 'network': '10.10.15.0', 'distance': '90', 'type': 'internal', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '2w3d', 'metric': '3072', 'tunnelid': ''}, {'segid': '', 'network': '10.10.15.0', 'distance': '90', 'type': 'internal', 'nexthop_if': 'Eth1/5', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.15.15', 'mask': '24', 'nexthop_vrf': '', 'uptime': '2w3d', 'metric': '3072', 'tunnelid': ''}, {'segid': '', 'network': '10.10.16.0', 'distance': '90', 'type': 'internal', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '4w0d', 'metric': '26112', 'tunnelid': ''}, {'segid': '', 'network': '10.11.12.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '300', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.11.18.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '300', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.12.18.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '300', 'nexthop_ip': '10.9.10.10', 'mask': '24', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '10.197.222.0', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '23', 'nexthop_vrf': '', 'uptime': '1w2d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '11.11.11.11', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '32', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '15.15.15.15', 'distance': '90', 'type': 'internal', 'nexthop_if': 'Eth1/5', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.15.15', 'mask': '32', 'nexthop_vrf': '', 'uptime': '2w3d', 'metric': '130816', 'tunnelid': ''}, {'segid': '', 'network': '22.22.22.22', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '100', 'nexthop_ip': '10.9.10.10', 'mask': '32', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '44.44.44.44', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '', 'nexthop_ip': '10.9.10.10', 'mask': '32', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}, {'segid': '', 'network': '66.66.66.66', 'distance': '170', 'type': 'external', 'nexthop_if': 'Eth1/4', 'protocol': 'eigrp-200', 'encap': '', 'tag': '300', 'nexthop_ip': '10.9.10.10', 'mask': '32', 'nexthop_vrf': '', 'uptime': '3w1d', 'metric': '25600768', 'tunnelid': ''}]
+
+Show interface Eth1/5 
+[{'address': '885a.92fb.1741', 'rxload': '1/255', 'description': '', 'interf_reset': '1', 'bia': '885a.92fb.170c', 'hardware_type': '100/1000/10000 Ethernet', 'late_collision': '0', 'admin_state': '', 'speed': '1000 Mb/s', 'delay': '10 usec', 'interface': 'Ethernet1/5', 'duplex': 'full-duplex', 'reliability': '255/255', 'mtu': '1500', 'ip_address': '10.9.15.9/24', 'overrun': '', 'giants': '', 'underrun': '', 'collisions': '0', 'output_packets': '693239', 'bandwidth': '1000000 Kbit', 'frame': '', 'output_errors': '0', 'encapsulation': 'ARPA', 'input_packets': '577226', 'link_status': 'up', 'txload': '1/255', 'input_errors': ''}]
+
+Show interface Eth1/5 
+[{'address': '885a.92fb.1741', 'rxload': '1/255', 'description': '', 'interf_reset': '1', 'bia': '885a.92fb.170c', 'hardware_type': '100/1000/10000 Ethernet', 'late_collision': '0', 'admin_state': '', 'speed': '1000 Mb/s', 'delay': '10 usec', 'interface': 'Ethernet1/5', 'duplex': 'full-duplex', 'reliability': '255/255', 'mtu': '1500', 'ip_address': '10.9.15.9/24', 'overrun': '', 'giants': '', 'underrun': '', 'collisions': '0', 'output_packets': '693273', 'bandwidth': '1000000 Kbit', 'frame': '', 'output_errors': '0', 'encapsulation': 'ARPA', 'input_packets': '577227', 'link_status': 'up', 'txload': '1/255', 'input_errors': ''}]
+
+Show interface Eth1/5 
+[{'address': '885a.92fb.1741', 'rxload': '1/255', 'description': '', 'interf_reset': '1', 'bia': '885a.92fb.170c', 'hardware_type': '100/1000/10000 Ethernet', 'late_collision': '0', 'admin_state': '', 'speed': '1000 Mb/s', 'delay': '10 usec', 'interface': 'Ethernet1/5', 'duplex': 'full-duplex', 'reliability': '255/255', 'mtu': '1500', 'ip_address': '10.9.15.9/24', 'overrun': '', 'giants': '', 'underrun': '', 'collisions': '0', 'output_packets': '693309', 'bandwidth': '1000000 Kbit', 'frame': '', 'output_errors': '0', 'encapsulation': 'ARPA', 'input_packets': '577227', 'link_status': 'up', 'txload': '1/255', 'input_errors': ''}]
+
+Show interface Eth1/4 
+[{'address': '885a.92fb.1741', 'rxload': '1/255', 'description': '', 'interf_reset': '1', 'bia': '885a.92fb.170b', 'hardware_type': '100/1000/10000 Ethernet', 'late_collision': '0', 'admin_state': '', 'speed': '1000 Mb/s', 'delay': '10 usec', 'interface': 'Ethernet1/4', 'duplex': 'full-duplex', 'reliability': '255/255', 'mtu': '1500', 'ip_address': '10.9.10.9/24', 'overrun': '', 'giants': '', 'underrun': '', 'collisions': '0', 'output_packets': '825787', 'bandwidth': '1000000 Kbit', 'frame': '', 'output_errors': '0', 'encapsulation': 'ARPA', 'input_packets': '659375', 'link_status': 'up', 'txload': '1/255', 'input_errors': ''}]
+
+Show interface Eth1/4 
+[{'address': '885a.92fb.1741', 'rxload': '1/255', 'description': '', 'interf_reset': '1', 'bia': '885a.92fb.170b', 'hardware_type': '100/1000/10000 Ethernet', 'late_collision': '0', 'admin_state': '', 'speed': '1000 Mb/s', 'delay': '10 usec', 'interface': 'Ethernet1/4', 'duplex': 'full-duplex', 'reliability': '255/255', 'mtu': '1500', 'ip_address': '10.9.10.9/24', 'overrun': '', 'giants': '', 'underrun': '', 'collisions': '0', 'output_packets': '825815', 'bandwidth': '1000000 Kbit', 'frame': '', 'output_errors': '0', 'encapsulation': 'ARPA', 'input_packets': '659375', 'link_status': 'up', 'txload': '1/255', 'input_errors': ''}]
+
+Show interface Eth1/4 
+[{'address': '885a.92fb.1741', 'rxload': '1/255', 'description': '', 'interf_reset': '1', 'bia': '885a.92fb.170b', 'hardware_type': '100/1000/10000 Ethernet', 'late_collision': '0', 'admin_state': '', 'speed': '1000 Mb/s', 'delay': '10 usec', 'interface': 'Ethernet1/4', 'duplex': 'full-duplex', 'reliability': '255/255', 'mtu': '1500', 'ip_address': '10.9.10.9/24', 'overrun': '', 'giants': '', 'underrun': '', 'collisions': '0', 'output_packets': '825830', 'bandwidth': '1000000 Kbit', 'frame': '', 'output_errors': '0', 'encapsulation': 'ARPA', 'input_packets': '659375', 'link_status': 'up', 'txload': '1/255', 'input_errors': ''}]
+
+Show interface Eth1/3 
+[{'address': '885a.92fb.1741', 'rxload': '1/255', 'description': '', 'interf_reset': '1', 'bia': '885a.92fb.170a', 'hardware_type': '100/1000/10000 Ethernet', 'late_collision': '0', 'admin_state': '', 'speed': '1000 Mb/s', 'delay': '10 usec', 'interface': 'Ethernet1/3', 'duplex': 'full-duplex', 'reliability': '255/255', 'mtu': '1500', 'ip_address': '10.3.9.9/24', 'overrun': '', 'giants': '', 'underrun': '', 'collisions': '0', 'output_packets': '689314', 'bandwidth': '1000000 Kbit', 'frame': '', 'output_errors': '0', 'encapsulation': 'ARPA', 'input_packets': '1063056', 'link_status': 'up', 'txload': '1/255', 'input_errors': ''}]
+
+Show interface Eth1/3 
+[{'address': '885a.92fb.1741', 'rxload': '1/255', 'description': '', 'interf_reset': '1', 'bia': '885a.92fb.170a', 'hardware_type': '100/1000/10000 Ethernet', 'late_collision': '0', 'admin_state': '', 'speed': '1000 Mb/s', 'delay': '10 usec', 'interface': 'Ethernet1/3', 'duplex': 'full-duplex', 'reliability': '255/255', 'mtu': '1500', 'ip_address': '10.3.9.9/24', 'overrun': '', 'giants': '', 'underrun': '', 'collisions': '0', 'output_packets': '689314', 'bandwidth': '1000000 Kbit', 'frame': '', 'output_errors': '0', 'encapsulation': 'ARPA', 'input_packets': '1063137', 'link_status': 'up', 'txload': '1/255', 'input_errors': ''}]
+
+Show interface Eth1/3 
+[{'address': '885a.92fb.1741', 'rxload': '1/255', 'description': '', 'interf_reset': '1', 'bia': '885a.92fb.170a', 'hardware_type': '100/1000/10000 Ethernet', 'late_collision': '0', 'admin_state': '', 'speed': '1000 Mb/s', 'delay': '10 usec', 'interface': 'Ethernet1/3', 'duplex': 'full-duplex', 'reliability': '255/255', 'mtu': '1500', 'ip_address': '10.3.9.9/24', 'overrun': '', 'giants': '', 'underrun': '', 'collisions': '0', 'output_packets': '689314', 'bandwidth': '1000000 Kbit', 'frame': '', 'output_errors': '0', 'encapsulation': 'ARPA', 'input_packets': '1063296', 'link_status': 'up', 'txload': '1/255', 'input_errors': ''}]
+
+Show spanning-tree active
+No spanning tree instance exists.
+
+Show int counters error | ex 0
+Eth1/5                0          0          0         17          0           0
+Eth1/50/1             0          0          0          0          0           0
+Eth1/50/2             0          0          0          0          0           0
+Eth1/50/3             0          0          0          0          0           0
+Eth1/50/4             0          0          0          0          0           0
+Eth1/51/1             0          0          0          0          0           0
+Eth1/51/2             0          0          0          0          0           0
+Eth1/51/3             0          0          0          0          0           0
+Eth1/51/4             0          0          0          0          0           0
+Eth1/52/1             0          0          0          0          0           0
+Eth1/52/2             0          0          0          0          0           0
+Eth1/52/3             0          0          0          0          0           0
+Eth1/52/4             0          0          0          0          0           0
+Eth1/5                0          0          0          0          0           0
+Eth1/50/1             0          0          0          0          0           0
+Eth1/50/2             0          0          0          0          0           0
+Eth1/50/3             0          0          0          0          0           0
+Eth1/50/4             0          0          0          0          0           0
+Eth1/51/1             0          0          0          0          0           0
+Eth1/51/2             0          0          0          0          0           0
+Eth1/51/3             0          0          0          0          0           0
+Eth1/51/4             0          0          0          0          0           0
+Eth1/52/1             0          0          0          0          0           0
+Eth1/52/2             0          0          0          0          0           0
+Eth1/52/3             0          0          0          0          0           0
+Eth1/52/4             0          0          0          0          0           0
+Eth1/5             0          --           0          17           0          0
+Eth1/50/1          0          --           0           0           0          0
+Eth1/50/2          0          --           0           0           0          0
+Eth1/50/3          0          --           0           0           0          0
+Eth1/50/4          0          --           0           0           0          0
+Eth1/51/1          0          --           0           0           0          0
+Eth1/51/2          0          --           0           0           0          0
+Eth1/51/3          0          --           0           0           0          0
+Eth1/51/4          0          --           0           0           0          0
+Eth1/52/1          0          --           0           0           0          0
+Eth1/52/2          0          --           0           0           0          0
+Eth1/52/3          0          --           0           0           0          0
+Eth1/52/4          0          --           0           0           0          0
+
+Show int counters error | ex 0
+Eth1/5                0          0          0         17          0           0
+Eth1/50/1             0          0          0          0          0           0
+Eth1/50/2             0          0          0          0          0           0
+Eth1/50/3             0          0          0          0          0           0
+Eth1/50/4             0          0          0          0          0           0
+Eth1/51/1             0          0          0          0          0           0
+Eth1/51/2             0          0          0          0          0           0
+Eth1/51/3             0          0          0          0          0           0
+Eth1/51/4             0          0          0          0          0           0
+Eth1/52/1             0          0          0          0          0           0
+Eth1/52/2             0          0          0          0          0           0
+Eth1/52/3             0          0          0          0          0           0
+Eth1/52/4             0          0          0          0          0           0
+Eth1/5                0          0          0          0          0           0
+Eth1/50/1             0          0          0          0          0           0
+Eth1/50/2             0          0          0          0          0           0
+Eth1/50/3             0          0          0          0          0           0
+Eth1/50/4             0          0          0          0          0           0
+Eth1/51/1             0          0          0          0          0           0
+Eth1/51/2             0          0          0          0          0           0
+Eth1/51/3             0          0          0          0          0           0
+Eth1/51/4             0          0          0          0          0           0
+Eth1/52/1             0          0          0          0          0           0
+Eth1/52/2             0          0          0          0          0           0
+Eth1/52/3             0          0          0          0          0           0
+Eth1/52/4             0          0          0          0          0           0
+Eth1/5             0          --           0          17           0          0
+Eth1/50/1          0          --           0           0           0          0
+Eth1/50/2          0          --           0           0           0          0
+Eth1/50/3          0          --           0           0           0          0
+Eth1/50/4          0          --           0           0           0          0
+Eth1/51/1          0          --           0           0           0          0
+Eth1/51/2          0          --           0           0           0          0
+Eth1/51/3          0          --           0           0           0          0
+Eth1/51/4          0          --           0           0           0          0
+Eth1/52/1          0          --           0           0           0          0
+Eth1/52/2          0          --           0           0           0          0
+Eth1/52/3          0          --           0           0           0          0
+Eth1/52/4          0          --           0           0           0          0
+
+Show int counters error | ex 0
+Eth1/5                0          0          0         17          0           0
+Eth1/50/1             0          0          0          0          0           0
+Eth1/50/2             0          0          0          0          0           0
+Eth1/50/3             0          0          0          0          0           0
+Eth1/50/4             0          0          0          0          0           0
+Eth1/51/1             0          0          0          0          0           0
+Eth1/51/2             0          0          0          0          0           0
+Eth1/51/3             0          0          0          0          0           0
+Eth1/51/4             0          0          0          0          0           0
+Eth1/52/1             0          0          0          0          0           0
+Eth1/52/2             0          0          0          0          0           0
+Eth1/52/3             0          0          0          0          0           0
+Eth1/52/4             0          0          0          0          0           0
+Eth1/5                0          0          0          0          0           0
+Eth1/50/1             0          0          0          0          0           0
+Eth1/50/2             0          0          0          0          0           0
+Eth1/50/3             0          0          0          0          0           0
+Eth1/50/4             0          0          0          0          0           0
+Eth1/51/1             0          0          0          0          0           0
+Eth1/51/2             0          0          0          0          0           0
+Eth1/51/3             0          0          0          0          0           0
+Eth1/51/4             0          0          0          0          0           0
+Eth1/52/1             0          0          0          0          0           0
+Eth1/52/2             0          0          0          0          0           0
+Eth1/52/3             0          0          0          0          0           0
+Eth1/52/4             0          0          0          0          0           0
+Eth1/5             0          --           0          17           0          0
+Eth1/50/1          0          --           0           0           0          0
+Eth1/50/2          0          --           0           0           0          0
+Eth1/50/3          0          --           0           0           0          0
+Eth1/50/4          0          --           0           0           0          0
+Eth1/51/1          0          --           0           0           0          0
+Eth1/51/2          0          --           0           0           0          0
+Eth1/51/3          0          --           0           0           0          0
+Eth1/51/4          0          --           0           0           0          0
+Eth1/52/1          0          --           0           0           0          0
+Eth1/52/2          0          --           0           0           0          0
+Eth1/52/3          0          --           0           0           0          0
+Eth1/52/4          0          --           0           0           0          0
+
+Show int counters error | ex 0
+Eth1/4                0          0          0          0          0           0
+Eth1/40               0          0          0          0          0           0
+Eth1/41               0          0          0          0          0           0
+Eth1/42               0          0          0          0          0           0
+Eth1/43               0          0          0          0          0           0
+Eth1/44               0          0          0          0          0           0
+Eth1/45               0          0          0          0          0           0
+Eth1/46               0          0          0          0          0           0
+Eth1/47               0          0          0          0          0           0
+Eth1/48               0          0          0          0          0           0
+Eth1/49/1             0          0          0          0          0           0
+Eth1/49/2             0          0          0          0          0           0
+Eth1/49/3             0          0          0          0          0           0
+Eth1/49/4             0          0          0          0          0           0
+Eth1/4                0          0          0          0          0           0
+Eth1/40               0          0          0          0          0           0
+Eth1/41               0          0          0          0          0           0
+Eth1/42               0          0          0          0          0           0
+Eth1/43               0          0          0          0          0           0
+Eth1/44               0          0          0          0          0           0
+Eth1/45               0          0          0          0          0           0
+Eth1/46               0          0          0          0          0           0
+Eth1/47               0          0          0          0          0           0
+Eth1/48               0          0          0          0          0           0
+Eth1/49/1             0          0          0          0          0           0
+Eth1/49/2             0          0          0          0          0           0
+Eth1/49/3             0          0          0          0          0           0
+Eth1/49/4             0          0          0          0          0           0
+Eth1/4             0          --           0           0           0          0
+Eth1/40            0          --           0           0           0          0
+Eth1/41            0          --           0           0           0          0
+Eth1/42            0          --           0           0           0          0
+Eth1/43            0          --           0           0           0          0
+Eth1/44            0          --           0           0           0          0
+Eth1/45            0          --           0           0           0          0
+Eth1/46            0          --           0           0           0          0
+Eth1/47            0          --           0           0           0          0
+Eth1/48            0          --           0           0           0          0
+Eth1/49/1          0          --           0           0           0          0
+Eth1/49/2          0          --           0           0           0          0
+Eth1/49/3          0          --           0           0           0          0
+Eth1/49/4          0          --           0           0           0          0
+
+Show int counters error | ex 0
+Eth1/4                0          0          0          0          0           0
+Eth1/40               0          0          0          0          0           0
+Eth1/41               0          0          0          0          0           0
+Eth1/42               0          0          0          0          0           0
+Eth1/43               0          0          0          0          0           0
+Eth1/44               0          0          0          0          0           0
+Eth1/45               0          0          0          0          0           0
+Eth1/46               0          0          0          0          0           0
+Eth1/47               0          0          0          0          0           0
+Eth1/48               0          0          0          0          0           0
+Eth1/49/1             0          0          0          0          0           0
+Eth1/49/2             0          0          0          0          0           0
+Eth1/49/3             0          0          0          0          0           0
+Eth1/49/4             0          0          0          0          0           0
+Eth1/4                0          0          0          0          0           0
+Eth1/40               0          0          0          0          0           0
+Eth1/41               0          0          0          0          0           0
+Eth1/42               0          0          0          0          0           0
+Eth1/43               0          0          0          0          0           0
+Eth1/44               0          0          0          0          0           0
+Eth1/45               0          0          0          0          0           0
+Eth1/46               0          0          0          0          0           0
+Eth1/47               0          0          0          0          0           0
+Eth1/48               0          0          0          0          0           0
+Eth1/49/1             0          0          0          0          0           0
+Eth1/49/2             0          0          0          0          0           0
+Eth1/49/3             0          0          0          0          0           0
+Eth1/49/4             0          0          0          0          0           0
+Eth1/4             0          --           0           0           0          0
+Eth1/40            0          --           0           0           0          0
+Eth1/41            0          --           0           0           0          0
+Eth1/42            0          --           0           0           0          0
+Eth1/43            0          --           0           0           0          0
+Eth1/44            0          --           0           0           0          0
+Eth1/45            0          --           0           0           0          0
+Eth1/46            0          --           0           0           0          0
+Eth1/47            0          --           0           0           0          0
+Eth1/48            0          --           0           0           0          0
+Eth1/49/1          0          --           0           0           0          0
+Eth1/49/2          0          --           0           0           0          0
+Eth1/49/3          0          --           0           0           0          0
+Eth1/49/4          0          --           0           0           0          0
+
+Show int counters error | ex 0
+Eth1/4                0          0          0          0          0           0
+Eth1/40               0          0          0          0          0           0
+Eth1/41               0          0          0          0          0           0
+Eth1/42               0          0          0          0          0           0
+Eth1/43               0          0          0          0          0           0
+Eth1/44               0          0          0          0          0           0
+Eth1/45               0          0          0          0          0           0
+Eth1/46               0          0          0          0          0           0
+Eth1/47               0          0          0          0          0           0
+Eth1/48               0          0          0          0          0           0
+Eth1/49/1             0          0          0          0          0           0
+Eth1/49/2             0          0          0          0          0           0
+Eth1/49/3             0          0          0          0          0           0
+Eth1/49/4             0          0          0          0          0           0
+Eth1/4                0          0          0          0          0           0
+Eth1/40               0          0          0          0          0           0
+Eth1/41               0          0          0          0          0           0
+Eth1/42               0          0          0          0          0           0
+Eth1/43               0          0          0          0          0           0
+Eth1/44               0          0          0          0          0           0
+Eth1/45               0          0          0          0          0           0
+Eth1/46               0          0          0          0          0           0
+Eth1/47               0          0          0          0          0           0
+Eth1/48               0          0          0          0          0           0
+Eth1/49/1             0          0          0          0          0           0
+Eth1/49/2             0          0          0          0          0           0
+Eth1/49/3             0          0          0          0          0           0
+Eth1/49/4             0          0          0          0          0           0
+Eth1/4             0          --           0           0           0          0
+Eth1/40            0          --           0           0           0          0
+Eth1/41            0          --           0           0           0          0
+Eth1/42            0          --           0           0           0          0
+Eth1/43            0          --           0           0           0          0
+Eth1/44            0          --           0           0           0          0
+Eth1/45            0          --           0           0           0          0
+Eth1/46            0          --           0           0           0          0
+Eth1/47            0          --           0           0           0          0
+Eth1/48            0          --           0           0           0          0
+Eth1/49/1          0          --           0           0           0          0
+Eth1/49/2          0          --           0           0           0          0
+Eth1/49/3          0          --           0           0           0          0
+Eth1/49/4          0          --           0           0           0          0
+
+Show int counters error | ex 0
+Eth1/3                0          0          0          0          0           0
+Eth1/30               0          0          0          0          0           0
+Eth1/31               0          0          0          0          0           0
+Eth1/32               0          0          0          0          0           0
+Eth1/33               0          0          0          0          0           0
+Eth1/34               0          0          0          0          0           0
+Eth1/35               0          0          0          0          0           0
+Eth1/36               0          0          0          0          0           0
+Eth1/37               0          0          0          0          0           0
+Eth1/38               0          0          0          0          0           0
+Eth1/39               0          0          0          0          0           0
+Eth1/3                0          0          0          0          0           0
+Eth1/30               0          0          0          0          0           0
+Eth1/31               0          0          0          0          0           0
+Eth1/32               0          0          0          0          0           0
+Eth1/33               0          0          0          0          0           0
+Eth1/34               0          0          0          0          0           0
+Eth1/35               0          0          0          0          0           0
+Eth1/36               0          0          0          0          0           0
+Eth1/37               0          0          0          0          0           0
+Eth1/38               0          0          0          0          0           0
+Eth1/39               0          0          0          0          0           0
+Eth1/3             0          --           0           0           0          0
+Eth1/30            0          --           0           0           0          0
+Eth1/31            0          --           0           0           0          0
+Eth1/32            0          --           0           0           0          0
+Eth1/33            0          --           0           0           0          0
+Eth1/34            0          --           0           0           0          0
+Eth1/35            0          --           0           0           0          0
+Eth1/36            0          --           0           0           0          0
+Eth1/37            0          --           0           0           0          0
+Eth1/38            0          --           0           0           0          0
+Eth1/39            0          --           0           0           0          0
+
+Show int counters error | ex 0
+Eth1/3                0          0          0          0          0           0
+Eth1/30               0          0          0          0          0           0
+Eth1/31               0          0          0          0          0           0
+Eth1/32               0          0          0          0          0           0
+Eth1/33               0          0          0          0          0           0
+Eth1/34               0          0          0          0          0           0
+Eth1/35               0          0          0          0          0           0
+Eth1/36               0          0          0          0          0           0
+Eth1/37               0          0          0          0          0           0
+Eth1/38               0          0          0          0          0           0
+Eth1/39               0          0          0          0          0           0
+Eth1/3                0          0          0          0          0           0
+Eth1/30               0          0          0          0          0           0
+Eth1/31               0          0          0          0          0           0
+Eth1/32               0          0          0          0          0           0
+Eth1/33               0          0          0          0          0           0
+Eth1/34               0          0          0          0          0           0
+Eth1/35               0          0          0          0          0           0
+Eth1/36               0          0          0          0          0           0
+Eth1/37               0          0          0          0          0           0
+Eth1/38               0          0          0          0          0           0
+Eth1/39               0          0          0          0          0           0
+Eth1/3             0          --           0           0           0          0
+Eth1/30            0          --           0           0           0          0
+Eth1/31            0          --           0           0           0          0
+Eth1/32            0          --           0           0           0          0
+Eth1/33            0          --           0           0           0          0
+Eth1/34            0          --           0           0           0          0
+Eth1/35            0          --           0           0           0          0
+Eth1/36            0          --           0           0           0          0
+Eth1/37            0          --           0           0           0          0
+Eth1/38            0          --           0           0           0          0
+Eth1/39            0          --           0           0           0          0
+
+Show int counters error | ex 0
+Eth1/3                0          0          0          0          0           0
+Eth1/30               0          0          0          0          0           0
+Eth1/31               0          0          0          0          0           0
+Eth1/32               0          0          0          0          0           0
+Eth1/33               0          0          0          0          0           0
+Eth1/34               0          0          0          0          0           0
+Eth1/35               0          0          0          0          0           0
+Eth1/36               0          0          0          0          0           0
+Eth1/37               0          0          0          0          0           0
+Eth1/38               0          0          0          0          0           0
+Eth1/39               0          0          0          0          0           0
+Eth1/3                0          0          0          0          0           0
+Eth1/30               0          0          0          0          0           0
+Eth1/31               0          0          0          0          0           0
+Eth1/32               0          0          0          0          0           0
+Eth1/33               0          0          0          0          0           0
+Eth1/34               0          0          0          0          0           0
+Eth1/35               0          0          0          0          0           0
+Eth1/36               0          0          0          0          0           0
+Eth1/37               0          0          0          0          0           0
+Eth1/38               0          0          0          0          0           0
+Eth1/39               0          0          0          0          0           0
+Eth1/3             0          --           0           0           0          0
+Eth1/30            0          --           0           0           0          0
+Eth1/31            0          --           0           0           0          0
+Eth1/32            0          --           0           0           0          0
+Eth1/33            0          --           0           0           0          0
+Eth1/34            0          --           0           0           0          0
+Eth1/35            0          --           0           0           0          0
+Eth1/36            0          --           0           0           0          0
+Eth1/37            0          --           0           0           0          0
+Eth1/38            0          --           0           0           0          0
+Eth1/39            0          --           0           0           0          0
+
+Show feature | i eigrp 
+[{'name': 'eigrp', 'state': 'enabled', 'instance': '1'}, {'name': 'eigrp', 'state': 'enabled (not-running)', 'instance': '2'}, {'name': 'eigrp', 'state': 'enabled (not-running)', 'instance': '3'}, {'name': 'eigrp', 'state': 'enabled (not-running)', 'instance': '4'}]
+

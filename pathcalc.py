@@ -27,7 +27,9 @@ def interf_desc(connec,os,interface_out):
         ret=connec.send_command("show interfaces description",use_textfsm=True)
         print(ret)
         for line in ret:
-            if line['port']==interface_out or line['port']==expand_name(interface_out):
+            x=interface_out[0:2]+interface_out[-5:]
+            print(x)#modify later
+            if line['port']==interface_out or line['port']==x:
                 if line['descrip']=='SP':
                     sp='yes'
             break
