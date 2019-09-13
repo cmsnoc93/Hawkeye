@@ -1,8 +1,40 @@
 import paramiko, re
 from netmiko import ConnectHandler, SSHDetect
-from hawkutils import _ping_to, router
+from hawkutils import _ping_to, router, expand_name
 from flask import g
 
+
+def tracenext(connec,destin,os,numb):
+    cross_prov_ip='no'
+    print('Will traceroute now')
+    retu=connec.send_command("traceroute "+destin)
+    print(retu)
+    retu=retu.split('\n')
+    for line in retu:
+        line=line.split()
+        print(line)
+        if len(line)>1 and line[0]==numb: #number can be changed
+            print('Next hop ip beyond SP is '+line[1])
+            cross_prov_ip=line[1]
+            break
+    print('Exiting traceroute')
+    return cross_prov_ip
+
+def interf_desc(connec,os,interface_out):
+    #Nexus not included
+    sp='no'
+    if os!='cisco_nxos':
+        ret=connec.send_command("show interfaces description",use_textfsm=True)
+        print(ret)
+        for line in ret:
+            x=interface_out[0:2]+interface_out[-5:]
+            print(x)#modify later
+            if line['port']==interface_out or line['port']==x:
+                if line['descrip']=='SP':
+                    sp='yes'
+            break
+    print("Returning from interface description "+sp)
+    return sp
 
 def get_path(src,dst):
     src=src
@@ -28,11 +60,15 @@ def get_path(src,dst):
     extract=set()
     p=''
     boo=True
+
+    ssh_series=list()
     
     ping_stat=dict()
     ping_stat['terminate']='false'
     ping_stat['ping_failure']='false'
     ping_stat['ssh_failure']='false'
+    ping_stat['cloud']=dict()
+    ping_stat['exit_to_cloud']=False
     ping_stat['ssh_err_ip']=list()
 
 
@@ -56,6 +92,7 @@ def get_path(src,dst):
             
             print ("SSH connection established for getting the version - ",now)
             stdin,stdout,stderr=rem.exec_command("show version")
+            
         except Exception as e:
             print("Error in ssh connection, Trying again. Error - ",e)
             ping_stat['terminate']='true'
@@ -70,17 +107,10 @@ def get_path(src,dst):
 
 
         output=stdout.readlines()
-        print(output)
         output='\n'.join(output)
         k9=output.replace('\n',' ')
-        print("\n\n\n\n")
-        print(k9)
         k9=k9.split()
-        print("\n\n\n\n")
-        print(k9)
         a=k9.index('Cisco')
-        #print(a)
-        #print(k9[a+1])
         ios_ver=''
         verdict={}
         if (k9[a+1]=='IOS'):
@@ -125,12 +155,6 @@ def get_path(src,dst):
                 var=k9.index('Version')
         
                 verdict['version']=k9[var+1]
-        
-            #var=k9.index('Release')
-            #verdict['hardware']=k9[var+4]  
-        
-            
-        
         else:
             if 'Version' in k9:
                 var=k9.index('Version')
@@ -153,14 +177,7 @@ def get_path(src,dst):
         boo=True
         
         try:
-        #device = {"device_type": "autodetect","host":now,"username": "rit","password":"CMSnoc$1234"}
-            #guesser = SSHDetect(**device)
-            #best_match = guesser.autodetect()
-            #print(best_match,guesser.potential_matches)
-    
-            ssh= ConnectHandler(device_type=ios_ver,host=now,username="rit",password="CMSnoc$1234")
-                
-        
+            ssh= ConnectHandler(device_type=ios_ver,host=now,username="rit",password="CMSnoc$1234") 
         except Exception as e:
             boo=True
             print(" Connection error ",e)
@@ -236,12 +253,7 @@ def get_path(src,dst):
             print(" SOURCE INTERFACE "+ ret)
             source_int=ret.split()[0]
             g.dictofobj[name].adddictip(source_int,src)
-
-
-
-
-
-
+        
         if ios_ver=='cisco_nxos':
             ret=ssh.send_command("sh ip route "+dst)
             print(" return from sh ip route | inc known via ")
@@ -357,8 +369,23 @@ def get_path(src,dst):
                             break
             print("Name "+name+" BGP: next hop "+dst1+" exit interface "+hop)
             extract.add(dst1)
-            s.add(dst1)
-            ls.append(dst1)
+ 
+            desc_response=interf_desc(ssh,ios_ver,hop)
+            
+            if desc_response=='yes':
+                cross_ip=tracenext(ssh,dst,ios_ver,'2')
+                ping_stat['cloud']['entry']=dst1
+                ping_stat['cloud']['exit_to']=cross_ip
+                ping_stat['exit_to_cloud']=True
+                s.add(cross_ip)
+                ls.append(cross_ip)
+
+            else:
+                s.add(dst1)
+                ls.append(dst1)
+
+
+
             p=''
             p=hop+' '+dst1
             if name not in exit.keys():
@@ -418,6 +445,7 @@ def get_path(src,dst):
                 print(exit_int_ip)
                 p=''
                 p=exit_int+' directly'
+
                 if name not in exit.keys():
                     exit[name]=set()
                 exit[name].add(p)
@@ -522,10 +550,23 @@ def get_path(src,dst):
                         print(ret2)
                         exit_int_ip=ret2[1]
                         print(next_hop_ip+"   "+exit_int+"  "+exit_int_ip)
+
+
                         if next_hop_ip not in extract:
                             extract.add(next_hop_ip)
-                            s.add(next_hop_ip)
-                            ls.append(next_hop_ip)
+                            desc_response=interf_desc(ssh,ios_ver,exit_int)
+                            if desc_response=='yes':
+                                cross_ip=tracenext(ssh,dst,ios_ver,'2')
+                                ping_stat['cloud']['entry']=dst1
+                                ping_stat['exit_to_cloud']=True
+                                ping_stat['cloud']['exit_to']=cross_ip
+                                s.add(cross_ip)
+                                ls.append(cross_ip)
+
+                            else:
+                                s.add(next_hop_ip)
+                                ls.append(next_hop_ip)
+                            
                             p=''  
                             
                             p=exit_int+' '+next_hop_ip
@@ -576,29 +617,44 @@ def get_path(src,dst):
                     t=0
                     for j in i:
                     #print(j)
+                        print("before extract "+j)
                         if re.match('^(?:[0-9]{1,3}\.){3}([0-9]{1,3})',j):
-                            print("extract- "+j[:-1])
-                            j=j[:-1]
-                            if j not in extract:
-                                extract.add(j)
-                                s.add(j)
-                                ls.append(j)     
-                            t=1
-                
-                        if t==1:
+                            print("extract- .. "+j[:-1])
+                            j=j[:-1] 
+                                
                             num=i.index('via')
                             p=i[num+1]
                             hop=i[num+1]
                             p=p+' '+j
+                            if j not in extract:
+                                extract.add(j)
+                                print('checking interface description')
+                                desc_response=interf_desc(ssh,ios_ver,hop)
+                                print("Desc Response "+desc_response)
+                                if desc_response=='yes':
+                                    print('tracing route')
+                                    cross_ip=tracenext(ssh,dst,ios_ver,'2')
+                                    ping_stat['cloud']['entry']=dst1
+                                    ping_stat['exit_to_cloud']=True
+                                    ping_stat['cloud']['exit_to']=cross_ip
+                                    s.add(cross_ip)
+                                    ls.append(cross_ip)                             
+                                else:
+                                    s.add(j)
+                                    ls.append(j) 
+                            print("here")
+
                             if name not in exit.keys():
                                 exit[name]=set()
                 
                             exit[name].add(p)
 
                             ctobj=dictofnames[name]
+
                             #print("ctobj "+ctobj)
                             arr[ctobj].addexit(p)
                             print("hop ",hop)
+                            print("here3")
                             boo=True
                             ret1=""
                             while boo:
@@ -656,12 +712,6 @@ def get_path(src,dst):
                 p=''
                 p=name+' '+entry_int
                 entryrev[now].add(p)
-        
-
-
-
-
-
 
             else:
 
@@ -728,8 +778,7 @@ def get_path(src,dst):
         ping_stat['ssh_failure']='true'
         ping_stat['ssh_err_ip'].append(dst)
         ssh_failure_any=True
-        
-        
+
         #return exit,entryrev,g.intojson,ping_stat   
     if ssh_failure_any==True:
         return entry,exit,entryrev,setofnames,ping_stat 

@@ -77,12 +77,12 @@ def topology():
 						print(thread)
 						if path_no == 1:
 							g.intojson.append(thread.join())
-						elif path_no == 2:
+						elif path_no == 2: # never gets called anymore
 							g.intojson2.append(thread.join())
 						
 					if path_no == 1:
 						return(g.intojson)
-					elif path_no == 2:
+					elif path_no == 2: # never gets called anymore
 						return(g.intojson2)
 
 
@@ -96,17 +96,11 @@ def topology():
 			except:
 				return json.dumps(list().append({'failure':'Failure occured in KPI Analysis'}))
 
-			# Forward Path after SP Cloud
-			if ping_stat['ssh_failure']=='true':
-				entry2,exit2,entryrev2,setofnames2,ping_stat2=path_calc(dst,src)
-				g.intojson2=callthreads(setofnames2,2) 
-
+			
 			# Path Connectivity Information
 			print("Exit: ",exit,"\n")
 			print("Reverse: ",entryrev,"\n")
-			if ping_stat['ssh_failure']=='true':
-				print("Exit2: ",exit2,"\n")
-				print("Reverse2: ",entryrev2,"\n")
+			
 
 			paths1 = jsonifypath(exit,entryrev)
 			device_json = restructureDict(g.intojson)
@@ -122,13 +116,13 @@ def topology():
 			worker['pid'] = os.getpid()
 			response_list.append(worker) # response[3]
 
-			# Response for Post-SP Path
+			""" # Response for Post-SP Path
 			if ping_stat['ssh_failure']=='true':
 				paths2 = jsonifypath(exit2,entryrev2)	
 				device_json2 = restructureDict(g.intojson2)
 				response_list.append(paths2) # response[4]
 				response_list.append(device_json2) # response[5]
-				response_list.append(ping_stat2) # response[6]
+				response_list.append(ping_stat2) # response[6] """
 
 			print(os.getpid(),"Exiting")
 			return json.dumps(response_list)
