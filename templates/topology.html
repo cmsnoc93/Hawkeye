@@ -778,7 +778,7 @@
                 <div class="mt-4 border tint"> 
                     <h5 class="kpi"> Device Health: <img ng-src = "{{images[device]}}" style="width:20px"/></h5>
                 </div>
-                <div class = "content">
+                <div class = "content-1" style= "display:none">
 		    <div>
 		    	<h6 class="sub-kpi">Platform: <img ng-src = "{{images[platform]}}" style="width:20px"/></h6>
 			<table class="table table-borderless">
@@ -1239,17 +1239,8 @@
 </div>
 </body>
 <script>
-$(".mt-4 border tint").click(function () {
-
-$header = $(this);
-//getting the next element
-$content = $header.next();
-//open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
-$content.slideToggle(500, function () {
-    //execute this after slideToggle is done
-    //change text of header based on visibility of content div
-});
-
-});
+   $('.mt-4 border tint').click(function(){
+        $('.content-1').slideToggle('slow');
+    });
 </script>
 </html>
