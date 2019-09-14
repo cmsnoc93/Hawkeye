@@ -50,6 +50,25 @@
                 return (false)  
             }  
 
+            function autocollapse(){
+                var acc = document.getElementsByClassName("accordion");
+                var i;
+                for (i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling.nextElementSibling.nextElementSibling;
+                    console.log("THIS")
+                    console.log(panel)
+                    if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                    } else {
+                    panel.style.display = "block";
+                    }
+                });
+                }
+            }
+            autocollapse()
+
             // Function : Abbreviate Interface Names
             function removeSmall(str) {
                 let temp = "";
@@ -1266,21 +1285,6 @@
 </div>
 </body>
 <script>
-var acc = document.getElementsByClassName("accordion");
-var i;
 
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling.nextElementSibling.nextElementSibling;
-    console.log("THIS")
-    console.log(panel)
-    if (panel.style.display === "block") {
-      panel.style.display = "none";
-    } else {
-      panel.style.display = "block";
-    }
-  });
-}
 </script>
 </html>
