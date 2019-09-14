@@ -818,9 +818,10 @@
                 <h4 class="sub-kpi"><img ng-src = "{{clicked_image}}" style="width:20px"/> {{ clicked_device.Name[0] }}</h4>
                 <div class="kpi"><b>Entry: </b>{{ entries }}</div>
                 <div class="kpi"><b>Exit: </b>{{ exits }}<br></div>
-		<div class="kpi"><b>Raw Output: </b><button class="btn btn-smsm btn-info" ng-click="fetchRaw()">Open</div>
+        <div class="kpi"><b>Raw Output: </b><button class="btn btn-smsm btn-info" ng-click="fetchRaw()">Open</div>
+            
             <div class="col-md-4">
-            <button class="btn btn-lg btn-success btn-block" data-toggle="collapse" data-target="#one">
+            <button class="btn btn-primary" data-toggle="collapse" data-target="#one">
                     Device Health: <img ng-src = "{{images[device]}}" style="width:20px"/>
             </button>
         </div>
