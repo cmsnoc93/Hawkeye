@@ -774,11 +774,13 @@
                 <div class="kpi"><b>Entry: </b>{{ entries }}</div>
                 <div class="kpi"><b>Exit: </b>{{ exits }}<br></div>
 		<div class="kpi"><b>Raw Output: </b><button class="btn btn-smsm btn-info" ng-click="fetchRaw()">Open</div>
-            
+
+            <button class="accordion">
                 <div class="mt-4 border tint" id="one"> 
                     <h5 class="kpi"> Device Health: <img ng-src = "{{images[device]}}" style="width:20px"/></h5>
                 </div>
-                <div class = "content-1" style= "display:none">
+            </button>
+                <div class = "panel" >
 		    <div>
 		    	<h6 class="sub-kpi">Platform: <img ng-src = "{{images[platform]}}" style="width:20px"/></h6>
 			<table class="table table-borderless">
@@ -1239,8 +1241,19 @@
 </div>
 </body>
 <script>
-   $('#one').click(function(){
-        $('.content-1').slideToggle('slow');
-    });
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
 </script>
 </html>
