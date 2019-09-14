@@ -10,31 +10,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
-    <style>
-    .accordion {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  transition: 0.4s;
-}
-
-.active, .accordion:hover {
-  background-color: #ccc; 
-}
-
-.panel {
-  padding: 0 18px;
-  display: none;
-  background-color: white;
-  overflow: hidden;
-}
-    </style>
     <script>
 
         // Initialize Angular
@@ -49,26 +24,6 @@
                 }  
                 return (false)  
             }  
-
-            function autocollapse(){
-                var acc = document.getElementsByClassName("accordion");
-                var i;
-                for (i = 0; i < acc.length; i++) {
-                acc[i].addEventListener("click", function() {
-                    this.classList.toggle("active");
-                    var panel = this.nextElementSibling.nextElementSibling.nextElementSibling;
-                    console.log("THIS")
-                    console.log(panel)
-                    if (panel.style.display === "block") {
-                    panel.style.display = "none";
-                    } else {
-                    panel.style.display = "block";
-                    }
-                });
-                }
-            }
-
-            autocollapse()
 
             // Function : Abbreviate Interface Names
             function removeSmall(str) {
@@ -738,7 +693,7 @@
     <div class="container text-center "style="width:355px;height:100px;background-color:white">
 	<div style="float:right;"><img src = "/static/high_res_hawk_crop.jpg" style="width:90px;height:85px;"/></div>
         <div style="float:right;"><p style="font-size:40px;text-align:left;margin-bottom:0;color:#0F75BD"><b>Hawkeye</b></p><hr style="margin-top:0;margin-bottom:0">
-        <p class="cisco" style="font-size:14px;text-align:center;color:#0F75BD">Network Path Analyzer</p></div>
+        <p class="cisco" style="font-size:14px;text-align:center;color:#0F75BD">Network Health Analyzer</p></div>
     </div>
 </div>
 <body style="overflow-x:hidden">
@@ -818,14 +773,12 @@
                 <h4 class="sub-kpi"><img ng-src = "{{clicked_image}}" style="width:20px"/> {{ clicked_device.Name[0] }}</h4>
                 <div class="kpi"><b>Entry: </b>{{ entries }}</div>
                 <div class="kpi"><b>Exit: </b>{{ exits }}<br></div>
-        <div class="kpi"><b>Raw Output: </b><button class="btn btn-smsm btn-info" ng-click="fetchRaw()">Open</div>
+		<div class="kpi"><b>Raw Output: </b><button class="btn btn-smsm btn-info" ng-click="fetchRaw()">Open</div>
             
-            <div class="col-md-4">
-            <button class="btn btn-primary" data-toggle="collapse" data-target="#one">
-                    Device Health: <img ng-src = "{{images[device]}}" style="width:20px"/>
-            </button>
-        </div>
-                <div class = "collapse" id="one">
+                <div class="mt-4 border tint" id="one"> 
+                    <h5 class="kpi"> Device Health: <img ng-src = "{{images[device]}}" style="width:20px"/></h5>
+                </div>
+                <div class = "content-1" style= "display:none">
 		    <div>
 		    	<h6 class="sub-kpi">Platform: <img ng-src = "{{images[platform]}}" style="width:20px"/></h6>
 			<table class="table table-borderless">
@@ -948,14 +901,10 @@
                         </div>
                     </div>
                   </div>
-                  <br>
-                <!-- INTERFACE STATISTICS BUTTON STARTS HERE -->
-                <div class="col-md-4">
-                    <button class="btn btn-primary" data-toggle="collapse" data-target="#two">
-                    Interface Statistics: <img ng-src = "{{images[interface]}}" style="width:20px"/>
-                    </button>
-                </div>
-                    <div class= "collapse" id="two">
+                
+
+                <div class="mt-4 border tint">
+                    <h5 class="kpi"> Interface Statistics: <img ng-src = "{{images[interface]}}" style="width:20px"/></h5>
                     <table class="table" ng-repeat="(key,interface) in clicked_device['Interface Dictionary']">
                         <thead><tr class="sub-kpi w-100"><td><h6>{{ key }} : {{ interface.ip }}
                                <img ng-src = "{{images[interfaces[key]]}}" style="width:20px"/></h6></td>
@@ -1162,16 +1111,10 @@
 </div>
 
 <!---!--->
-      </div>   
-    </div>           
-                
-<br>
-        <div class="col-md-4">
-                <button class="btn btn-primary" data-toggle="collapse" data-target="#three">
-                    Protocol Information: <img ng-src = "{{images[protocols]}}" style="width:20px"/>
-                </button>
-        </div>
-                <div class="content" id ="three">
+      </div>              
+                </div>
+                <div class="mt-4 border tint">
+                    <h5 class="kpi"> Protocol Information: <img ng-src = "{{images[protocols]}}" style="width:20px"/></h5>
                     <div ng-if="clicked_device.Protocols.eigrp && os_type!='cisco_nxos'">
                         <h6 class="sub-kpi">EIGRP Neighbors: <img ng-src = "{{images[eigrp]}}" style="width:20px"/></h6>
                         <table class="table table-borderless">
@@ -1286,8 +1229,7 @@
                         <h6 class="sub-kpi">Spanning Tree : <img ng-src = "{{images[spanning]}}" style="width:20px"/></h6>
 			<h6 class="sub-kpi green"> No topology changes observed  </h6>
                     </div>              
-
-                </div>
+		</div> 
                 <div class="mt-4 border tint">
                         <h5 class="kpi"> Quality of Service: <img ng-src = "{{images[qos]}}" style="width:20px"/></h5>
                 </div>
@@ -1297,6 +1239,8 @@
 </div>
 </body>
 <script>
-
+   $('#one').click(function(){
+        $('.content-1').slideToggle('slow');
+    });
 </script>
 </html>
