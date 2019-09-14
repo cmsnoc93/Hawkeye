@@ -819,10 +819,11 @@
                 <div class="kpi"><b>Entry: </b>{{ entries }}</div>
                 <div class="kpi"><b>Exit: </b>{{ exits }}<br></div>
 		<div class="kpi"><b>Raw Output: </b><button class="btn btn-smsm btn-info" ng-click="fetchRaw()">Open</div>
-
-            <button class="btn btn-info" data-toggle="collapse" data-target="#one">
+            <div class="col-md-4">
+            <button class="btn btn-lg btn-success btn-block" data-toggle="collapse" data-target="#one">
                     Device Health: <img ng-src = "{{images[device]}}" style="width:20px"/>
             </button>
+        </div>
                 <div class = "collapse" id="one">
 		    <div>
 		    	<h6 class="sub-kpi">Platform: <img ng-src = "{{images[platform]}}" style="width:20px"/></h6>
