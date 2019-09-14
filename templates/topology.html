@@ -949,9 +949,12 @@
                     </div>
                   </div>
                 
-
-                <div class="mt-4 border tint">
-                    <h5 class="kpi"> Interface Statistics: <img ng-src = "{{images[interface]}}" style="width:20px"/></h5>
+                  <div class="col-md-4">
+                    <button class="btn btn-primary" data-toggle="collapse" data-target="#two">
+                    Interface Statistics: <img ng-src = "{{images[interface]}}" style="width:20px"/>
+                    </button>
+                    </div>
+                    <div class= "collapse" id="two">
                     <table class="table" ng-repeat="(key,interface) in clicked_device['Interface Dictionary']">
                         <thead><tr class="sub-kpi w-100"><td><h6>{{ key }} : {{ interface.ip }}
                                <img ng-src = "{{images[interfaces[key]]}}" style="width:20px"/></h6></td>
@@ -1158,8 +1161,9 @@
 </div>
 
 <!---!--->
-      </div>              
-                </div>
+      </div>   
+    </div>           
+                
                 <div class="mt-4 border tint">
                     <h5 class="kpi"> Protocol Information: <img ng-src = "{{images[protocols]}}" style="width:20px"/></h5>
                     <div ng-if="clicked_device.Protocols.eigrp && os_type!='cisco_nxos'">
