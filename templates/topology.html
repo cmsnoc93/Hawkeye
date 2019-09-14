@@ -67,6 +67,7 @@
                 });
                 }
             }
+
             autocollapse()
 
             // Function : Abbreviate Interface Names
@@ -819,12 +820,12 @@
                 <div class="kpi"><b>Exit: </b>{{ exits }}<br></div>
 		<div class="kpi"><b>Raw Output: </b><button class="btn btn-smsm btn-info" ng-click="fetchRaw()">Open</div>
 
-            <button class="accordion">
-                <div class="mt-4 border tint" id="one"> 
+            <button class="accordion" data-toggle="collapse" data-target="#one">
+                <div class="mt-4 border tint" > 
                     <h5 class="kpi"> Device Health: <img ng-src = "{{images[device]}}" style="width:20px"/></h5>
                 </div>
             </button>
-                <div class = "panel" >
+                <div class = "panel" id="one" >
 		    <div>
 		    	<h6 class="sub-kpi">Platform: <img ng-src = "{{images[platform]}}" style="width:20px"/></h6>
 			<table class="table table-borderless">
