@@ -213,10 +213,32 @@
                         }
                         if(!isEndpoint)
                             node.label = name;
-                        if (name.includes('RC'))
-                            node.image = "/static/router.png";
-                        else
-                            node.image = "/static/switchl3.png";
+                        if (name.includes('RC')){
+                            if($scope.color_dict != None){
+                                if($scope.color_dict['name']==0)
+                                    node.image = "/static/router-green.png"
+                                else if($scope.color_dict['name']==1)
+                                    node.image = "/static/router-amber.png"
+                                else
+                                    node.image = "/static/router-red.png"
+                            }
+                            else
+                                node.image = "/static/router.png"
+                        }
+                        else{
+                            if($scope.color_dict != None){
+                                if($scope.color_dict['name']==0)
+                                    node.image = "/static/switch-green.png"
+                                else if($scope.color_dict['name']==1)
+                                    node.image = "/static/switch-amber.png"
+                                else
+                                    node.image = "/static/switch-red.png"
+                            }
+                            else
+                                node.image = "/static/switchl3.png"
+
+                        }
+                        
                         nodelist.push(node);
                     }
                 }            
@@ -280,11 +302,17 @@
 
                 var network = new vis.Network(container, data, options);    
 		        $scope.network = network;
-		        $scope.data = data;
+                $scope.data = data;
+                $scope.color_dict = []
                 network.on("click", function (properties) {
-                    $scope.$apply(function () { 
-                        $scope.clicked_device = $scope.device_map[properties.nodes];  
+                    $scope.$apply(function analyze(device=None) { 
+                        
                 
+                        if(device!=None)
+                            $scope.clicked_device = device
+                        else
+                            $scope.clicked_device = $scope.device_map[properties.nodes];  
+
                         if(properties.nodes == "cloud"){
                             console.log($scope.clicked_device);				
                             $scope.cloudclicked=true
@@ -317,7 +345,11 @@
                             $scope.routeflaps = 0;		
             
                             $scope.qos = 0;
-                            evaluateThresholds();      
+                            evaluateThresholds();
+                            $scope.overall = $scope.device | $scope.interfaces | $scope.protocols   
+                            $scope.color_dict.push({key:$scope.clicked_device.Name[0],
+                                                    value:$scope.overall})
+
                             if($scope.clicked_device.Name[0].includes('RC'))
                                 $scope.clicked_image = "/static/router.png"
                             else 
@@ -374,6 +406,14 @@
                     
                     });
                 });
+
+                for(device in $scope.device_map){
+                    console.log("Analyzing & Applying Thresholds")
+                    analyze(device);
+                }
+                console.log($scope.color_dict)
+                $scope.refresh();
+
             }
 
             // Function : Interface Checks
@@ -738,7 +778,7 @@
     <div class="container text-center "style="width:355px;height:100px;background-color:white">
 	<div style="float:right;"><img src = "/static/high_res_hawk_crop.jpg" style="width:90px;height:85px;"/></div>
         <div style="float:right;"><p style="font-size:40px;text-align:left;margin-bottom:0;color:#0F75BD"><b>Hawkeye</b></p><hr style="margin-top:0;margin-bottom:0">
-        <p class="cisco" style="font-size:14px;text-align:center;color:#0F75BD">Network Path Self-Analyzer</p></div>
+        <p class="cisco" style="font-size:16px;text-align:center;color:#0F75BD">Network Path Self-Analyzer</p></div>
     </div>
 </div>
 <body style="overflow-x:hidden">
