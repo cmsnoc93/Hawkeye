@@ -162,6 +162,15 @@
                             makeTable(response[1],"forward");
                             if($scope.mapstyle == "broken")
                                 makeTable(response[5],"backward");
+                            
+                            // Determine Colors for device images
+                            $scope.color_dict = []
+                            for(device in $scope.device_map){
+                                console.log("Analyzing & Applying Thresholds")
+                                analyze(device);
+                            }
+                            console.log($scope.color_dict)
+                            
 
                             // Draw Topology
                             document.getElementById("loader-head").style.display="none";
@@ -303,7 +312,7 @@
                 var network = new vis.Network(container, data, options);    
 		        $scope.network = network;
                 $scope.data = data;
-                $scope.color_dict = []
+                
                 network.on("click", function (properties) {
                     $scope.$apply(function analyze(device=None) { 
                         
@@ -407,12 +416,8 @@
                     });
                 });
 
-                for(device in $scope.device_map){
-                    console.log("Analyzing & Applying Thresholds")
-                    analyze(device);
-                }
-                console.log($scope.color_dict)
-                $scope.refresh();
+
+
 
             }
 
@@ -778,7 +783,7 @@
     <div class="container text-center "style="width:355px;height:100px;background-color:white">
 	<div style="float:right;"><img src = "/static/high_res_hawk_crop.jpg" style="width:90px;height:85px;"/></div>
         <div style="float:right;"><p style="font-size:40px;text-align:left;margin-bottom:0;color:#0F75BD"><b>Hawkeye</b></p><hr style="margin-top:0;margin-bottom:0">
-        <p class="cisco" style="font-size:16px;text-align:center;color:#0F75BD">Network Path Self-Analyzer</p></div>
+        <p class="cisco" style="font-size:16px;text-align:center;color:#0F75BD">Network Path Analyzer</p></div>
     </div>
 </div>
 <body style="overflow-x:hidden">
