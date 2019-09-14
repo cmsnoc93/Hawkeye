@@ -775,7 +775,7 @@
                 <div class="kpi"><b>Exit: </b>{{ exits }}<br></div>
 		<div class="kpi"><b>Raw Output: </b><button class="btn btn-smsm btn-info" ng-click="fetchRaw()">Open</div>
             
-                <div class="mt-4 border tint"> 
+                <div class="mt-4 border tint" id="one"> 
                     <h5 class="kpi"> Device Health: <img ng-src = "{{images[device]}}" style="width:20px"/></h5>
                 </div>
                 <div class = "content-1" style= "display:none">
@@ -1239,7 +1239,7 @@
 </div>
 </body>
 <script>
-   $('.mt-4 border tint').click(function(){
+   $('#one').click(function(){
         $('.content-1').slideToggle('slow');
     });
 </script>
