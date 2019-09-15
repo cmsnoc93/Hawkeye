@@ -78,8 +78,8 @@
                             $scope.qos = 0;
                             evaluateThresholds();
                             $scope.overall = $scope.device | $scope.interfaces | $scope.protocols   
-                            $scope.color_dict.push({key:$scope.clicked_device.Name[0],
-                                                    value:$scope.overall})
+                            $scope.color_dict[$scope.clicked_device.Name[0]]=$scope.overall;
+                                                    
 
                             if($scope.clicked_device.Name[0].includes('RC'))
                                 $scope.clicked_image = "/static/router.png"
@@ -256,7 +256,7 @@
                                 makeTable(response[5],"backward");
                             
                             // Determine Colors for device images
-                            $scope.color_dict = []
+                            $scope.color_dict = {}
                             console.log("Analyzing & Applying Thresholds")
                             for(device in $scope.device_map){                                
                                 analyze($scope.device_map[device],response[0],response[2]);
