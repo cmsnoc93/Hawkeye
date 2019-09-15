@@ -81,7 +81,7 @@
                             $scope.color_dict[$scope.clicked_device.Name[0]]=$scope.overall;
                                                     
                             var clicked_name = $scope.clicked_device.Name[0];
-                            if($scope.color_dict[clicked_name].includes('RC')){
+                            if(clicked_name.includes('RC')){
                                 if($scope.color_dict[clicked_name]==0)
                                     node.image = "/static/router-green.png"
                                 else if($scope.color_dict[clicked_name]==1)
