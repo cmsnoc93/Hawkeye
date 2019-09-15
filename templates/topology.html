@@ -315,10 +315,10 @@
                         if(!isEndpoint)
                             node.label = name;
                         if (name.includes('RC')){
-                            if($scope.color_dict != None){
-                                if($scope.color_dict['name']==0)
+                            if($scope.color_dict != null){
+                                if($scope.color_dict[name]==0)
                                     node.image = "/static/router-green.png"
-                                else if($scope.color_dict['name']==1)
+                                else if($scope.color_dict[name]==1)
                                     node.image = "/static/router-amber.png"
                                 else
                                     node.image = "/static/router-red.png"
@@ -327,10 +327,10 @@
                                 node.image = "/static/router.png"
                         }
                         else{
-                            if($scope.color_dict != None){
-                                if($scope.color_dict['name']==0)
+                            if($scope.color_dict != null){
+                                if($scope.color_dict[name]==0)
                                     node.image = "/static/switch-green.png"
-                                else if($scope.color_dict['name']==1)
+                                else if($scope.color_dict[name]==1)
                                     node.image = "/static/switch-amber.png"
                                 else
                                     node.image = "/static/switch-red.png"
