@@ -87,14 +87,14 @@ def topology():
 
 
 			# Forward Path
-			#try:
+			try:
 				entry,exit,entryrev,setofnames,ping_stat = path_calc(src,dst)				
-			#except:
-			#	return json.dumps(list().append({'failure':'Failure occured in KPI Analysis'}))
-			#try:
+			except:
+				return json.dumps(list().append({'failure':'Failure occured in KPI Analysis'}))
+			try:
 				g.intojson=callthreads(setofnames,1)				
-			#except:
-			#	return json.dumps(list().append({'failure':'Failure occured in KPI Analysis'}))
+			except:
+				return json.dumps(list().append({'failure':'Failure occured in KPI Analysis'}))
 
 			
 			# Path Connectivity Information

@@ -95,7 +95,7 @@ def get_path(src,dst):
             
         except Exception as e:
             print("Error in ssh connection, Trying again. Error - ",e)
-            ping_stat[ 'terminate']='true'
+            ping_stat['terminate']='true'
             ping_stat['ssh_failure']='true'
             ping_stat['ssh_err_ip'].append(now)
             ssh_failure_any=True
@@ -369,10 +369,8 @@ def get_path(src,dst):
                             break
             print("Name "+name+" BGP: next hop "+dst1+" exit interface "+hop)
             extract.add(dst1)
-
-            print("Checking if WAN link")
+ 
             desc_response=interf_desc(ssh,ios_ver,hop)
-            
             
             if desc_response=='yes':
                 cross_ip=tracenext(ssh,dst,ios_ver,'2')
@@ -386,7 +384,7 @@ def get_path(src,dst):
                 s.add(dst1)
                 ls.append(dst1)
 
-            print("Passed WAN link check")
+
 
             p=''
             p=hop+' '+dst1
