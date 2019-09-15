@@ -49,16 +49,9 @@
                         if(device!=null)
                             $scope.clicked_device = device
                         else
-                            $scope.clicked_device = $scope.device_map[properties.nodes];  
+                            console.log("Unhandled Click Event")
 
-                        if(properties.nodes == "cloud"){
-                            console.log($scope.clicked_device);				
-                            $scope.cloudclicked=true
-                    
-                        }
-                        else
-                            $scope.cloudclicked = false
-                            
+                                                 
                         if(!$scope.cloudclicked){                           
                             
                             $scope.thresholds = { green: 0, amber: 1, red: 3 }
@@ -137,9 +130,6 @@
                             if ($scope.entries.length === 0) {
                                 $scope.entries = "THIS IS SOURCE";
                             }
-                        }else if($scope.cloudclicked){
-                            $scope.entries = $scope.ssh_in+" on Ingres Provider Edge Router";		
-                            $scope.exits = $scope.ssh_out+" on Egress Provider Edge Router";
                         }
                     
                 }
@@ -417,7 +407,20 @@
                 $scope.data = data;
                 
                 network.on("click", function (properties) {
-                    $scope.$apply(analyze($scope.device_map[properties.nodes]));
+                    $scope.clicked_device=$scope.device_mapproperties.nodes];
+                    if(properties.nodes == "cloud"){
+                            console.log($scope.clicked_device);				
+                            $scope.cloudclicked=true
+                            $scope.entries = $scope.ssh_in+" on Ingres Provider Edge Router";		
+                            $scope.exits = $scope.ssh_out+" on Egress Provider Edge Router";
+                    
+                        }
+                        else{
+                            $scope.cloudclicked = false
+                            $scope.$apply(analyze($scope.device_map[properties.nodes]));
+                        }                    
+                    
+                    
                 });
 
 
