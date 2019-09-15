@@ -83,20 +83,20 @@
                             var clicked_name = $scope.clicked_device.Name[0];
                             if(clicked_name.includes('RC')){
                                 if($scope.color_dict[clicked_name]==0)
-                                    node.image = "/static/router-green.png"
+                                    $scope.clicked_image = "/static/router-green.png"
                                 else if($scope.color_dict[clicked_name]==1)
-                                    node.image = "/static/router-amber.png"
+                                    $scope.clicked_image = "/static/router-amber.png"
                                 else
-                                    node.image = "/static/router-red.png"
+                                    $scope.clicked_image = "/static/router-red.png"
                             }
                             else 
                             {
                                 if($scope.color_dict[clicked_name]==0)
-                                    node.image = "/static/switch-green.png"
+                                    $scope.clicked_image = "/static/switch-green.png"
                                 else if($scope.color_dict[clicked_name]==1)
-                                    node.image = "/static/switch-amber.png"
+                                    $scope.clicked_image = "/static/switch-amber.png"
                                 else
-                                    node.image = "/static/switch-red.png"
+                                    $scope.clicked_image = "/static/switch-red.png"
                             }
                             
                                 
