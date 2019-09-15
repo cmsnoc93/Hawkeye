@@ -43,7 +43,7 @@
             let response; 
 
 
-            function analyze(device=null) { 
+            function analyze(device=null,response,response2) { 
                         
                         console.log(device)
                         if(device!=null)
@@ -259,7 +259,7 @@
                             $scope.color_dict = []
                             console.log("Analyzing & Applying Thresholds")
                             for(device in $scope.device_map){                                
-                                analyze($scope.device_map[device]);
+                                analyze($scope.device_map[device],response[0],response[2]);
                             }
                             console.log($scope.color_dict)
                             
@@ -416,7 +416,7 @@
                         }
                         else{
                             $scope.cloudclicked = false
-                            $scope.$apply(analyze($scope.device_map[properties.nodes]));
+                            $scope.$apply(analyze($scope.device_map[properties.nodes],response,response2));
                         }                    
                     
                     
