@@ -42,6 +42,109 @@
         app.controller("myController", function ($scope, $http) {
             let response; 
 
+
+            function analyze(device=None) { 
+                        
+                
+                        if(device!=None)
+                            $scope.clicked_device = device
+                        else
+                            $scope.clicked_device = $scope.device_map[properties.nodes];  
+
+                        if(properties.nodes == "cloud"){
+                            console.log($scope.clicked_device);				
+                            $scope.cloudclicked=true
+                    
+                        }
+                        else
+                            $scope.cloudclicked = false
+                            
+                        if(!$scope.cloudclicked){                           
+                            
+                            $scope.thresholds = { green: 0, amber: 1, red: 3 }
+                            $scope.images = { 0: "/static/checked.png", 
+                                            1: "/static/warning-t.png",
+                                            3: "/static/cancel.png"}
+                            $scope.device = 0; 
+                            $scope.platform = 0;
+                            $scope.cpu = 0;
+                            $scope.memory = 0;
+                            $scope.logs = 0;
+
+                            $scope.interface = 0;
+                            $scope.interfaces = {};
+                            $scope.counters = 0;
+                            $scope.protocols = 0;
+                            $scope.eigrp = 0;
+                            $scope.eigrp_down = [];
+                            $scope.bgp = 0;
+                            $scope.bgp_down = [];
+                            $scope.spanning = 0;
+                            $scope.routeflaps = 0;		
+            
+                            $scope.qos = 0;
+                            evaluateThresholds();
+                            $scope.overall = $scope.device | $scope.interfaces | $scope.protocols   
+                            $scope.color_dict.push({key:$scope.clicked_device.Name[0],
+                                                    value:$scope.overall})
+
+                            if($scope.clicked_device.Name[0].includes('RC'))
+                                $scope.clicked_image = "/static/router.png"
+                            else 
+                                $scope.clicked_image = "/static/switchl3.png"
+                            
+                            console.log($scope.clicked_device);
+                
+                            let clicked = properties.nodes;
+                            $scope.exits = "";
+                            $scope.entries = "";
+
+                            for (entry in response) {
+                                from = response[entry]["now"];
+                    
+                                if (from == clicked) {
+                                    if (response[entry]['next'] == from)
+                                        continue;
+                                    if(response[entry]["next"] == "Couldnt Fetch"){$scope.exits += "Provider Edge via "+response[entry]["exit"]}else
+                                    $scope.exits += response[entry]["next"] + " via " + response[entry]["exit"]+" "
+                                }
+                                to = response[entry]["next"];
+                                if (to == clicked) {
+                                    if (response[entry]['now'] == to)
+                                        continue;
+                                    $scope.entries += response[entry]["now"] + " via " + response[entry]["entry"]+" "
+                                }
+                            }
+                            for (entry in response2) {
+                                from = response2[entry]["now"];
+                                if (from == clicked) {
+                                    if (response2[entry]['next'] == from)
+                                        continue;
+                                    if(response2[entry]["next"] == "Couldnt Fetch"){$scope.entries += "Provider Edge via "+response2[entry]["exit"]}else
+                                        $scope.entries += response2[entry]["next"] + " via " + response2[entry]["exit"]+" "
+                                }
+                                to = response2[entry]["next"];
+                                if (to == clicked) {
+                                    if (response2[entry]['now'] == to)
+                                        continue;
+                    
+                                    $scope.exits += response2[entry]["now"] + " via " + response2[entry]["entry"]+" "
+                                }
+                            }
+                            if ($scope.exits.length === 0) {
+                                $scope.exits = "THIS IS DESTINATION";
+                            }
+                            if ($scope.entries.length === 0) {
+                                $scope.entries = "THIS IS SOURCE";
+                            }
+                        }else if($scope.cloudclicked){
+                            $scope.entries = $scope.ssh_in+" on Ingres Provider Edge Router";		
+                            $scope.exits = $scope.ssh_out+" on Egress Provider Edge Router";
+                        }
+                    
+                    });
+                }
+
             // Function : Validate IP Addresses
             function isValidIP(ipaddress) {  
                 if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {  
@@ -314,107 +417,7 @@
                 $scope.data = data;
                 
                 network.on("click", function (properties) {
-                    $scope.$apply(function analyze(device=None) { 
-                        
-                
-                        if(device!=None)
-                            $scope.clicked_device = device
-                        else
-                            $scope.clicked_device = $scope.device_map[properties.nodes];  
-
-                        if(properties.nodes == "cloud"){
-                            console.log($scope.clicked_device);				
-                            $scope.cloudclicked=true
-                    
-                        }
-                        else
-                            $scope.cloudclicked = false
-                            
-                        if(!$scope.cloudclicked){                           
-                            
-                            $scope.thresholds = { green: 0, amber: 1, red: 3 }
-                            $scope.images = { 0: "/static/checked.png", 
-                                            1: "/static/warning-t.png",
-                                            3: "/static/cancel.png"}
-                            $scope.device = 0; 
-                            $scope.platform = 0;
-                            $scope.cpu = 0;
-                            $scope.memory = 0;
-                            $scope.logs = 0;
-
-                            $scope.interface = 0;
-                            $scope.interfaces = {};
-                            $scope.counters = 0;
-                            $scope.protocols = 0;
-                            $scope.eigrp = 0;
-                            $scope.eigrp_down = [];
-                            $scope.bgp = 0;
-                            $scope.bgp_down = [];
-                            $scope.spanning = 0;
-                            $scope.routeflaps = 0;		
-            
-                            $scope.qos = 0;
-                            evaluateThresholds();
-                            $scope.overall = $scope.device | $scope.interfaces | $scope.protocols   
-                            $scope.color_dict.push({key:$scope.clicked_device.Name[0],
-                                                    value:$scope.overall})
-
-                            if($scope.clicked_device.Name[0].includes('RC'))
-                                $scope.clicked_image = "/static/router.png"
-                            else 
-                                $scope.clicked_image = "/static/switchl3.png"
-                            
-                            console.log($scope.clicked_device);
-                
-                            let clicked = properties.nodes;
-                            $scope.exits = "";
-                            $scope.entries = "";
-
-                            for (entry in response) {
-                                from = response[entry]["now"];
-                    
-                                if (from == clicked) {
-                                    if (response[entry]['next'] == from)
-                                        continue;
-                                    if(response[entry]["next"] == "Couldnt Fetch"){$scope.exits += "Provider Edge via "+response[entry]["exit"]}else
-                                    $scope.exits += response[entry]["next"] + " via " + response[entry]["exit"]+" "
-                                }
-                                to = response[entry]["next"];
-                                if (to == clicked) {
-                                    if (response[entry]['now'] == to)
-                                        continue;
-                                    $scope.entries += response[entry]["now"] + " via " + response[entry]["entry"]+" "
-                                }
-                            }
-                            for (entry in response2) {
-                                from = response2[entry]["now"];
-                                if (from == clicked) {
-                                    if (response2[entry]['next'] == from)
-                                        continue;
-                                    if(response2[entry]["next"] == "Couldnt Fetch"){$scope.entries += "Provider Edge via "+response2[entry]["exit"]}else
-                                        $scope.entries += response2[entry]["next"] + " via " + response2[entry]["exit"]+" "
-                                }
-                                to = response2[entry]["next"];
-                                if (to == clicked) {
-                                    if (response2[entry]['now'] == to)
-                                        continue;
-                    
-                                    $scope.exits += response2[entry]["now"] + " via " + response2[entry]["entry"]+" "
-                                }
-                            }
-                            if ($scope.exits.length === 0) {
-                                $scope.exits = "THIS IS DESTINATION";
-                            }
-                            if ($scope.entries.length === 0) {
-                                $scope.entries = "THIS IS SOURCE";
-                            }
-                        }else if($scope.cloudclicked){
-                            $scope.entries = $scope.ssh_in+" on Ingres Provider Edge Router";		
-                            $scope.exits = $scope.ssh_out+" on Egress Provider Edge Router";
-                        }
-                    
-                    });
-                });
+                    $scope.$apply(analyze($scope.device_map[properties.nodes]));
 
 
 
