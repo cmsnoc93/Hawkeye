@@ -43,10 +43,10 @@
             let response; 
 
 
-            function analyze(device=None) { 
+            function analyze(device=null) { 
                         
-                
-                        if(device!=None)
+                        console.log(device)
+                        if(device!=null)
                             $scope.clicked_device = device
                         else
                             $scope.clicked_device = $scope.device_map[properties.nodes];  
