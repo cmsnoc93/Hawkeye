@@ -80,11 +80,26 @@
                             $scope.overall = $scope.device | $scope.interfaces | $scope.protocols   
                             $scope.color_dict[$scope.clicked_device.Name[0]]=$scope.overall;
                                                     
-
-                            if($scope.clicked_device.Name[0].includes('RC'))
-                                $scope.clicked_image = "/static/router.png"
+                            var clicked_name = $scope.clicked_device.Name[0];
+                            if($scope.color_dict[clicked_name].includes('RC')){
+                                if($scope.color_dict[clicked_name]==0)
+                                    node.image = "/static/router-green.png"
+                                else if($scope.color_dict[clicked_name]==1)
+                                    node.image = "/static/router-amber.png"
+                                else
+                                    node.image = "/static/router-red.png"
+                            }
                             else 
-                                $scope.clicked_image = "/static/switchl3.png"
+                            {
+                                if($scope.color_dict[clicked_name]==0)
+                                    node.image = "/static/switch-green.png"
+                                else if($scope.color_dict[clicked_name]==1)
+                                    node.image = "/static/switch-amber.png"
+                                else
+                                    node.image = "/static/switch-red.png"
+                            }
+                            
+                                
                             
                                            
                             let clicked = $scope.clicked_device.Name[0];
@@ -874,7 +889,7 @@
         <div class="kpi"><b>Raw Output: </b><button class="btn btn-smsm btn-info" ng-click="fetchRaw()">Open</div>
             
             <div class="col-md-4">
-            <button class="btn btn-primary" data-toggle="collapse" data-target="#one">
+            <button class="btn btn-default" data-toggle="collapse" data-target="#one">
                     Device Health: <img ng-src = "{{images[device]}}" style="width:20px"/>
             </button>
         </div>
@@ -1004,7 +1019,7 @@
                   <br>
                 <!-- INTERFACE STATISTICS BUTTON STARTS HERE -->
                 <div class="col-md-4">
-                    <button class="btn btn-primary" data-toggle="collapse" data-target="#two">
+                    <button class="btn btn-default" data-toggle="collapse" data-target="#two">
                     Interface Statistics: <img ng-src = "{{images[interface]}}" style="width:20px"/>
                     </button>
                 </div>
@@ -1218,9 +1233,9 @@
       </div>   
     </div>           
                 
-<br>
+<br>    <!-- PROTOCOL BUTTON starts here-->
         <div class="col-md-4">
-                <button class="btn btn-primary" data-toggle="collapse" data-target="#three">
+                <button class="btn btn-default" data-toggle="collapse" data-target="#three">
                     Protocol Information: <img ng-src = "{{images[protocols]}}" style="width:20px"/>
                 </button>
         </div>
