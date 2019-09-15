@@ -258,9 +258,9 @@
                             
                             // Determine Colors for device images
                             $scope.color_dict = []
-                            for(device in $scope.device_map){
-                                console.log("Analyzing & Applying Thresholds")
-                                analyze(device);
+                            console.log("Analyzing & Applying Thresholds")
+                            for(device in $scope.device_map){                                
+                                analyze($scope.device_map[device]);
                             }
                             console.log($scope.color_dict)
                             
