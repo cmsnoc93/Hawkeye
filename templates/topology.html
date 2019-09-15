@@ -407,7 +407,7 @@
                 $scope.data = data;
                 
                 network.on("click", function (properties) {
-                    $scope.clicked_device=$scope.device_mapproperties.nodes];
+                    $scope.clicked_device=$scope.device_map[properties.nodes];
                     if(properties.nodes == "cloud"){
                             console.log($scope.clicked_device);				
                             $scope.cloudclicked=true
